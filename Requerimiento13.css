@@ -1,0 +1,46 @@
+body {
+    font-family: Arial, sans-serif;
+}
+
+.ventEmergente {
+    position: fixed;
+    display: flex;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    align-items: center;
+    justify-content: center;
+    background-color: #0F152A;
+}
+
+.ventEmergente-contenido {
+    position: relative;
+    padding: 60px;
+    border-radius: 35px;
+    width: 420px;
+    text-align: center;
+    color: #fff;
+    background-color: #16A34A;
+}
+
+.boton-cerrar {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    background: none;
+    border: none;
+    color: #c12121;
+    font-size: 24px;
+    cursor: pointer;
+}
+
+.checkbox-container {
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.checkbox-container .checkbox {
+    width: 30px;
+    height: 30px;
+}
