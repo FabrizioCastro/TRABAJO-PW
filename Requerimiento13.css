@@ -35,12 +35,18 @@ body {
     cursor: pointer;
 }
 
+.contenedor-mensaje {
+    display: flex;
+    flex-direction: row;
+    gap: 30px;
+    
+}
+
 .checkbox-container {
-    margin-bottom: 20px;
     text-align: center;
 }
 
 .checkbox-container .checkbox {
-    width: 30px;
-    height: 30px;
+    width: 60px;
+    height: 60px;
 }
