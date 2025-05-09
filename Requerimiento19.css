@@ -19,18 +19,14 @@ body {
     padding: 60px;
     border-radius: 35px;
     width: 420px;
-    text-align: center;
     color: #fff;
     background-color: #16A34A;
+    text-align: left;
 }
-
 
 .formulario-contenedor {
     flex: 1;
-}
-
-.formulario-contenedor h2 {
-    margin-top: 0;
+    align-items: center;
 }
 
 .formulario-contenedor label {
@@ -40,18 +36,47 @@ body {
 }
 
 .formulario-contenedor input {
-    width: 100%;
+    width: 75%;
     padding: 9px;
     border-radius: 10px;
     margin-bottom: 10px;
     border: none;
 }
 
+#categoria {
+    justify-content: left;
+    width: 80%;
+    padding: 9px;
+    border: none;
+    border-radius: 10px;
+    margin-bottom: 10px;
+    background-color: #f9f9f9;
+}
+
+.botones-contenedor {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    gap: 10px;
+}
+
 .button {
-    position: absolute;
     bottom: 10px;
-    right: 10px;
     padding: 10px 30px;
     background-color: #20193a;
     border-radius: 100px;
+}
+
+.precio-rango {
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+}
+
+.precio-rango input {
+    width: 25%;
+    padding: 9px;
+    border-radius: 10px;
+    margin-bottom: 10px;
+    border: none;
 }
