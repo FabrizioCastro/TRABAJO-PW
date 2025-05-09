@@ -14,6 +14,16 @@ body {
     background-color: #0F152A;
 }
 
+
+.formulario-contenedor textarea {
+    width: 100%;
+    height: 150px;
+    border-radius: 10px;
+    padding: 9px;
+    border: none;
+    resize: none;
+}
+
 .modal-contenido {
     position: relative;
     padding: 60px;
@@ -24,19 +34,11 @@ body {
     background-color: #16A34A;
 }
 
-
 .formulario-contenedor {
-    flex: 1;
-}
-
-.formulario-contenedor h2 {
-    margin-top: 0;
-}
-
-.formulario-contenedor label {
-    display: block;
-    margin: 10px 2px;
-    text-align: left;
+     flex: 1;
+    display: flex;
+    flex-direction: row;
+    gap: 30px;
 }
 
 .formulario-contenedor input {
@@ -47,11 +49,29 @@ body {
     border: none;
 }
 
+.formulario-contenedor label {
+    display: block;
+    margin: 10px 2px;
+    text-align: left;
+}
+
+.botones-contenedor {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    gap: 30px;
+}
+
 .button {
-    position: absolute;
-    bottom: 10px;
-    right: 10px;
+    margin-top: 30px;
     padding: 10px 30px;
     background-color: #20193a;
     border-radius: 100px;
+}
+.imagen-cuadro {
+    width: 100%;
+    height: 150px;
+    border-radius: 10px;
+    padding: 9px;
+    background-color: #ffffff;
 }

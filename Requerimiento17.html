@@ -1,48 +1,68 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <link rel="stylesheet" href="Requerimiento17.css">
 </head>
+
 <body>
+  <div class="sidebar">
+    <div class="perfil">
+      <div class="perfil-imagen"></div>
+      <p class="perfil-nombre">Nombre perfil</p>
+    </div>
 
+    <nav class="menu">
+      <ul>
+        <li><a href="#">Usuarios</a></li>
+        <li><a href="#">Juegos</a></li>
+        <li><a href="#">Noticias</a></li>
+        <li><a href="#">Estadisticas</a></li>
+        <li class="cerrar-sesion"><a href="#">Cerrar sesión</a></li>
+      </ul>
+    </nav>
+  </div>
+
+  <div class="main-content">
     <div class="encabezado">
-        <h2>Juegos</h2>
-        <div class="acciones">
-          <button class="button">Filtrar</button>
-          <button class="button">Añadir</button>
-        </div>
+      <h2>Juegos</h2>
+      <div class="botonesAccion">
+        <button class="botones">Filtrar</button>
+        <button class="botones">+ Añadir</button>
       </div>
+    </div>
 
-      <table class="tabla-juegos">
-        <thead>
-          <tr>
-            <th>Fecha</th>
-            <th>Categoría</th>
-            <th>Nombre</th>
-            <th>Precio base</th>
-            <th>Descuento</th>
-            <th>Acciones</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td>
-                <div class="botones-contenedor">
-
-                    <div class="button">Editar</div>
-                    <div class="button">Borrar</div>
-                </div>
-            </td>
-          </tr>
-         
-        </tbody>
-      </table>
+    <table class="tabla-juegos">
+      <thead>
+        <tr>
+          <th>Fecha</th>
+          <th>Categoría</th>
+          <th>Nombre</th>
+          <th>Precio base</th>
+          <th>Descuento</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>1</td>
+          <td>2</td>
+          <td>3</td>
+          <td>4</td>
+          <td>5</td>
+          <td>
+            <div class="botonesAccion">
+              <button class="botones">Editar</button>
+              <button class="botones">Borrar</button>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
 </body>
+
 </html>

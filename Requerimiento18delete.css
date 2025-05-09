@@ -2,7 +2,7 @@ body {
     font-family: Arial, sans-serif;
 }
 
-.ventEmergente {
+.modal {
     position: fixed;
     display: flex;
     top: 0;
@@ -14,7 +14,7 @@ body {
     background-color: #0F152A;
 }
 
-.ventEmergente-contenido {
+.modal-contenido{
     position: relative;
     padding: 60px;
     border-radius: 35px;

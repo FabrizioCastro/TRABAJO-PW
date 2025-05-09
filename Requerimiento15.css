@@ -2,7 +2,7 @@ body {
     font-family: Arial, sans-serif;
 }
 
-.ventEmergente {
+.modal {
     position: fixed;
     display: flex;
     top: 0;
@@ -14,7 +14,7 @@ body {
     background-color: #0F152A;
 }
 
-.ventEmergente-contenido {
+.modal-contenido {
     position: relative;
     padding: 60px;
     border-radius: 35px;
@@ -24,7 +24,7 @@ body {
     background-color: #16A34A;
 }
 
-.boton-cerrar {
+.cerrar-modal {
     position: absolute;
     top: 20px;
     right: 20px;
@@ -32,7 +32,6 @@ body {
     border: none;
     color: #c12121;
     font-size: 24px;
-    cursor: pointer;
 }
 
 .perfil-contenedor {
@@ -66,7 +65,8 @@ body {
 
 .formulario-contenedor label {
     display: block;
-    margin: 10px 20px;
+    margin: 10px 2px;
+    text-align: left;
 }
 
 .formulario-contenedor input {
@@ -74,6 +74,7 @@ body {
     padding: 9px;
     border-radius: 10px;
     margin-bottom: 10px;
+    border: none;
 }
 
 .button {

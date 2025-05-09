@@ -5,35 +5,36 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Edita la informacion de tu perfil</title>
-    <link rel="stylesheet" href="Requerimiento18delete.css">
+    <link rel="stylesheet" href="Requerimiento18EditAdd.css">
 </head>
 
 <body>
-    <div class="ventEmergente">
-        <div class="ventEmergente-contenido">
+    <div class="modal">
+        <div class="modal-contenido">
             <h2>Editar juego</h2>
-            <div class="formulario-editar">
-                <form>
+            <div class="formulario-contenedor">
+                <div>
                     <label for="nombre">Nombre</label>
                     <input type="text" id="nombre" name="nombre" />
-          
+
                     <label for="categoria">Categoria</label>
                     <input type="text" id="categoria" name="categoria" />
-          
+
                     <label for="precio">Precio</label>
                     <input type="text" id="precio" name="precio" />
 
                     <label for="descuento">Descuento</label>
                     <input type="text" id="descuento" name="descuento" />
-                </form>
+                </div>
 
-                <form>
+                <div>
                     <label for="descripcion">Descripcion</label>
-                    <textarea id="descripcion" name="descripcion" ></textarea>
+                    <textarea id="descripcion" name="descripcion"></textarea>
 
-                    <label for="imagen"></label><br>
-                    <input type="file" id="imagen" name="imagen">
-                </form>
+                    <label for="imagen">Imagen</label>
+                    <div id="preview" class="imagen-cuadro"></div>
+
+                </div>
             </div>
             <div class="botones-contenedor">
                 <div class="button">Cancelar</div>
