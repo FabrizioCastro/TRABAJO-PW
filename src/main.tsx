@@ -6,9 +6,10 @@ import EditarPerfil from './pages/EditarPerfil'
 import CompraExitosa from './pages/CompraExitosa'
 import EliminarJuego from './pages/EliminarJuego'
 import AgregarJuego from './pages/AgregarJuego'
+import FiltrarJuego from './pages/FiltrarJuego'
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-   <AgregarJuego/>
+   <FiltrarJuego/>
   </StrictMode>,
 )
