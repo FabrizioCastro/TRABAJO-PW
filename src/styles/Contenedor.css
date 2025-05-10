@@ -3,3 +3,11 @@
     flex-direction: row;
     gap: 30px;
 }
+
+
+.botones-contenedor {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    gap: 30px;
+}

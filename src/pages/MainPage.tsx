@@ -5,7 +5,7 @@ const MainPage = () => {
     return (
         <div>
             <h1>Página Principal</h1>
-            <EditarPerfil/>
+            <CompraExitosa/>
         </div>
   )
 }

@@ -5,7 +5,7 @@ import Titulo from "../components/Titulo"
 import Modal from "../components/modal"
 import "../styles/Contenedor.css"
 
-const EditarPerfil = () => {
+const FiltrarJuego = () => {
     return (
         <Modal>
             <div className="contenedor">
@@ -27,4 +27,4 @@ const EditarPerfil = () => {
     )
 }
 
-export default EditarPerfil
+export default FiltrarJuego
