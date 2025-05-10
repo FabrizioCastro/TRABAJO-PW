@@ -1,15 +1,14 @@
 import Boton from "../components/Boton"
 import Formulario from "../components/Formulario"
+import ImgPerfil from "../components/ImgUsuario"
 import Titulo from "../components/Titulo"
 import Modal from "../components/modal"
-
-
+import "../styles/Contenedor.css"
 const EditarPerfil = ()=>{
     return(
         <Modal>
-            <div className="perfil-contenedor">
-                <div className="perfil-imagen">Tu imagen de perfil</div>
-
+            <div className="contenedor">
+               <ImgPerfil/>
                 <div>
                     <Titulo texto="Edita la información de tu perfil"/>
                         <Formulario>

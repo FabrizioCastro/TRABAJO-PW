@@ -1,4 +1,4 @@
-import "../styles/Formulario.css""
+import "../styles/Formulario.css"
 
 const Formulario = ({children})=>{
     return(
