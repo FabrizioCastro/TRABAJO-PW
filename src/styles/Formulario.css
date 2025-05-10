@@ -1,0 +1,22 @@
+
+.formulario-contenedor {
+    flex: 1;
+}
+
+.formulario-contenedor h2 {
+    margin-top: 0;
+}
+
+.formulario-contenedor label {
+    display: block;
+    margin: 10px 2px;
+    text-align: left;
+}
+
+.formulario-contenedor input {
+    width: 100%;
+    padding: 9px;
+    border-radius: 10px;
+    margin-bottom: 10px;
+    border: none;
+}
