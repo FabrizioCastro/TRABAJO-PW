@@ -1,5 +1,6 @@
 body {
     font-family: Arial, sans-serif;
+    color: rgba(255, 255, 255, 0.87);
 }
 
 .modal {
@@ -20,9 +21,9 @@ body {
     border-radius: 35px;
     width: 420px;
     text-align: center;
-    color: #fff;
-    background-color: #16A34A;
-    
+    border-radius: 12.124px;
+    border: 0.808px solid #FFF;
+    background-color: #2F2F8A;
 }
 
 .cerrar-modal {
