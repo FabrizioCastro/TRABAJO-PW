@@ -1,16 +1,14 @@
-
-
-const Modal = ({children}) => {
+const Modal = ({ children, mostrarCerrar = false }) => {
     return (
         <div className="modal">
             <div className="modal-contenido">
-               
-                <button className="cerrar-modal">&times;</button>
-                
+                {mostrarCerrar && (
+                    <button className="cerrar-modal">&times;</button>
+                )}
                 {children}
             </div>
         </div>
     );
 };
 
-export default Modal
+export default Modal;

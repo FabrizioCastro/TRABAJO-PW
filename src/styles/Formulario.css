@@ -1,15 +1,19 @@
-
 .formulario-contenedor {
-    flex: 1;
+    max-width: 100%;
+    width: 100%;
+    box-sizing: border-box;
+    margin-top: 30px;
+    margin-bottom: 30px;
 }
 
-.formulario-contenedor h2 {
-    margin-top: 0;
+.formulario-contenedor div {
+    width: 100%;
 }
 
 .formulario-contenedor label {
     display: block;
     margin: 10px 2px;
+    font-weight: bold;
     text-align: left;
 }
 
@@ -19,6 +23,8 @@
     border-radius: 10px;
     margin-bottom: 10px;
     border: none;
+    box-sizing: border-box;
+    text-align: left;
 }
 
 .formulario-contenedor textarea {
@@ -28,6 +34,8 @@
     padding: 9px;
     border: none;
     resize: none;
+    box-sizing: border-box;
+    text-align: left;
 }
 
 .imagen-cuadro {
@@ -36,15 +44,16 @@
     border-radius: 10px;
     padding: 9px;
     background-color: #ffffff;
+    box-sizing: border-box;
 }
 
-
 #categoria {
-    justify-content: left;
-    width: 110%;
+    width: 100%;
     padding: 9px;
     border: none;
     border-radius: 10px;
     margin-bottom: 10px;
     background-color: #f9f9f9;
+    box-sizing: border-box;
+    text-align: left;
 }

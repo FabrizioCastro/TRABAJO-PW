@@ -4,7 +4,7 @@ import '../styles/CompraExitosa.css'
 
 const CompraExitosa = () => {
     return (
-        <Modal>
+        <Modal mostrarCerrar={true}>
             <div className="mensaje-compra">
                 <Titulo texto="¡Compra completada con éxito!" />
                 <div className="check-icono">&#10003;</div>

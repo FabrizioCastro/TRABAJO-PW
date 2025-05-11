@@ -6,13 +6,17 @@ interface ImgPerfilProps {
 
 const ImgPerfil = ({ src, alt = "Imagen de perfil" }: ImgPerfilProps) => {
     return (
-        <div className="perfil-imagen">
+        <div>
+             <div className="perfil-imagen">
             {src ? (
                 <img src={src} alt={alt}/>
             ) : (
                 "Tu imagen de perfil"
             )}
         </div>
+
+        </div>
+       
     );
 };
 
