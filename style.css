@@ -200,11 +200,13 @@ body {
     padding: 2rem;
     background-color: var(--card-bg);
     border-radius: 10px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
 }
 
 .cart-items {
     list-style: none;
     padding: 0;
+    margin: 0;
 }
 
 .cart-items li {
@@ -212,13 +214,122 @@ body {
     justify-content: space-between;
     align-items: center;
     padding: 1rem;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    margin-bottom: 0.5rem;
+    background-color: rgba(255, 255, 255, 0.05);
+    border-radius: 5px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
+.cart-items li button {
+    background-color: var(--accent-color);
+    color: white;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.cart-items li button:hover {
+    background-color: #ff1a4f;
+    transform: translateY(-2px);
+}
+
+.cart-summary {
+    margin-top: 2rem;
+    padding: 1.5rem;
+    background-color: rgba(255, 255, 255, 0.05);
+    border-radius: 10px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Order Summary */
+.order-summary {
+    max-width: 800px;
+    margin: 2rem auto;
+    padding: 2rem;
+    background-color: var(--card-bg);
+    border-radius: 10px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+}
+
+.order-details {
+    background-color: rgba(255, 255, 255, 0.05);
+    padding: 1.5rem;
+    border-radius: 10px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.order-items {
+    list-style: none;
+    padding: 0;
+    margin: 1rem 0;
+}
+
+.order-items li {
+    padding: 0.8rem;
+    margin-bottom: 0.5rem;
+    background-color: rgba(255, 255, 255, 0.05);
+    border-radius: 5px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Purchase History */
+.history-section {
+    max-width: 800px;
+    margin: 2rem auto;
+    padding: 2rem;
+    background-color: var(--card-bg);
+    border-radius: 10px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+}
+
+.history-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.history-list li {
+    padding: 1.2rem;
+    margin-bottom: 1rem;
+    background-color: rgba(255, 255, 255, 0.05);
+    border-radius: 10px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    transition: transform 0.3s ease;
+}
+
+.history-list li:hover {
+    transform: translateY(-2px);
+    background-color: rgba(255, 255, 255, 0.08);
+}
+
+.history-list li strong {
+    color: var(--secondary-color);
+    display: block;
+    margin-bottom: 0.5rem;
+}
+
+/* Total styles */
 .total {
     font-size: 1.2rem;
     color: var(--secondary-color);
     margin: 1rem 0;
+    padding: 1rem;
+    background-color: rgba(255, 255, 255, 0.05);
+    border-radius: 5px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    text-align: right;
+}
+
+/* Message styles */
+.message {
+    padding: 1rem;
+    margin: 1rem 0;
+    border-radius: 5px;
+    text-align: center;
+    background-color: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 /* Footer */
@@ -313,7 +424,7 @@ body {
 
 #carrito {
   margin-top: 40px;
-  background-color: #fdfdfd;
+  
   padding: 20px;
   border: 2px dashed #ccc;
   border-radius: 8px;
@@ -327,16 +438,76 @@ body {
 #resumenCompra {
   margin-top: 30px;
   padding: 20px;
-  background-color: #f1f1f1;
+  
   border: 2px dashed #ccc;
   border-radius: 8px;
 }
 
 #historialCompras {
   margin-top: 30px;
-  background-color: #f8f8f8;
+  
   padding: 20px;
   border: 1px solid #ccc;
   border-radius: 6px;
+}
+
+/* Notificaciones */
+.notificacion {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  padding: 15px 25px;
+  border-radius: 5px;
+  background-color: var(--card-bg);
+  color: var(--text-color);
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+  z-index: 1000;
+  opacity: 0;
+  transform: translateY(-20px);
+  transition: all 0.3s ease;
+}
+
+.notificacion.success {
+  border-left: 4px solid var(--secondary-color);
+}
+
+.notificacion.error {
+  border-left: 4px solid var(--accent-color);
+}
+
+.notificacion.info {
+  border-left: 4px solid var(--primary-color);
+}
+
+/* Mejoras en la navegación */
+.nav-links .user-actions {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.nav-links .user-actions span {
+  color: var(--secondary-color);
+  font-weight: 500;
+}
+
+/* Mejoras en los botones */
+button:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+/* Transiciones suaves */
+section {
+  transition: opacity 0.3s ease;
+}
+
+/* Mejoras en el carrito */
+.cart-items li {
+  transition: background-color 0.3s ease;
+}
+
+.cart-items li:hover {
+  background-color: rgba(255, 255, 255, 0.05);
 }
   
