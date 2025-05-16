@@ -1,28 +1,37 @@
 import { useState } from 'react';
 import AgregarJuego from './AgregarJuego';
-
+import EliminarJuego from './EliminarJuego';
 import '../styles/Juegos.css'
 import Boton from "../components/Boton"
 import Titulo from "../components/Titulo"
 import NavBar from '../components/Navbar';
 
 export interface Juego {
-  id: number;
-  nombre: string;
-  categoria: string;
-  precio: number;
-  descuento: number;
-  descripcion: string;
-  fecha: string;
+    id: number;
+    nombre: string;
+    categoria: string;
+    precio: number;
+    descuento: number;
+    descripcion: string;
+    fecha: string;
 }
 
 const Juegos = () => {
     const [juegos, setJuegos] = useState<Juego[]>([]);
-    const [mostrarModal, setMostrarModal] = useState(false);
+    const [mostrarModAgregar, setMostrarModAgregar] = useState(false);
+    const [juegoAEliminar, setJuegoAEliminar] = useState<Juego | null>(null);
 
     const agregarJuego = (nuevoJuego: Juego) => {
         setJuegos([...juegos, nuevoJuego]);
     };
+
+    const handleEliminar = () => {
+        if (juegoAEliminar) {
+            setJuegos(juegos.filter(j => j.id !== juegoAEliminar.id));
+            setJuegoAEliminar(null);
+        }
+    };
+
 
     return (
         <div className="container1">
@@ -32,7 +41,7 @@ const Juegos = () => {
                     <Titulo texto="Juegos" />
                     <div className='row-btn2'>
                         <Boton tipo="button" texto="Filtrar" />
-                        <Boton tipo="button" texto="+ Añadir" onClick={() => setMostrarModal(true)} />
+                        <Boton tipo="button" texto="+ Añadir" onClick={() => setMostrarModAgregar(true)} />
 
                     </div>
                 </div>
@@ -60,7 +69,7 @@ const Juegos = () => {
                                 <td>
                                     <div className='row-btn1'>
                                         <Boton tipo="button" texto="Editar" />
-                                        <Boton tipo="button" texto="Borrar" />
+                                        <Boton tipo="button" texto="Borrar" onClick={() => setJuegoAEliminar(juego)} />
                                     </div>
                                 </td>
                             </tr>
@@ -68,10 +77,17 @@ const Juegos = () => {
                     </tbody>
                 </table>
             </div>
-            {mostrarModal && (
+            {mostrarModAgregar && (
                 <AgregarJuego
                     onAgregarJuego={agregarJuego}
-                    onCerrar={() => setMostrarModal(false)}
+                    onCerrar={() => setMostrarModAgregar(false)}
+                />
+            )}
+
+            {juegoAEliminar && (
+                <EliminarJuego
+                    onConfirmar={handleEliminar}
+                    onCancelar={() => setJuegoAEliminar(null)}
                 />
             )}
         </div>

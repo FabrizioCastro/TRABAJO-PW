@@ -18,11 +18,6 @@ const AgregarJuego = ({ onAgregarJuego, onCerrar }: AgregarJuegoProps) => {
     const [descripcion, setDescripcion] = useState('');
 
     const handleAgregarJuego = () => {
-        if (!nombre || !categoria || !precio) {
-            alert("Completa todos los campos obligatorios.");
-            return;
-        }
-
         const nuevoJuego: Juego = {
             id: Date.now(),
             nombre,
