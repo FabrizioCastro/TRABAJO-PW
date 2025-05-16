@@ -9,7 +9,7 @@ import "../styles/Contenedor.css"
 
 const MainPage = () => {
     return (
-        <FiltrarJuego />
+        <Juegos />
     )
 }
 

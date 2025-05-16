@@ -1,9 +1,9 @@
-const Modal = ({ children, mostrarCerrar = false }) => {
+const Modal = ({ children, mostrarCerrar = false, onCerrar }) => {
     return (
         <div className="modal">
             <div className="modal-contenido">
                 {mostrarCerrar && (
-                    <button className="cerrar-modal">&times;</button>
+                    <button className="cerrar-modal" onClick={onCerrar}>&times;</button>
                 )}
                 {children}
             </div>
