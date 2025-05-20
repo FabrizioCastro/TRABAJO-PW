@@ -13,7 +13,7 @@ export interface Game {
   categoria: string;
   plataforma: string;
   precio: number;
-  descuento?: number; // Porcentaje de descuento (0-100)
+  descuento?: number; 
   oferta: boolean;
   ventas: number;
   valoracion: number;

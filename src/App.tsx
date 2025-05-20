@@ -15,6 +15,8 @@ import TopRated from './pages/TopRated'
 import Verification from './pages/Verification'
 import GameDetail from './pages/GameDetail'
 import { AuthProvider } from './context/AuthContext'
+import NavBar from './components/Navbar'
+import Juegos from './pages/Juegos'
 
 // Layout para usuario normal
 function AppLayout() {
@@ -33,12 +35,12 @@ function AppLayout() {
 // Layout para admin 
 function AdminLayout() {
   return (
-    <>
-      <main style={{ minHeight: '80vh', padding: '2rem' }}>
+    <div style={{ display: 'flex', minHeight: '100vh' }}>
+      <NavBar />
+      <main style={{ flexGrow: 1, padding: '2rem' }}>
         <Outlet />
       </main>
-      <Footer />
-    </>
+    </div>
   )
 }
 
@@ -63,7 +65,7 @@ function App() {
         {/* Rutas admin con AdminLayout */}
         <Route path="/admin" element={<AdminLayout />}>
           <Route index element={<AdminPanel />} />
-         
+          <Route path="juegos" element={<Juegos />} />
         </Route>
       </Routes>
     </AuthProvider>

@@ -66,7 +66,6 @@ const AgregarJuego = ({ onAgregarJuego, onCerrar }: AgregarJuegoProps) => {
             fecha: obtenerFechaDDMMYYYY()
         };
 
-
         onAgregarJuego(nuevoJuego);
         onCerrar();
         limpiarFormulario();

@@ -1,25 +1,38 @@
+import { Link } from "react-router-dom"
 import ImgPerfil from "../components/ImgUsuario"
 import '../styles/NavBar.css'
 
-const NavBar = () => {
-    return (
-        <div className="sidebar">
-            <div className="perfil">
-                <ImgPerfil />
-                <p className="text-white">Nombre perfil</p>
-            </div>
+interface NavBarProps {
+  nombreUsuario?: string
+  imagenUsuario?: string
+  onLogout?: () => void
+}
 
-            <nav className="menu">
-                <ul>
-                    <li><a href="#">Usuarios</a></li>
-                    <li><a href="#">Juegos</a></li>
-                    <li><a href="#">Noticias</a></li>
-                    <li><a href="#">Estadísticas</a></li>
-                    <li className="cerrar-sesion"><a href="#">Cerrar sesión</a></li>
-                </ul>
-            </nav>
-        </div>
-    )
+const NavBar = ({ nombreUsuario = "Nombre perfil", imagenUsuario, onLogout }: NavBarProps) => {
+  return (
+    <aside className="sidebar">
+      <div className="perfil">
+        <ImgPerfil imagen={imagenUsuario} />
+        <p className="text-white">{nombreUsuario}</p>
+      </div>
+
+      <nav className="menu">
+        <ul>
+          <li><Link to="/admin">Usuarios</Link></li>
+          <li><Link to="/admin/juegos">Juegos</Link></li>
+          <li><Link to="/admin//noticias">Noticias</Link></li>
+          <li><Link to="/admin//estadisticas">Estadísticas</Link></li>
+          <li className="cerrar-sesion">
+            {onLogout ? (
+              <button onClick={onLogout} className="btn-logout">Cerrar sesión</button>
+            ) : (
+              <Link to="/logout">Cerrar sesión</Link> 
+            )}
+          </li>
+        </ul>
+      </nav>
+    </aside>
+  )
 }
 
 export default NavBar
