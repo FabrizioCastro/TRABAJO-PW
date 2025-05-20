@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom'
 import type { Game } from '../data/games'
 
 interface Props {
@@ -15,12 +16,18 @@ function GameCard({ juego, index }: Props) {
 
   return (
     <div className="juego-card">
-      <h3>{juego.nombre}</h3>
-      <p>Categoría: {juego.categoria}</p>
-      <p>Plataforma: {juego.plataforma}</p>
-      <p>Precio: ${juego.precio.toFixed(2)}</p>
-      {juego.oferta && <p className="oferta">🔥 En oferta</p>}
-      <button onClick={agregarAlCarrito}>Agregar al carrito 🛒</button>
+      <Link to={`/juego/${juego.id}`} style={{ textDecoration: 'none', color: 'inherit' }}>
+        <div className="juego-info">
+          <h3>{juego.nombre}</h3>
+          <p>Categoría: {juego.categoria}</p>
+          <p>Precio: ${juego.precio.toFixed(2)}</p>
+          <p>Valoración: ⭐ {juego.valoracion}</p>
+        </div>
+      </Link>
+
+      <button onClick={agregarAlCarrito} className="btn-primary">
+        Agregar al carrito 🛒
+      </button>
     </div>
   )
 }
