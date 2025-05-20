@@ -6,6 +6,7 @@ import AgregarJuego from "./AgregarJuego"
 import EditarJuego from "./EditarJuego"
 import FiltrarJuego from "./FiltrarJuego"
 import "../styles/Contenedor.css"
+import '@fortawesome/fontawesome-free/css/all.min.css';
 
 const MainPage = () => {
     return (

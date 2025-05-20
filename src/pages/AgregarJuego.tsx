@@ -32,8 +32,6 @@ const AgregarJuego = ({ onAgregarJuego, onCerrar }: AgregarJuegoProps) => {
         onCerrar();
     };
 
-    
-
     return (
         <Modal onCerrar={onCerrar} >
             <Titulo texto="Agregar juego" />

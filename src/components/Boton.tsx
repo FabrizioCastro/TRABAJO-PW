@@ -8,7 +8,7 @@ interface BotonProps {
 }
 
 const Boton = ({ texto, tipo = "button", estilo = "b1" , onClick}: BotonProps) => {
-    const clase = estilo === "b1" ? "button1" : "button2";
+    const clase = estilo === "b1" ? "btn-primary" : "button2";
     return (
         <div>
             <button type={tipo} className={clase} onClick={onClick}> {texto} </button>

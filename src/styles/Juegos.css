@@ -29,7 +29,7 @@
   overflow: auto;
   padding: 30px;
   color: #e0e0e0;
-  background-color: #0F152A;
+  background-color: var(--dark-bg);
 }
 
 .encabezado {
