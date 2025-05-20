@@ -1,23 +1,22 @@
-import '../styles/ImgPerfil.css'
 interface ImgPerfilProps {
-    src?: string;
-    alt?: string;
+  imagen?: string;
+  nombre?: string;
 }
 
-const ImgPerfil = ({ src, alt = "Imagen de perfil" }: ImgPerfilProps) => {
-    return (
-        <div>
-             <div className="perfil-imagen">
-            {src ? (
-                <img src={src} alt={alt}/>
-            ) : (
-                "Tu imagen de perfil"
-            )}
-        </div>
-
-        </div>
-       
-    );
+const ImgPerfil = ({ imagen, nombre }: ImgPerfilProps) => {
+  return (
+    <div style={{ textAlign: 'center' }}>
+      <div className="perfil-imagen">
+        {imagen ? (
+          <img src={imagen} alt={`Imagen de perfil de ${nombre || 'usuario'}`} />
+        ) : (
+          <span>Tu imagen de perfil</span>
+        )}
+      </div>
+      {nombre && <p className="text-white">{nombre}</p>}
+    </div>
+  );
 };
+
 
 export default ImgPerfil;
