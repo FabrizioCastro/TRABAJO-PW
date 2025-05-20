@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import AgregarJuego from './AgregarJuego';
 import EliminarJuego from './EliminarJuego';
 import FiltrarJuego from './FiltrarJuego';
@@ -7,7 +7,7 @@ import Boton from "../components/Boton";
 import Titulo from "../components/Titulo";
 import NavBar from '../components/Navbar';
 import EditarJuego from './EditarJuego';
-import { juegos as juegosData, type Game } from '../data/games';
+import { type Game } from '../data/games';
 import { filtrarJuegos } from '../utils/filtrarJuegos';
 
 interface Filtro {
@@ -18,7 +18,7 @@ interface Filtro {
 }
 
 const Juegos = () => {
-    const [juegos, setJuegos] = useState<Game[]>(juegosData);
+    const [juegos, setJuegos] = useState<Game[]>([]);
     const [mostrarModAgregar, setMostrarModAgregar] = useState(false);
     const [mostrarEditarJuego, setMostrarEditarJuego] = useState(false);
     const [juegoAEliminar, setJuegoAEliminar] = useState<Game | null>(null);
@@ -26,19 +26,36 @@ const Juegos = () => {
     const [mostrarFiltro, setMostrarFiltro] = useState(false);
     const [filtrosActivos, setFiltrosActivos] = useState<Filtro | null>(null);
 
+    useEffect(() => {
+        const juegosGuardados = localStorage.getItem('juegos');
+        if (juegosGuardados) {
+            setJuegos(JSON.parse(juegosGuardados));
+        } else {
+            console.log("No hay juegos guardados")
+        }
+    }, []);
+
+    const actualizarJuegos = (nuevosJuegos: Game[]) => {
+        setJuegos(nuevosJuegos);
+        localStorage.setItem('juegos', JSON.stringify(nuevosJuegos));
+    };
+
     const agregarJuego = (nuevoJuego: Game) => {
-        setJuegos([...juegos, nuevoJuego]);
+        const nuevos = [...juegos, nuevoJuego];
+        actualizarJuegos(nuevos);
     };
 
     const handleEliminar = () => {
         if (juegoAEliminar) {
-            setJuegos(juegos.filter(j => j.id !== juegoAEliminar.id));
+            const nuevos = juegos.filter(j => j.id !== juegoAEliminar.id);
+            actualizarJuegos(nuevos);
             setJuegoAEliminar(null);
         }
     };
-
+    
     const editarJuego = (juegoEditado: Game) => {
-        setJuegos(juegos.map(j => j.id === juegoEditado.id ? juegoEditado : j));
+        const nuevos = juegos.map(j => j.id === juegoEditado.id ? juegoEditado : j);
+        actualizarJuegos(nuevos);
     };
 
     const juegosFiltrados = filtrosActivos
