@@ -1,13 +1,16 @@
-import "../styles/Formulario.css"
+import "../styles/Formulario.css";
 
-const Formulario = ({children})=>{
-    return(
-        <div>
-            <form className="formulario-contenedor">
-                {children}
-            </form>
-        </div>
-    )
+interface FormularioProps {
+  children: React.ReactNode;
+  onSubmit?: (e: React.FormEvent<HTMLFormElement>) => void;
 }
 
-export default Formulario
+const Formulario = ({ children, onSubmit }: FormularioProps) => {
+  return (
+    <form className="formulario-contenedor" onSubmit={onSubmit}>
+      {children}
+    </form>
+  );
+};
+
+export default Formulario;

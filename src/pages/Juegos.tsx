@@ -1,29 +1,20 @@
 import { useState } from 'react';
 import AgregarJuego from './AgregarJuego';
 import EliminarJuego from './EliminarJuego';
-import FiltrarJuego from './FiltrarJuego'; 
+import FiltrarJuego from './FiltrarJuego';
 import '../styles/Juegos.css';
 import Boton from "../components/Boton";
 import Titulo from "../components/Titulo";
 import NavBar from '../components/Navbar';
 import EditarJuego from './EditarJuego';
-import juegosDatos from '../datos/juegos.json'
-export interface Juego {
-    id: number;
-    nombre: string;
-    categoria: string;
-    precio: number;
-    descuento: number;
-    descripcion: string;
-    fecha: string;
-}
+import { juegos as juegosData, type Game } from '../data/games';
 
 const Juegos = () => {
-    const [juegos, setJuegos] = useState<Juego[]>(juegosDatos);
+    const [juegos, setJuegos] = useState<Game[]>(juegosData);
     const [mostrarModAgregar, setMostrarModAgregar] = useState(false);
     const [mostrarEditarJuego, setMostrarEditarJuego] = useState(false);
-    const [juegoAEliminar, setJuegoAEliminar] = useState<Juego | null>(null);
-    const [juegoAEditar, setJuegoAEditar] = useState<Juego | null>(null);
+    const [juegoAEliminar, setJuegoAEliminar] = useState<Game | null>(null);
+    const [juegoAEditar, setJuegoAEditar] = useState<Game | null>(null);
 
     const [mostrarFiltro, setMostrarFiltro] = useState(false);
     const [filtro, setFiltro] = useState<{
@@ -33,7 +24,7 @@ const Juegos = () => {
         precioMax?: number;
     } | null>(null);
 
-    const agregarJuego = (nuevoJuego: Juego) => {
+    const agregarJuego = (nuevoJuego: Game) => {
         setJuegos([...juegos, nuevoJuego]);
     };
 
@@ -44,18 +35,14 @@ const Juegos = () => {
         }
     };
 
-    const editarJuego = (juegoEditado: Juego) => {
+    const editarJuego = (juegoEditado: Game) => {
         setJuegos(juegos.map(j => j.id === juegoEditado.id ? juegoEditado : j));
     };
 
-   
     const juegosFiltrados = filtro
         ? juegos.filter(j => {
-          
             const cumpleFecha = filtro.fechaLanzamiento ? j.fecha === filtro.fechaLanzamiento : true;
-        
             const cumpleCategoria = filtro.categoria ? j.categoria === filtro.categoria : true;
-           
             const cumplePrecioMin = filtro.precioMin !== undefined ? j.precio >= filtro.precioMin : true;
             const cumplePrecioMax = filtro.precioMax !== undefined ? j.precio <= filtro.precioMax : true;
             return cumpleFecha && cumpleCategoria && cumplePrecioMin && cumplePrecioMax;
@@ -78,33 +65,44 @@ const Juegos = () => {
                     <thead>
                         <tr>
                             <th>Fecha</th>
-                            <th>Categoría</th>
                             <th>Nombre</th>
-                            <th>Precio base</th>
+                            <th>Categoría</th>
+                            <th>Plataforma</th>
+                            <th>Precio</th>
                             <th>Descuento</th>
+                            <th>Precio final</th>
                             <th>Acciones</th>
                         </tr>
                     </thead>
 
                     <tbody>
-                        {juegosFiltrados.map((juego) => (
-                            <tr key={juego.id}>
-                                <td>{juego.fecha}</td>
-                                <td>{juego.categoria}</td>
-                                <td>{juego.nombre}</td>
-                                <td>{juego.precio}</td>
-                                <td>{juego.descuento}</td>
-                                <td>
-                                    <div className='row-btn1'>
-                                        <Boton tipo="button" texto="Editar" onClick={() => {
-                                            setJuegoAEditar(juego);
-                                            setMostrarEditarJuego(true);
-                                        }} />
-                                        <Boton tipo="button" texto="Borrar" onClick={() => setJuegoAEliminar(juego)} />
-                                    </div>
-                                </td>
-                            </tr>
-                        ))}
+                        {juegosFiltrados.map((juego) => {
+                            const precioFinal = juego.oferta
+                                ? (juego.precio - (juego.precio * juego.descuento / 100)).toFixed(2)
+                                : juego.precio.toFixed(2);
+
+                            return (
+                                <tr key={juego.id}>
+                                    <td>{juego.fecha}</td>
+                                    <td>{juego.nombre}</td>
+                                    <td>{juego.categoria}</td>
+                                    <td>{juego.plataforma}</td>
+
+                                    <td>${juego.precio.toFixed(2)}</td>
+                                    <td>{juego.oferta ? `${juego.descuento}%` : '0%'}</td>
+                                    <td>${precioFinal}</td>
+                                    <td>
+                                        <div className='row-btn1'>
+                                            <Boton tipo="button" texto="Editar" onClick={() => {
+                                                setJuegoAEditar(juego);
+                                                setMostrarEditarJuego(true);
+                                            }} />
+                                            <Boton tipo="button" texto="Borrar" onClick={() => setJuegoAEliminar(juego)} />
+                                        </div>
+                                    </td>
+                                </tr>
+                            );
+                        })}
                     </tbody>
                 </table>
             </div>
@@ -142,6 +140,6 @@ const Juegos = () => {
             )}
         </div>
     );
-};
+}
 
 export default Juegos;

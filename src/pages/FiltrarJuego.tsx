@@ -34,7 +34,7 @@ const FiltrarJuego = ({ onFiltrar, onCerrar }: FiltrarJuegoProps) => {
     return (
         <Modal onCerrar={onCerrar}>
             <Titulo texto="Filtro" />
-            <Formulario onSubmit={handleSubmit}>
+            <Formulario>
                 <label htmlFor="lanzamiento-fecha">Fecha de lanzamiento</label>
                 <input
                     type="text"
@@ -51,9 +51,9 @@ const FiltrarJuego = ({ onFiltrar, onCerrar }: FiltrarJuegoProps) => {
                     value={categoria}
                     onChange={(e) => setCategoria(e.target.value)}
                 >
-                    <option value="Terror">Terror</option>
-                    <option value="Acción">Acción</option>
                     <option value="RPG">RPG</option>
+                    <option value="Terror">Metroidvania</option>
+                    <option value="Acción">Acción</option>
                     <option value="Aventura">Aventura</option>
                 </select>
 

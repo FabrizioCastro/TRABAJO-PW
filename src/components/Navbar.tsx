@@ -1,5 +1,6 @@
 import ImgPerfil from "../components/ImgUsuario"
 import '../styles/NavBar.css'
+
 const NavBar = () => {
     return (
         <div className="sidebar">

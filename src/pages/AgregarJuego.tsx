@@ -1,12 +1,12 @@
 import { useState } from 'react';
-import Boton from "../components/Boton"
-import Formulario from "../components/Formulario"
-import Titulo from "../components/Titulo"
-import Modal from "../components/Modal"
-import type { Juego } from './Juegos';
+import Boton from "../components/Boton";
+import Formulario from "../components/Formulario";
+import Titulo from "../components/Titulo";
+import Modal from '../components/modal';
+import type { Game } from '../data/games';
 
 interface AgregarJuegoProps {
-    onAgregarJuego: (juego: Juego) => void;
+    onAgregarJuego: (juego: Game) => void;
     onCerrar: () => void;
 }
 
@@ -16,24 +16,65 @@ const AgregarJuego = ({ onAgregarJuego, onCerrar }: AgregarJuegoProps) => {
     const [precio, setPrecio] = useState('');
     const [descuento, setDescuento] = useState('');
     const [descripcion, setDescripcion] = useState('');
+    const [plataforma, setPlataforma] = useState('');
+    const [imagen, setImagen] = useState<File | null>(null);
+    const [preview, setPreview] = useState<string | null>(null);
+
+    const handleImagenChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const file = e.target.files?.[0];
+        if (file) {
+            setImagen(file);
+            const reader = new FileReader();
+            reader.onloadend = () => {
+                setPreview(reader.result as string);
+            };
+            reader.readAsDataURL(file);
+        }
+    };
 
     const handleAgregarJuego = () => {
-        const nuevoJuego: Juego = {
+        if (!nombre || !categoria || !precio || !descripcion || !plataforma || !preview) {
+            alert('Por favor, completa todos los campos obligatorios y sube una imagen.');
+            return;
+        }
+
+        const precioNumerico = parseFloat(precio);
+        const descuentoNumerico = parseFloat(descuento) || 0;
+
+        const nuevoJuego: Game = {
             id: Date.now(),
             nombre,
-            categoria,
-            precio: parseFloat(precio),
-            descuento: parseFloat(descuento),
             descripcion,
-            fecha: new Date().toLocaleDateString()
+            categoria,
+            plataforma,
+            precio: precioNumerico,
+            descuento: descuentoNumerico,
+            oferta: descuentoNumerico > 0, 
+            ventas: 0,
+            valoracion: 0,
+            imagen: preview,
+            reviews: [],
+            fecha: new Date().toISOString().split('T')[0] 
         };
 
         onAgregarJuego(nuevoJuego);
         onCerrar();
+        limpiarFormulario();
+    };
+
+    const limpiarFormulario = () => {
+        setNombre('');
+        setCategoria('');
+        setPrecio('');
+        setDescuento('');
+        setDescripcion('');
+        setPlataforma('');
+        setImagen(null);
+        setPreview(null);
     };
 
     return (
-        <Modal onCerrar={onCerrar} >
+        <Modal onCerrar={onCerrar}>
             <Titulo texto="Agregar juego" />
             <Formulario>
                 <div className="row">
@@ -48,21 +89,36 @@ const AgregarJuego = ({ onAgregarJuego, onCerrar }: AgregarJuegoProps) => {
                             <option value="Acción">Acción</option>
                             <option value="RPG">RPG</option>
                             <option value="Aventura">Aventura</option>
+                            <option value="Metroidvania">Metroidvania</option>
+                        </select>
+
+                        <label htmlFor="plataforma">Plataforma</label>
+                        <select id="plataforma" value={plataforma} onChange={(e) => setPlataforma(e.target.value)}>
+                            <option value="">Seleccionar</option>
+                            <option value="PC">PC</option>
+                            <option value="PlayStation">PlayStation</option>
+                            <option value="Nintendo">Nintendo</option>
+                            <option value="Xbox">Xbox</option>
                         </select>
 
                         <label htmlFor="precio">Precio</label>
-                        <input type="text" id="precio" value={precio} onChange={(e) => setPrecio(e.target.value)} />
+                        <input type="number" id="precio" value={precio} onChange={(e) => setPrecio(e.target.value)} />
 
-                        <label htmlFor="descuento">Descuento</label>
-                        <input type="text" id="descuento" value={descuento} onChange={(e) => setDescuento(e.target.value)} />
+                        <label htmlFor="descuento">Descuento (%)</label>
+                        <input type="number" id="descuento" value={descuento} onChange={(e) => setDescuento(e.target.value)} />
                     </div>
 
                     <div>
                         <label htmlFor="descripcion">Descripción</label>
                         <textarea id="descripcion" value={descripcion} onChange={(e) => setDescripcion(e.target.value)} />
 
-                        <label htmlFor="imagen">Imagen</label>
-                        <div id="preview" className="imagen-cuadro"></div>
+                        <label htmlFor="imagen">Subir Imagen</label>
+                        <input type="file" id="imagen" accept="image/*" onChange={handleImagenChange} />
+                        {preview && (
+                            <div className="imagen-cuadro">
+                                <img src={preview} alt="Vista previa" style={{ maxWidth: '100%', maxHeight: 200 }} />
+                            </div>
+                        )}
                     </div>
                 </div>
             </Formulario>
