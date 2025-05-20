@@ -11,11 +11,11 @@ interface AgregarJuegoProps {
 }
 
 const obtenerFechaDDMMYYYY = (): string => {
-  const fecha = new Date();
-  const dia = fecha.getDate().toString().padStart(2, '0');
-  const mes = (fecha.getMonth() + 1).toString().padStart(2, '0');
-  const anio = fecha.getFullYear();
-  return `${dia}-${mes}-${anio}`;
+    const fecha = new Date();
+    const dia = fecha.getDate().toString().padStart(2, '0');
+    const mes = (fecha.getMonth() + 1).toString().padStart(2, '0');
+    const anio = fecha.getFullYear();
+    return `${dia}-${mes}-${anio}`;
 };
 
 const AgregarJuego = ({ onAgregarJuego, onCerrar }: AgregarJuegoProps) => {
@@ -57,13 +57,15 @@ const AgregarJuego = ({ onAgregarJuego, onCerrar }: AgregarJuegoProps) => {
             plataforma,
             precio: precioNumerico,
             descuento: descuentoNumerico,
-            oferta: descuentoNumerico > 0, 
+            oferta: descuentoNumerico > 0,
             ventas: 0,
             valoracion: 0,
             imagen: preview,
             reviews: [],
+            claves: [],
             fecha: obtenerFechaDDMMYYYY()
         };
+
 
         onAgregarJuego(nuevoJuego);
         onCerrar();
@@ -83,7 +85,7 @@ const AgregarJuego = ({ onAgregarJuego, onCerrar }: AgregarJuegoProps) => {
 
     return (
         <Modal onCerrar={onCerrar}>
-            <Titulo texto="Agregar juego"/>
+            <Titulo texto="Agregar juego" />
             <Formulario>
                 <div className="d-flex flex-row gap-4 justify-content-center align-items-start">
                     <div>
