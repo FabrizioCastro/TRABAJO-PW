@@ -13,6 +13,7 @@ import TopSelling from './pages/TopSelling'
 import TopRated from './pages/TopRated'
 import Verification from './pages/Verification'
 import GameDetail from './pages/GameDetail'
+import { AuthProvider } from './context/AuthContext'
 
 function AppLayout() {
   return (
@@ -28,21 +29,23 @@ function AppLayout() {
 
 function App() {
   return (
-    <Routes>
-      <Route path="/" element={<AppLayout />}>
-        <Route index element={<Catalog />} />
-        <Route path="login" element={<Login />} />
-        <Route path="register" element={<Register />} />
-        <Route path="carrito" element={<Cart />} />
-        <Route path="resumen" element={<OrderSummary />} />
-        <Route path="compras" element={<PurchaseHistory />} />
-        <Route path="admin" element={<AdminPanel />} />
-        <Route path="top-vendidos" element={<TopSelling />} />
-        <Route path="top-valorados" element={<TopRated />} />
-        <Route path="verificacion" element={<Verification />} />
-        <Route path="juego/:id" element={<GameDetail />} />
-      </Route>
-    </Routes>
+    <AuthProvider>
+      <Routes>
+        <Route path="/" element={<AppLayout />}>
+          <Route index element={<Catalog />} />
+          <Route path="login" element={<Login />} />
+          <Route path="register" element={<Register />} />
+          <Route path="carrito" element={<Cart />} />
+          <Route path="resumen" element={<OrderSummary />} />
+          <Route path="compras" element={<PurchaseHistory />} />
+          <Route path="admin" element={<AdminPanel />} />
+          <Route path="top-vendidos" element={<TopSelling />} />
+          <Route path="top-valorados" element={<TopRated />} />
+          <Route path="verificacion" element={<Verification />} />
+          <Route path="juego/:id" element={<GameDetail />} />
+        </Route>
+      </Routes>
+    </AuthProvider>
   )
 }
 

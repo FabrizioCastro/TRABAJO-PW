@@ -1,3 +1,11 @@
+export interface Review {
+  userId: string;
+  username: string;
+  rating: number;
+  comment: string;
+  date: string;
+}
+
 export interface Game {
   id: number
   nombre: string
@@ -9,6 +17,7 @@ export interface Game {
   ventas: number
   valoracion: number
   imagen?: string // 🔍 Nueva propiedad
+  reviews: Review[]
 }
 
 export const juegos: Game[] = [
@@ -22,7 +31,8 @@ export const juegos: Game[] = [
     oferta: true,
     ventas: 150,
     valoracion: 4.8,
-    imagen: "/ELDEN-RING.avif"
+    imagen: "/ELDEN-RING.avif",
+    reviews: []
   },
   {
     id: 2,
@@ -34,7 +44,8 @@ export const juegos: Game[] = [
     oferta: false,
     ventas: 200,
     valoracion: 4.9,
-    imagen: "/GOD-OF-WAR.webp"
+    imagen: "/GOD-OF-WAR.webp",
+    reviews: []
   },
   {
     id: 3,
@@ -46,7 +57,8 @@ export const juegos: Game[] = [
     oferta: true,
     ventas: 300,
     valoracion: 4.7,
-    imagen: "/HOLLOW-KNIGHT.jpg"
+    imagen: "/HOLLOW-KNIGHT.jpg",
+    reviews: []
   },
   {
     id: 4,
@@ -58,6 +70,7 @@ export const juegos: Game[] = [
     oferta: false,
     ventas: 250,
     valoracion: 4.9,
-    imagen: "/XELDA.avif"
+    imagen: "/XELDA.avif",
+    reviews: []
   }
 ]

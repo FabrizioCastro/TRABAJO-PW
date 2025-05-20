@@ -1,11 +1,12 @@
 import { useState } from 'react'
 import type { FormEvent } from 'react'
-
 import { useNavigate } from 'react-router-dom'
 import { hashPassword } from '../utils/hash'
+import { useAuth } from '../context/AuthContext'
 
 function Login() {
   const navigate = useNavigate()
+  const { login } = useAuth()
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [mensaje, setMensaje] = useState('')
@@ -29,7 +30,13 @@ function Login() {
     )
 
     if (usuarioEncontrado) {
-      localStorage.setItem('usuarioActivo', JSON.stringify(usuarioEncontrado))
+      // Usar el contexto de autenticación para iniciar sesión
+      login({
+        id: usuarioEncontrado.id,
+        username: usuarioEncontrado.name,
+        email: usuarioEncontrado.email
+      })
+      
       setMensaje(`Bienvenido/a, ${usuarioEncontrado.name} ✅`)
 
       // Si es admin, redirigir al panel
