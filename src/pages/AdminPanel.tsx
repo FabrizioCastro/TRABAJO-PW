@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { juegos } from '../data/games'
+import { juegos, getJuegos } from '../data/games'
 import type { Game } from '../data/games'
 
 interface Usuario {
@@ -16,14 +16,58 @@ function AdminPanel() {
   const [juegosList, setJuegosList] = useState<Game[]>([])
   const [selectedGame, setSelectedGame] = useState<Game | null>(null)
   const [descuento, setDescuento] = useState<number>(0)
+  const [nuevaClave, setNuevaClave] = useState('')
+  const [cantidadClaves, setCantidadClaves] = useState<number>(1)
 
   useEffect(() => {
     const dataVerificados = JSON.parse(localStorage.getItem("usuarios") || "[]")
     const dataPendientes = JSON.parse(localStorage.getItem("usuariosPendientes") || "[]")
     setUsuarios(dataVerificados)
     setPendientes(dataPendientes)
-    setJuegosList(juegos)
+    setJuegosList(getJuegos())
   }, [])
+
+  const generarClaveAleatoria = (prefijo: string): string => {
+    const caracteres = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'
+    const longitud = 12
+    let clave = prefijo + '-'
+    
+    for (let i = 0; i < longitud; i++) {
+      if (i > 0 && i % 4 === 0) clave += '-'
+      clave += caracteres.charAt(Math.floor(Math.random() * caracteres.length))
+    }
+    
+    return clave
+  }
+
+  const generarClaves = () => {
+    if (!selectedGame) return
+
+    const prefijo = selectedGame.nombre
+      .split(' ')
+      .map(word => word[0])
+      .join('')
+      .toUpperCase()
+      .slice(0, 3)
+
+    const nuevasClaves = Array.from({ length: cantidadClaves }, () => 
+      generarClaveAleatoria(prefijo)
+    )
+
+    const nuevosJuegos = juegosList.map(juego => {
+      if (juego.id === selectedGame.id) {
+        return {
+          ...juego,
+          claves: [...(juego.claves || []), ...nuevasClaves]
+        }
+      }
+      return juego
+    })
+
+    setJuegosList(nuevosJuegos)
+    localStorage.setItem("juegos", JSON.stringify(nuevosJuegos))
+    alert(`${cantidadClaves} clave(s) generada(s) para ${selectedGame.nombre}`)
+  }
 
   const eliminarUsuario = (email: string) => {
     if (!confirm(`¿Eliminar al usuario ${email}?`)) return
@@ -80,6 +124,44 @@ function AdminPanel() {
     setDescuento(0)
   }
 
+  const agregarClave = () => {
+    if (!selectedGame || !nuevaClave.trim()) return
+
+    const nuevosJuegos = juegosList.map(juego => {
+      if (juego.id === selectedGame.id) {
+        return {
+          ...juego,
+          claves: [...juego.claves, nuevaClave.trim()]
+        }
+      }
+      return juego
+    })
+
+    setJuegosList(nuevosJuegos)
+    localStorage.setItem("juegos", JSON.stringify(nuevosJuegos))
+    setNuevaClave('')
+    alert(`Clave agregada a ${selectedGame.nombre}`)
+  }
+
+  const eliminarClave = (juegoId: number, claveIndex: number) => {
+    if (!confirm('¿Eliminar esta clave?')) return
+
+    const nuevosJuegos = juegosList.map(juego => {
+      if (juego.id === juegoId) {
+        const nuevasClaves = [...juego.claves]
+        nuevasClaves.splice(claveIndex, 1)
+        return {
+          ...juego,
+          claves: nuevasClaves
+        }
+      }
+      return juego
+    })
+
+    setJuegosList(nuevosJuegos)
+    localStorage.setItem("juegos", JSON.stringify(nuevosJuegos))
+  }
+
   return (
     <section className="admin-panel">
       <h2><i className="fas fa-user-shield"></i> Panel de Administrador</h2>
@@ -125,6 +207,71 @@ function AdminPanel() {
             Aplicar Descuento
           </button>
         </div>
+      </div>
+
+      {/* Sección de Claves */}
+      <div className="admin-section">
+        <h3><i className="fas fa-key"></i> Gestión de Claves</h3>
+        <div className="keys-controls">
+          <select 
+            value={selectedGame?.id || ''} 
+            onChange={(e) => {
+              const game = juegosList.find(g => g.id === Number(e.target.value))
+              setSelectedGame(game || null)
+            }}
+            className="form-select"
+          >
+            <option value="">Seleccionar juego</option>
+            {juegosList.map(juego => (
+              <option key={juego.id} value={juego.id}>
+                {juego.nombre}
+              </option>
+            ))}
+          </select>
+
+          <div className="key-input">
+            <label>Cantidad de claves a generar:</label>
+            <input
+              type="number"
+              min="1"
+              max="100"
+              value={cantidadClaves}
+              onChange={(e) => setCantidadClaves(Number(e.target.value))}
+              className="form-control"
+            />
+          </div>
+
+          <button 
+            onClick={generarClaves}
+            disabled={!selectedGame}
+            className="btn-primary"
+          >
+            Generar Claves
+          </button>
+        </div>
+
+        {selectedGame && (
+          <div className="keys-list">
+            <h4>Claves disponibles para {selectedGame.nombre}</h4>
+            {(!selectedGame.claves || selectedGame.claves.length === 0) ? (
+              <p>No hay claves disponibles</p>
+            ) : (
+              <ul>
+                {selectedGame.claves.map((clave, index) => (
+                  <li key={index}>
+                    {clave}
+                    <button 
+                      onClick={() => eliminarClave(selectedGame.id, index)}
+                      className="btn-danger"
+                    >
+                      <i className="fas fa-trash"></i>
+                    </button>
+                  </li>
+                ))}
+              </ul>
+            )}
+          </div>
+        )}
       </div>
 
       <div className="admin-stats">

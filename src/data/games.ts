@@ -19,6 +19,7 @@ export interface Game {
   imagen?: string // 🔍 Nueva propiedad
   reviews: Review[]
   descuento?: number // Porcentaje de descuento (0-100)
+  claves: string[] // Array de claves disponibles para el juego
 }
 
 // Juegos por defecto
@@ -34,7 +35,8 @@ const juegosDefault: Game[] = [
     ventas: 150,
     valoracion: 4.8,
     imagen: "/ELDEN-RING.avif",
-    reviews: []
+    reviews: [],
+    claves: ["ELDEN-RING-XXXX-XXXX-XXXX", "ELDEN-RING-YYYY-YYYY-YYYY"]
   },
   {
     id: 2,
@@ -47,7 +49,8 @@ const juegosDefault: Game[] = [
     ventas: 200,
     valoracion: 4.9,
     imagen: "/GOD-OF-WAR.webp",
-    reviews: []
+    reviews: [],
+    claves: ["GOW-XXXX-XXXX-XXXX", "GOW-YYYY-YYYY-YYYY"]
   },
   {
     id: 3,
@@ -60,7 +63,8 @@ const juegosDefault: Game[] = [
     ventas: 300,
     valoracion: 4.7,
     imagen: "/HOLLOW-KNIGHT.jpg",
-    reviews: []
+    reviews: [],
+    claves: []
   },
   {
     id: 4,
@@ -73,7 +77,8 @@ const juegosDefault: Game[] = [
     ventas: 250,
     valoracion: 4.9,
     imagen: "/XELDA.avif",
-    reviews: []
+    reviews: [],
+    claves: []
   },
   {
     id: 5,
@@ -86,7 +91,8 @@ const juegosDefault: Game[] = [
     ventas: 0,
     valoracion: 0,
     imagen: "/GTA-6.jpg",
-    reviews: []
+    reviews: [],
+    claves: []
   },
   {
     id: 6,
@@ -99,7 +105,8 @@ const juegosDefault: Game[] = [
     ventas: 400,
     valoracion: 4.9,
     imagen: "/WITCHER-3.jpeg",
-    reviews: []
+    reviews: [],
+    claves: []
   },
   {
     id: 7,
@@ -112,7 +119,8 @@ const juegosDefault: Game[] = [
     ventas: 350,
     valoracion: 4.8,
     imagen: "/RDR2.jpeg",
-    reviews: []
+    reviews: [],
+    claves: []
   },
   {
     id: 8,
@@ -125,7 +133,8 @@ const juegosDefault: Game[] = [
     ventas: 200,
     valoracion: 4.5,
     imagen: "/CYBERPUNK.jpeg",
-    reviews: []
+    reviews: [],
+    claves: []
   },
   {
     id: 9,
@@ -138,7 +147,8 @@ const juegosDefault: Game[] = [
     ventas: 300,
     valoracion: 4.7,
     imagen: "/LASTOFUS2.jpeg",
-    reviews: []
+    reviews: [],
+    claves: []
   },
   {
     id: 10,
@@ -151,7 +161,8 @@ const juegosDefault: Game[] = [
     ventas: 250,
     valoracion: 4.6,
     imagen: "/FIFA24.jpg",
-    reviews: []
+    reviews: [],
+    claves: []
   }
 ]
 

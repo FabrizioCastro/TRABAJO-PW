@@ -7,7 +7,7 @@ import Login from './pages/Login'
 import Register from './pages/Register'
 import Catalog from './pages/Catalog'
 import Cart from './pages/Cart'
-import OrderSummary from './pages/OrderSummary'
+import Resumen from './pages/Resumen'
 import PurchaseHistory from './pages/PurchaseHistory'
 import AdminPanel from './pages/AdminPanel'
 import TopSelling from './pages/TopSelling'
@@ -38,7 +38,7 @@ function App() {
           <Route path="login" element={<Login />} />
           <Route path="register" element={<Register />} />
           <Route path="carrito" element={<Cart />} />
-          <Route path="resumen" element={<OrderSummary />} />
+          <Route path="resumen" element={<Resumen />} />
           <Route path="compras" element={<PurchaseHistory />} />
           <Route path="admin" element={<AdminPanel />} />
           <Route path="top-vendidos" element={<TopSelling />} />
