@@ -1,4 +1,5 @@
-import Modal from "../components/modal"
+
+import Modal from "../components/Modal"
 import Titulo from "../components/Titulo"
 import '../styles/CompraExitosa.css'
 
@@ -9,7 +10,7 @@ const CompraExitosa = () => {
                 <Titulo texto="¡Compra completada con éxito!" />
                 <div className="check-icono">&#10003;</div>
             </div>
-            <p>Las claves de los juegos adquiridos se han enviado a la dirección de correo electrónico proporcionada.</p>
+            <p className="text-white">Las claves de los juegos adquiridos se han enviado a la dirección de correo electrónico proporcionada.</p>
         </Modal>
     )
 }

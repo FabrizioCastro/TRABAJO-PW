@@ -2,7 +2,7 @@ import { useState } from 'react';
 import Boton from "../components/Boton";
 import Formulario from "../components/Formulario";
 import Titulo from "../components/Titulo";
-import Modal from '../components/modal';
+import Modal from '../components/Modal';
 import type { Game } from '../data/games';
 
 interface AgregarJuegoProps {
@@ -83,9 +83,9 @@ const AgregarJuego = ({ onAgregarJuego, onCerrar }: AgregarJuegoProps) => {
 
     return (
         <Modal onCerrar={onCerrar}>
-            <Titulo texto="Agregar juego" />
+            <Titulo texto="Agregar juego"/>
             <Formulario>
-                <div className="row">
+                <div className="d-flex flex-row gap-4 justify-content-center align-items-start">
                     <div>
                         <label htmlFor="nombre">Nombre</label>
                         <input type="text" id="nombre" value={nombre} onChange={(e) => setNombre(e.target.value)} />
@@ -131,7 +131,7 @@ const AgregarJuego = ({ onAgregarJuego, onCerrar }: AgregarJuegoProps) => {
                 </div>
             </Formulario>
 
-            <div className="row">
+            <div className="row-btn1">
                 <Boton tipo="button" texto="Cancelar" onClick={onCerrar} />
                 <Boton tipo="button" texto="Enviar" onClick={handleAgregarJuego} />
             </div>

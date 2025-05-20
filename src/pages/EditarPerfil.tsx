@@ -1,13 +1,13 @@
 import Boton from "../components/Boton"
 import Formulario from "../components/Formulario"
 import ImgPerfil from "../components/ImgUsuario"
+import Modal from "../components/Modal"
 import Titulo from "../components/Titulo"
-import Modal from "../components/modal"
 
 const EditarPerfil = () => {
     return (
         <Modal>
-            <div className="row">
+            <div className="d-flex flex-row gap-4 justify-content-center align-items-start">
                 <ImgPerfil />
                 <Formulario>
                     <Titulo texto="Edita la información de tu perfil" />
@@ -17,9 +17,8 @@ const EditarPerfil = () => {
                     <input type="text" id="segundoNombre" name="segundoNombre" />
                     <label htmlFor="correo">Correo</label>
                     <input type="email" id="correo" name="correo" />
-                    <Boton tipo="submit" estilo="b2" texto="Edita información" />
+                    <Boton tipo="submit" texto="Edita información" />
                 </Formulario>
-                
             </div>
         </Modal>
     )

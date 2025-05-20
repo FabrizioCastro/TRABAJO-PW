@@ -46,7 +46,7 @@ const Juegos = () => {
         : juegos;
 
     return (
-        <div className="container1">
+        <div className="position-fixed top-0 start-0 w-100 h-100 d-flex">
             <NavBar />
             <div className="pagina-juegos">
                 <div className="encabezado">

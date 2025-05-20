@@ -3,7 +3,7 @@ interface TituloProps {
 }
 
 const Titulo =(props : TituloProps) => {
-    return <h1>{props.texto}</h1>
+    return <h1 className="text-white">{props.texto}</h1>
 }
 
 export default Titulo

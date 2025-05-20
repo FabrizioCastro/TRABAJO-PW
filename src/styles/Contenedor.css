@@ -1,20 +1,3 @@
-.contenedor {
-  flex: 1;
-  display: flex;
-  flex-direction: row;
-  gap: 30px;
-  
-}
-
-.container1 {
-  position: fixed;
-  display: flex;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-}
-
 .row-btn1 {
   display: flex;
   flex-direction: row;
@@ -25,13 +8,4 @@
 .row-btn2 {
   display: flex;
   gap: 10px;
-}
-
-
-.row {
-  display: flex;
-  flex-direction: row;
-  gap: 20px;
-  justify-content: center;
-   align-items: flex-start;
 }

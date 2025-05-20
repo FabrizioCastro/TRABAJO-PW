@@ -2,7 +2,7 @@ import { useState } from "react";
 import Boton from "../components/Boton";
 import Formulario from "../components/Formulario";
 import Titulo from "../components/Titulo";
-import Modal from "../components/modal";
+import Modal from "../components/Modal";
 
 interface FiltrarJuegoProps {
     onFiltrar: (filtro: {
@@ -19,15 +19,16 @@ const FiltrarJuego = ({ onFiltrar, onCerrar }: FiltrarJuegoProps) => {
     const [categoria, setCategoria] = useState("RPG");
     const [precioMin, setPrecioMin] = useState(0);
     const [precioMax, setPrecioMax] = useState(100);
+    const [error, setError] = useState<string | null>(null);
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
 
         if (precioMin > precioMax) {
-            console.log("El precio mínimo no puede ser mayor que el máximo");
+            setError("El precio mínimo no puede ser mayor que el máximo");
             return;
         }
-
+        setError(null);
         onFiltrar({
             fechaLanzamiento,
             categoria,
@@ -41,6 +42,12 @@ const FiltrarJuego = ({ onFiltrar, onCerrar }: FiltrarJuegoProps) => {
     return (
         <Modal onCerrar={onCerrar}>
             <Titulo texto="Filtrar Juegos" />
+            {error && (
+                <div className="alert alert-danger" role="alert">
+                    {error}
+                </div>
+            )}
+
             <Formulario onSubmit={handleSubmit}>
                 <label htmlFor="lanzamiento-fecha">Fecha de lanzamiento desde</label>
                 <input
@@ -68,7 +75,7 @@ const FiltrarJuego = ({ onFiltrar, onCerrar }: FiltrarJuegoProps) => {
                 </select>
 
                 <label>Rango de precios</label>
-                <div className="row">
+                 <div className="d-flex flex-row gap-4 justify-content-center align-items-start">
                     <input
                         type="number"
                         value={precioMin}

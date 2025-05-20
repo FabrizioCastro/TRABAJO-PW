@@ -1,5 +1,5 @@
 import Boton from "../components/Boton"
-import Modal from "../components/modal"
+import Modal from "../components/Modal";
 import Titulo from "../components/Titulo"
 
 interface EliminarJuegoProps {

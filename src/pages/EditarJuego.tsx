@@ -2,8 +2,8 @@ import { useState, useEffect } from "react";
 import Boton from "../components/Boton";
 import Formulario from "../components/Formulario";
 import Titulo from "../components/Titulo";
-import Modal from "../components/modal";
 import type { Game } from "../data/games";
+import Modal from "../components/Modal";
 
 interface EditarJuegoProps {
   juego: Game;
@@ -83,7 +83,7 @@ const EditarJuego = ({ juego, onEditarJuego, onCerrar }: EditarJuegoProps) => {
     <Modal onCerrar={onCerrar}>
       <Titulo texto="Editar juego" />
       <Formulario onSubmit={handleSubmit}>
-        <div className="row">
+        <div className="d-flex flex-row gap-4 justify-content-center align-items-start">
           <div>
             <label htmlFor="nombre">Nombre</label>
             <input
@@ -172,9 +172,9 @@ const EditarJuego = ({ juego, onEditarJuego, onCerrar }: EditarJuegoProps) => {
           </div>
         </div>
 
-        <div className="row" style={{ marginTop: 20, display: "flex", gap: "10px" }}>
+       <div className="row-btn1">
           <Boton tipo="button" texto="Cancelar" onClick={onCerrar} />
-          <Boton tipo="submit" texto="Guardar cambios" />
+          <Boton tipo="submit" texto="Guardar" />
         </div>
       </Formulario>
     </Modal>

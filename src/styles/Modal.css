@@ -3,7 +3,7 @@ body {
     color: var(--secondary-color);
 }
 
-.modal {
+.mi-modal  {
     position: fixed;
     display: flex;
     top: 0;
@@ -15,18 +15,18 @@ body {
     background-color: #0f152ab9;
 }
 
-.modal-contenido {
+.mi-modal-contenido {
     position: relative;
     padding: 60px;
     border-radius: 35px;
-    width: 420px;
+    width: 50%;
     text-align: center;
     border-radius: 12.124px;
     border: 2px dashed #ccc;
     background-color: var(--card-bg);
 }
 
-.cerrar-modal {
+.mi-modal .cerrar-modal {
     position: absolute;
     top: 20px;
     right: 20px;

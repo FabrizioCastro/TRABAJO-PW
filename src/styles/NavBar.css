@@ -1,5 +1,5 @@
 .sidebar {
-  width: 220px;
+  width: 250px;
   background-color: var(--card-bg);
   padding: 20px;
   box-shadow: 0 2px 15px rgba(0, 0, 0, 0.3);
@@ -11,8 +11,8 @@
 }
 
 .perfil-imagen {
-  width: 100px;
-  height: 100px;
+  width: 150px;
+  height: 150px;
   background-color: #ccc;
   border-radius: 50%;
   margin: 0 auto 10px;

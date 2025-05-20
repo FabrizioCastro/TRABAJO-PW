@@ -6,7 +6,7 @@ const NavBar = () => {
         <div className="sidebar">
             <div className="perfil">
                 <ImgPerfil />
-                <p className="perfil-nombre">Nombre perfil</p>
+                <p className="text-white">Nombre perfil</p>
             </div>
 
             <nav className="menu">

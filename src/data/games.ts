@@ -17,7 +17,7 @@ export interface Game {
   oferta: boolean;
   ventas: number;
   valoracion: number;
-  imagen?: string;
+  imagen?: File | string;
   reviews: Review[];
   fecha: string; 
 }
