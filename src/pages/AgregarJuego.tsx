@@ -10,6 +10,14 @@ interface AgregarJuegoProps {
     onCerrar: () => void;
 }
 
+const obtenerFechaDDMMYYYY = (): string => {
+  const fecha = new Date();
+  const dia = fecha.getDate().toString().padStart(2, '0');
+  const mes = (fecha.getMonth() + 1).toString().padStart(2, '0');
+  const anio = fecha.getFullYear();
+  return `${dia}-${mes}-${anio}`;
+};
+
 const AgregarJuego = ({ onAgregarJuego, onCerrar }: AgregarJuegoProps) => {
     const [nombre, setNombre] = useState('');
     const [categoria, setCategoria] = useState('');
@@ -34,7 +42,7 @@ const AgregarJuego = ({ onAgregarJuego, onCerrar }: AgregarJuegoProps) => {
 
     const handleAgregarJuego = () => {
         if (!nombre || !categoria || !precio || !descripcion || !plataforma || !preview) {
-            alert('Por favor, completa todos los campos obligatorios y sube una imagen.');
+            console.log('Por favor, completa todos los campos obligatorios y sube una imagen.');
             return;
         }
 
@@ -54,7 +62,7 @@ const AgregarJuego = ({ onAgregarJuego, onCerrar }: AgregarJuegoProps) => {
             valoracion: 0,
             imagen: preview,
             reviews: [],
-            fecha: new Date().toISOString().split('T')[0] 
+            fecha: obtenerFechaDDMMYYYY()
         };
 
         onAgregarJuego(nuevoJuego);

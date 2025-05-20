@@ -13,13 +13,13 @@ export interface Game {
   categoria: string;
   plataforma: string;
   precio: number;
-  descuento: number; // porcentaje de descuento (ej: 20 = 20%)
+  descuento: number; 
   oferta: boolean;
   ventas: number;
   valoracion: number;
   imagen?: string;
   reviews: Review[];
-  fecha: string; // formato ISO: 'YYYY-MM-DD'
+  fecha: string; 
 }
 
 export const juegos: Game[] = [
@@ -36,7 +36,7 @@ export const juegos: Game[] = [
     valoracion: 4.8,
     imagen: "/ELDEN-RING.avif",
     reviews: [],
-    fecha: "2022-02-25"
+    fecha: "25-02-2022"
   },
   {
     id: 2,
@@ -51,7 +51,7 @@ export const juegos: Game[] = [
     valoracion: 4.9,
     imagen: "/GOD-OF-WAR.webp",
     reviews: [],
-    fecha: "2018-04-20"
+    fecha: "20-04-2018"
   },
   {
     id: 3,
@@ -66,7 +66,7 @@ export const juegos: Game[] = [
     valoracion: 4.7,
     imagen: "/HOLLOW-KNIGHT.jpg",
     reviews: [],
-    fecha: "2017-02-24"
+    fecha: "24-02-2017"
   },
   {
     id: 4,
@@ -81,6 +81,6 @@ export const juegos: Game[] = [
     valoracion: 4.9,
     imagen: "/XELDA.avif",
     reviews: [],
-    fecha: "2017-03-03"
+    fecha: "03-03-2017"
   }
 ];

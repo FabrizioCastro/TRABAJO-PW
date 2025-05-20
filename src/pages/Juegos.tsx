@@ -8,6 +8,14 @@ import Titulo from "../components/Titulo";
 import NavBar from '../components/Navbar';
 import EditarJuego from './EditarJuego';
 import { juegos as juegosData, type Game } from '../data/games';
+import { filtrarJuegos } from '../utils/filtrarJuegos';
+
+interface Filtro {
+    fechaLanzamiento: string;
+    categoria: string;
+    precioMin: number;
+    precioMax: number;
+}
 
 const Juegos = () => {
     const [juegos, setJuegos] = useState<Game[]>(juegosData);
@@ -15,14 +23,8 @@ const Juegos = () => {
     const [mostrarEditarJuego, setMostrarEditarJuego] = useState(false);
     const [juegoAEliminar, setJuegoAEliminar] = useState<Game | null>(null);
     const [juegoAEditar, setJuegoAEditar] = useState<Game | null>(null);
-
     const [mostrarFiltro, setMostrarFiltro] = useState(false);
-    const [filtro, setFiltro] = useState<{
-        fechaLanzamiento?: string;
-        categoria?: string;
-        precioMin?: number;
-        precioMax?: number;
-    } | null>(null);
+    const [filtrosActivos, setFiltrosActivos] = useState<Filtro | null>(null);
 
     const agregarJuego = (nuevoJuego: Game) => {
         setJuegos([...juegos, nuevoJuego]);
@@ -39,14 +41,8 @@ const Juegos = () => {
         setJuegos(juegos.map(j => j.id === juegoEditado.id ? juegoEditado : j));
     };
 
-    const juegosFiltrados = filtro
-        ? juegos.filter(j => {
-            const cumpleFecha = filtro.fechaLanzamiento ? j.fecha === filtro.fechaLanzamiento : true;
-            const cumpleCategoria = filtro.categoria ? j.categoria === filtro.categoria : true;
-            const cumplePrecioMin = filtro.precioMin !== undefined ? j.precio >= filtro.precioMin : true;
-            const cumplePrecioMax = filtro.precioMax !== undefined ? j.precio <= filtro.precioMax : true;
-            return cumpleFecha && cumpleCategoria && cumplePrecioMin && cumplePrecioMax;
-        })
+    const juegosFiltrados = filtrosActivos
+        ? filtrarJuegos(juegos, filtrosActivos)
         : juegos;
 
     return (
@@ -57,8 +53,12 @@ const Juegos = () => {
                     <Titulo texto="Juegos" />
                     <div className='row-btn2'>
                         <Boton tipo="button" texto="Filtrar" onClick={() => setMostrarFiltro(true)} />
+                        {filtrosActivos && (
+                            <Boton tipo="button" texto="Limpiar filtros" onClick={() => setFiltrosActivos(null)} />
+                        )}
                         <Boton tipo="button" texto="+ Añadir" onClick={() => setMostrarModAgregar(true)} />
                     </div>
+
                 </div>
 
                 <table className="tabla-juegos">
@@ -74,7 +74,6 @@ const Juegos = () => {
                             <th>Acciones</th>
                         </tr>
                     </thead>
-
                     <tbody>
                         {juegosFiltrados.map((juego) => {
                             const precioFinal = juego.oferta
@@ -87,7 +86,6 @@ const Juegos = () => {
                                     <td>{juego.nombre}</td>
                                     <td>{juego.categoria}</td>
                                     <td>{juego.plataforma}</td>
-
                                     <td>${juego.precio.toFixed(2)}</td>
                                     <td>{juego.oferta ? `${juego.descuento}%` : '0%'}</td>
                                     <td>${precioFinal}</td>
@@ -134,12 +132,15 @@ const Juegos = () => {
 
             {mostrarFiltro && (
                 <FiltrarJuego
-                    onFiltrar={(filtroAplicado) => setFiltro(filtroAplicado)}
+                    onFiltrar={(filtroAplicado) => {
+                        setFiltrosActivos(filtroAplicado);
+                        setMostrarFiltro(false);
+                    }}
                     onCerrar={() => setMostrarFiltro(false)}
                 />
             )}
         </div>
     );
-}
+};
 
 export default Juegos;

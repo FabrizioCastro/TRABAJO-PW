@@ -15,33 +15,41 @@ interface FiltrarJuegoProps {
 }
 
 const FiltrarJuego = ({ onFiltrar, onCerrar }: FiltrarJuegoProps) => {
-    const [fechaLanzamiento, setFechaLanzamiento] = useState("12/03/2025");
-    const [categoria, setCategoria] = useState("Terror");
-    const [precioMin, setPrecioMin] = useState(32.5);
-    const [precioMax, setPrecioMax] = useState(232.5);
+    const [fechaLanzamiento, setFechaLanzamiento] = useState("2017-01-01");
+    const [categoria, setCategoria] = useState("RPG");
+    const [precioMin, setPrecioMin] = useState(0);
+    const [precioMax, setPrecioMax] = useState(100);
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
+
+        if (precioMin > precioMax) {
+            console.log("El precio mínimo no puede ser mayor que el máximo");
+            return;
+        }
+
         onFiltrar({
             fechaLanzamiento,
             categoria,
             precioMin,
             precioMax
         });
+
         onCerrar();
     };
 
     return (
         <Modal onCerrar={onCerrar}>
-            <Titulo texto="Filtro" />
-            <Formulario>
-                <label htmlFor="lanzamiento-fecha">Fecha de lanzamiento</label>
+            <Titulo texto="Filtrar Juegos" />
+            <Formulario onSubmit={handleSubmit}>
+                <label htmlFor="lanzamiento-fecha">Fecha de lanzamiento desde</label>
                 <input
-                    type="text"
+                    type="date"
                     id="lanzamiento-fecha"
                     name="lanzamiento-fecha"
                     value={fechaLanzamiento}
                     onChange={(e) => setFechaLanzamiento(e.target.value)}
+                    required
                 />
 
                 <label htmlFor="categoria">Categoría</label>
@@ -50,9 +58,11 @@ const FiltrarJuego = ({ onFiltrar, onCerrar }: FiltrarJuegoProps) => {
                     name="categoria"
                     value={categoria}
                     onChange={(e) => setCategoria(e.target.value)}
+                    required
                 >
                     <option value="RPG">RPG</option>
-                    <option value="Terror">Metroidvania</option>
+                    <option value="Terror">Terror</option>
+                    <option value="Metroidvania">Metroidvania</option>
                     <option value="Acción">Acción</option>
                     <option value="Aventura">Aventura</option>
                 </select>
@@ -62,13 +72,19 @@ const FiltrarJuego = ({ onFiltrar, onCerrar }: FiltrarJuegoProps) => {
                     <input
                         type="number"
                         value={precioMin}
+                        min={0}
+                        step={0.01}
                         onChange={(e) => setPrecioMin(Number(e.target.value))}
+                        required
                     />
-                    <span>a</span>
+                    <span style={{ margin: "0 0.5rem" }}>a</span>
                     <input
                         type="number"
                         value={precioMax}
+                        min={0}
+                        step={0.01}
                         onChange={(e) => setPrecioMax(Number(e.target.value))}
+                        required
                     />
                 </div>
 
