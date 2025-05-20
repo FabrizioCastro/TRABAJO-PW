@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { juegos as juegosData } from '../data/games'
+import { getJuegos } from '../data/games'
 import type { Game } from '../data/games'
 
 import GameCard from '../components/GameCard'
@@ -12,11 +12,13 @@ function Catalog() {
   const [precioMax, setPrecioMax] = useState<number | ''>('')
 
   useEffect(() => {
-    setJuegos(juegosData)
+    // Obtener los juegos actualizados del localStorage
+    const juegosActualizados = getJuegos()
+    setJuegos(juegosActualizados)
   }, [])
 
   const aplicarFiltros = () => {
-    let filtrados = juegosData.filter(juego => {
+    let filtrados = getJuegos().filter(juego => {
       return (
         (categoria === '' || juego.categoria === categoria) &&
         (plataforma === '' || juego.plataforma === plataforma) &&

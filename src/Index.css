@@ -732,4 +732,67 @@ section {
   display: block;
   margin-top: 0.5rem;
 }
+
+/* Discount Styles */
+.precio-container {
+  position: relative;
+  margin: 10px 0;
+}
+
+.precio-original {
+  text-decoration: line-through;
+  color: #666;
+  font-size: 0.9em;
+  margin: 0;
+}
+
+.precio-descuento {
+  color: #4CAF50;
+  font-size: 1.2em;
+  font-weight: bold;
+  margin: 5px 0;
+}
+
+.descuento-badge {
+  position: absolute;
+  top: 0;
+  right: 0;
+  background-color: #ff4444;
+  color: white;
+  padding: 2px 6px;
+  border-radius: 3px;
+  font-size: 0.8em;
+  font-weight: bold;
+}
+
+/* Admin Panel Discount Controls */
+.discount-controls {
+  display: flex;
+  gap: 1rem;
+  align-items: flex-end;
+  margin-bottom: 2rem;
+  padding: 1rem;
+  background-color: var(--card-bg);
+  border-radius: 10px;
+}
+
+.discount-input {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.discount-input label {
+  color: var(--secondary-color);
+  font-weight: 500;
+}
+
+.form-select, .form-control {
+  padding: 0.5rem;
+  background-color: rgba(255, 255, 255, 0.12);
+  border: 1px solid var(--primary-color);
+  color: var(--text-color);
+  border-radius: 5px;
+  min-width: 200px;
+}
   

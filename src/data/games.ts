@@ -18,9 +18,11 @@ export interface Game {
   valoracion: number
   imagen?: string // 🔍 Nueva propiedad
   reviews: Review[]
+  descuento?: number // Porcentaje de descuento (0-100)
 }
 
-export const juegos: Game[] = [
+// Juegos por defecto
+const juegosDefault: Game[] = [
   {
     id: 1,
     nombre: "Elden Ring",
@@ -152,3 +154,17 @@ export const juegos: Game[] = [
     reviews: []
   }
 ]
+
+// Función para obtener los juegos del localStorage o usar los valores por defecto
+export const getJuegos = (): Game[] => {
+  const juegosGuardados = localStorage.getItem("juegos")
+  if (juegosGuardados) {
+    return JSON.parse(juegosGuardados)
+  }
+  // Si no hay juegos guardados, guardar los valores por defecto
+  localStorage.setItem("juegos", JSON.stringify(juegosDefault))
+  return juegosDefault
+}
+
+// Exportar los juegos por defecto para uso inicial
+export const juegos = getJuegos()

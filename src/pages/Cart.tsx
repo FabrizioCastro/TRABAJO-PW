@@ -2,7 +2,6 @@ import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import type { Game } from '../data/games'
 
-
 function Cart() {
   const navigate = useNavigate()
   const [carrito, setCarrito] = useState<Game[]>([])
@@ -16,7 +15,12 @@ function Cart() {
   }, [])
 
   const calcularTotal = (items: Game[]) => {
-    const total = items.reduce((acc, item) => acc + item.precio, 0)
+    const total = items.reduce((acc, item) => {
+      const precio = item.descuento 
+        ? item.precio * (1 - item.descuento / 100)
+        : item.precio
+      return acc + precio
+    }, 0)
     setTotal(total)
   }
 
@@ -64,22 +68,46 @@ function Cart() {
   return (
     <section className="cart-section">
       <h2><i className="fas fa-shopping-cart"></i> Carrito de Compras</h2>
+      
+      {mensaje && <div className="message">{mensaje}</div>}
 
-      <ul className="cart-items">
-        {carrito.map((item, index) => (
-          <li key={index}>
-            {item.nombre} - ${item.precio.toFixed(2)}
-            <button onClick={() => quitarDelCarrito(index)}>🗑️</button>
-          </li>
-        ))}
-      </ul>
+      {carrito.length === 0 ? (
+        <p>Tu carrito está vacío</p>
+      ) : (
+        <>
+          <ul className="cart-items">
+            {carrito.map((juego, index) => (
+              <li key={index}>
+                <div className="item-info">
+                  <h3>{juego.nombre}</h3>
+                  {juego.descuento ? (
+                    <div className="precio-container">
+                      <p className="precio-original">${juego.precio.toFixed(2)}</p>
+                      <p className="precio-descuento">
+                        ${(juego.precio * (1 - juego.descuento / 100)).toFixed(2)}
+                      </p>
+                      <span className="descuento-badge">-{juego.descuento}%</span>
+                    </div>
+                  ) : (
+                    <p>Precio: ${juego.precio.toFixed(2)}</p>
+                  )}
+                </div>
+                <button onClick={() => quitarDelCarrito(index)} className="btn-danger">
+                  <i className="fas fa-trash"></i> Eliminar
+                </button>
+              </li>
+            ))}
+          </ul>
 
-      <div className="cart-summary">
-        <p className="total">Total: ${total.toFixed(2)}</p>
-        <button className="btn-primary" onClick={procesarPago}>Pagar</button>
-      </div>
-
-      {mensaje && <p className="message">{mensaje}</p>}
+          <div className="cart-summary">
+            <h3>Resumen de la Compra</h3>
+            <p className="total">Total: ${total.toFixed(2)}</p>
+            <button onClick={procesarPago} className="btn-primary">
+              Proceder al Pago
+            </button>
+          </div>
+        </>
+      )}
     </section>
   )
 }

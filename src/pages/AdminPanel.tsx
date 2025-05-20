@@ -1,4 +1,6 @@
 import { useEffect, useState } from 'react'
+import { juegos } from '../data/games'
+import type { Game } from '../data/games'
 
 interface Usuario {
   name: string
@@ -11,12 +13,16 @@ interface Usuario {
 function AdminPanel() {
   const [usuarios, setUsuarios] = useState<Usuario[]>([])
   const [pendientes, setPendientes] = useState<Usuario[]>([])
+  const [juegosList, setJuegosList] = useState<Game[]>([])
+  const [selectedGame, setSelectedGame] = useState<Game | null>(null)
+  const [descuento, setDescuento] = useState<number>(0)
 
   useEffect(() => {
     const dataVerificados = JSON.parse(localStorage.getItem("usuarios") || "[]")
     const dataPendientes = JSON.parse(localStorage.getItem("usuariosPendientes") || "[]")
     setUsuarios(dataVerificados)
     setPendientes(dataPendientes)
+    setJuegosList(juegos)
   }, [])
 
   const eliminarUsuario = (email: string) => {
@@ -53,9 +59,73 @@ function AdminPanel() {
     setPendientes(nuevosPendientes)
   }
 
+  const aplicarDescuento = () => {
+    if (!selectedGame) return
+
+    const nuevosJuegos = juegosList.map(juego => {
+      if (juego.id === selectedGame.id) {
+        return {
+          ...juego,
+          oferta: descuento > 0,
+          descuento: descuento
+        }
+      }
+      return juego
+    })
+
+    setJuegosList(nuevosJuegos)
+    localStorage.setItem("juegos", JSON.stringify(nuevosJuegos))
+    alert(`Descuento de ${descuento}% aplicado a ${selectedGame.nombre}`)
+    setSelectedGame(null)
+    setDescuento(0)
+  }
+
   return (
     <section className="admin-panel">
       <h2><i className="fas fa-user-shield"></i> Panel de Administrador</h2>
+
+      {/* Sección de Descuentos */}
+      <div className="admin-section">
+        <h3><i className="fas fa-tags"></i> Gestión de Descuentos</h3>
+        <div className="discount-controls">
+          <select 
+            value={selectedGame?.id || ''} 
+            onChange={(e) => {
+              const game = juegosList.find(g => g.id === Number(e.target.value))
+              setSelectedGame(game || null)
+              setDescuento(game?.descuento || 0)
+            }}
+            className="form-select"
+          >
+            <option value="">Seleccionar juego</option>
+            {juegosList.map(juego => (
+              <option key={juego.id} value={juego.id}>
+                {juego.nombre} - ${juego.precio}
+              </option>
+            ))}
+          </select>
+
+          <div className="discount-input">
+            <label>Porcentaje de descuento:</label>
+            <input
+              type="number"
+              min="0"
+              max="100"
+              value={descuento}
+              onChange={(e) => setDescuento(Number(e.target.value))}
+              className="form-control"
+            />
+          </div>
+
+          <button 
+            onClick={aplicarDescuento}
+            disabled={!selectedGame}
+            className="btn-primary"
+          >
+            Aplicar Descuento
+          </button>
+        </div>
+      </div>
 
       <div className="admin-stats">
         <p>Total de usuarios registrados: <strong>{usuarios.length}</strong></p>

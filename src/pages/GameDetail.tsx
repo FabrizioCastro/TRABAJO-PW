@@ -1,6 +1,6 @@
 // src/pages/GameDetail.tsx
 import { useParams } from 'react-router-dom'
-import { juegos } from '../data/games'
+import { getJuegos } from '../data/games'
 import type { Game, Review } from '../data/games'
 import { useState, useEffect } from 'react'
 import { useAuth } from '../context/AuthContext'
@@ -16,7 +16,8 @@ function GameDetail() {
   })
 
   useEffect(() => {
-    const foundGame = juegos.find(j => j.id === Number(id))
+    const juegosActualizados = getJuegos()
+    const foundGame = juegosActualizados.find(j => j.id === Number(id))
     setJuego(foundGame)
 
     // Check if user has purchased this game
@@ -52,8 +53,10 @@ function GameDetail() {
     }
     
     // Update games array
-    const gameIndex = juegos.findIndex(g => g.id === juego.id)
-    juegos[gameIndex] = updatedGame
+    const juegosActualizados = getJuegos()
+    const gameIndex = juegosActualizados.findIndex((g: Game) => g.id === juego.id)
+    juegosActualizados[gameIndex] = updatedGame
+    localStorage.setItem("juegos", JSON.stringify(juegosActualizados))
     setJuego(updatedGame)
 
     // Reset form
@@ -66,7 +69,15 @@ function GameDetail() {
       <img src={juego.imagen} alt={juego.nombre} style={{ maxWidth: '300px', borderRadius: '12px' }} />
       <p><strong>Descripción:</strong> {juego.descripcion}</p>
       <p><strong>Plataforma:</strong> {juego.plataforma}</p>
-      <p><strong>Precio:</strong> ${juego.precio.toFixed(2)}</p>
+      {juego.descuento ? (
+        <div className="precio-container">
+          <p><strong>Precio original:</strong> ${juego.precio.toFixed(2)}</p>
+          <p><strong>Precio con descuento:</strong> ${(juego.precio * (1 - juego.descuento / 100)).toFixed(2)}</p>
+          <span className="descuento-badge">-{juego.descuento}%</span>
+        </div>
+      ) : (
+        <p><strong>Precio:</strong> ${juego.precio.toFixed(2)}</p>
+      )}
       <p><strong>Valoración:</strong> ⭐ {juego.valoracion}</p>
       {juego.oferta && <p style={{ color: 'orange' }}>🔥 En oferta</p>}
 
