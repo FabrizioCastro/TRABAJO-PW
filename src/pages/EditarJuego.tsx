@@ -72,7 +72,7 @@ const EditarJuego = ({ juego, onEditarJuego, onCerrar }: EditarJuegoProps) => {
       descuento: descuentoNumber,
       descripcion,
       plataforma,
-      imagen: archivoImagen ? archivoImagen : juego.imagen,
+      imagen: preview ? preview : juego.imagen,
     };
 
     onEditarJuego(juegoEditado);
