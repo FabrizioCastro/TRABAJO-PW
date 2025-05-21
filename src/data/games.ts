@@ -41,6 +41,7 @@ const juegosDefault: Game[] = [
     trailer: "https://www.youtube.com/watch?v=E3Huy2cdih0",
     reviews: [],
     claves: ["ELDEN-RING-XXXX-XXXX-XXXX", "ELDEN-RING-YYYY-YYYY-YYYY"],
+    imagenes: ["public/er1.jpeg", "public/er2.jpeg", "public/er3.jpeg"],
     fecha: "25-02-2022"
   },
   {
@@ -97,6 +98,7 @@ const juegosDefault: Game[] = [
     trailer: "https://www.youtube.com/watch?v=ofH5ptn5w-A",
     reviews: [],
     claves: [],
+    imagenes: ["public/er1.jpeg", "public/er2.jpeg", "public/er3.jpeg"],
     fecha: "03-03-2017"
   },
   {
@@ -114,6 +116,7 @@ const juegosDefault: Game[] = [
     trailer: "https://www.youtube.com/watch?v=QdBZY2fkU-0",
     reviews: [],
     claves: [],
+    imagenes: ["public/er1.jpeg", "public/er2.jpeg", "public/er3.jpeg"],
     fecha: "Próximamente"
   },
   {
@@ -131,6 +134,7 @@ const juegosDefault: Game[] = [
     trailer: "https://www.youtube.com/watch?v=c0i88t0Kacs",
     reviews: [],
     claves: [],
+    imagenes: ["public/er1.jpeg", "public/er2.jpeg", "public/er3.jpeg"],
     fecha: "19-05-2015"
   },
   {
@@ -148,6 +152,7 @@ const juegosDefault: Game[] = [
     trailer: "https://www.youtube.com/watch?v=gmA6MrX81z4",
     reviews: [],
     claves: [],
+    imagenes: ["public/er1.jpeg", "public/er2.jpeg", "public/er3.jpeg"],
     fecha: "26-10-2018"
   },
   {
@@ -165,6 +170,7 @@ const juegosDefault: Game[] = [
     trailer: "https://www.youtube.com/watch?v=8X2kIfS6fb8",
     reviews: [],
     claves: [],
+    imagenes: ["public/er1.jpeg", "public/er2.jpeg", "public/er3.jpeg"],
     fecha: "10-12-2020"
   },
   {
@@ -182,6 +188,7 @@ const juegosDefault: Game[] = [
     trailer: "https://www.youtube.com/watch?v=JdE9U9WW_HM",
     reviews: [],
     claves: [],
+    imagenes: ["public/er1.jpeg", "public/er2.jpeg", "public/er3.jpeg"],
     fecha: "19-06-2020"
   },
   {
