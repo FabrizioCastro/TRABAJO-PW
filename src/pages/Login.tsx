@@ -18,7 +18,7 @@ function Login() {
     const tienePunto = email.includes('.')
 
     if (!tieneArroba || !tienePunto) {
-      setMensaje('Correo inválido ❌')
+      setMensaje('Correo inválido')
       return
     }
 

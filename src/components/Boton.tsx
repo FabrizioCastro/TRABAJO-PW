@@ -1,7 +1,8 @@
+import type { ReactNode } from 'react';
 import '../styles/Boton.css';
 
 interface BotonProps {
-  texto: string;
+  texto: ReactNode;
   tipo?: 'button' | 'submit';
   onClick?: () => void;
 }

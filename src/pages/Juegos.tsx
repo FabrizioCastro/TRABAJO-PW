@@ -1,14 +1,14 @@
 import { useEffect, useState } from 'react';
+import { FaEdit, FaTrash } from 'react-icons/fa'
 import AgregarJuego from './AgregarJuego';
 import EliminarJuego from './EliminarJuego';
 import FiltrarJuego from './FiltrarJuego';
-import '../styles/Juegos.css';
 import Boton from "../components/Boton";
 import Titulo from "../components/Titulo";
-import NavBar from '../components/Navbar';
 import EditarJuego from './EditarJuego';
 import { type Game } from '../data/games';
 import { filtrarJuegos } from '../utils/filtrarJuegos';
+import '../styles/Juegos.css';
 
 interface Filtro {
     fechaLanzamiento: string;
@@ -17,10 +17,8 @@ interface Filtro {
     precioMax: number;
 }
 
-
-
 const Juegos = () => {
-     console.log("Página Juegos renderizada");
+    console.log("Página Juegos renderizada");
     const [juegos, setJuegos] = useState<Game[]>([]);
     const [mostrarModAgregar, setMostrarModAgregar] = useState(false);
     const [mostrarEditarJuego, setMostrarEditarJuego] = useState(false);
@@ -66,7 +64,7 @@ const Juegos = () => {
         : juegos;
 
     return (
-       <div className="d-flex flex-column w-100 h-100">
+        <div className="d-flex flex-column w-100 h-100">
             <div className="pagina-juegos">
                 <div className="encabezado">
                     <Titulo texto="Juegos" />
@@ -96,9 +94,8 @@ const Juegos = () => {
                     <tbody>
                         {juegosFiltrados.map((juego) => {
                             const precioFinal = juego.oferta
-                                ? (juego.precio - (juego.precio * juego.descuento/ 100)).toFixed(2)
+                                ? (juego.precio - (juego.precio * juego.descuento / 100)).toFixed(2)
                                 : juego.precio.toFixed(2);
-
                             return (
                                 <tr key={juego.id}>
                                     <td>{juego.fecha}</td>
@@ -110,11 +107,19 @@ const Juegos = () => {
                                     <td>${precioFinal}</td>
                                     <td>
                                         <div className='row-btn1'>
-                                            <Boton tipo="button" texto="Editar" onClick={() => {
-                                                setJuegoAEditar(juego);
-                                                setMostrarEditarJuego(true);
-                                            }} />
-                                            <Boton tipo="button" texto="Borrar" onClick={() => setJuegoAEliminar(juego)} />
+                                            <Boton
+                                                tipo="button"
+                                                texto={<FaEdit />}
+                                                onClick={() => {
+                                                    setJuegoAEditar(juego)
+                                                    setMostrarEditarJuego(true)
+                                                }}
+                                            />
+                                            <Boton
+                                                tipo="button"
+                                                texto={<FaTrash />}
+                                                onClick={() => setJuegoAEliminar(juego)}
+                                            />
                                         </div>
                                     </td>
                                 </tr>

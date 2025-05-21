@@ -59,7 +59,6 @@ const EditarPerfil = ({ onCerrar }: EditarPerfilProps) => {
 
   return (
     <Modal>
-      
         <Titulo texto="Edita la información de tu perfil" />
         <ImgPerfil
           imagen={imagen}
