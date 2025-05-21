@@ -8,12 +8,13 @@ interface NavBarProps {
   onLogout?: () => void
 }
 
+
 const NavBar = ({ nombreUsuario = "Nombre perfil", imagenUsuario, onLogout }: NavBarProps) => {
   return (
+    
     <aside className="sidebar">
       <div className="perfil">
-        <ImgPerfil imagen={imagenUsuario} />
-        <p className="text-white">{nombreUsuario}</p>
+        <ImgPerfil imagen={imagenUsuario} nombre={nombreUsuario} />
       </div>
 
       <nav className="menu">

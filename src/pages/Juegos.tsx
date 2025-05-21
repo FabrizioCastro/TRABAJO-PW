@@ -17,7 +17,10 @@ interface Filtro {
     precioMax: number;
 }
 
+
+
 const Juegos = () => {
+     console.log("Página Juegos renderizada");
     const [juegos, setJuegos] = useState<Game[]>([]);
     const [mostrarModAgregar, setMostrarModAgregar] = useState(false);
     const [mostrarEditarJuego, setMostrarEditarJuego] = useState(false);
@@ -52,7 +55,7 @@ const Juegos = () => {
             setJuegoAEliminar(null);
         }
     };
-    
+
     const editarJuego = (juegoEditado: Game) => {
         const nuevos = juegos.map(j => j.id === juegoEditado.id ? juegoEditado : j);
         actualizarJuegos(nuevos);
@@ -63,8 +66,7 @@ const Juegos = () => {
         : juegos;
 
     return (
-        <div className="position-fixed top-0 start-0 w-100 h-100 d-flex">
-            <NavBar />
+       <div className="d-flex flex-column w-100 h-100">
             <div className="pagina-juegos">
                 <div className="encabezado">
                     <Titulo texto="Juegos" />
@@ -94,7 +96,7 @@ const Juegos = () => {
                     <tbody>
                         {juegosFiltrados.map((juego) => {
                             const precioFinal = juego.oferta
-                                ? (juego.precio - (juego.precio * juego.descuento / 100)).toFixed(2)
+                                ? (juego.precio - (juego.precio * juego.descuento/ 100)).toFixed(2)
                                 : juego.precio.toFixed(2);
 
                             return (

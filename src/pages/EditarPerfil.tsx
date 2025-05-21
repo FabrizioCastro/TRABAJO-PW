@@ -1,74 +1,15 @@
-import React, { useState } from "react"
+import React, { useState, useEffect } from "react"
 import Boton from "../components/Boton"
 import Formulario from "../components/Formulario"
 import ImgPerfil from "../components/ImgUsuario"
-import Modal from "../components/Modal"
 import Titulo from "../components/Titulo"
-import { usuarios } from "../data/usuarios"
+import Modal from "../components/Modal"
 
-const EditarPerfil = () => {
-  const primerUsuario = usuarios[0]
-
-  const [primerNombre, setPrimerNombre] = useState(primerUsuario.name.split(' ')[0] || "")
-  const [segundoNombre, setSegundoNombre] = useState(primerUsuario.name.split(' ')[1] || "")
-  const [correo, setCorreo] = useState(primerUsuario.email)
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault()
-    console.log("Datos editados:", { primerNombre, segundoNombre, correo })
-  }
-
-  return (
-    <Modal>
-      <div >
-        <Titulo texto="Edita la información de tu perfil" />
-        <ImgPerfil imagen={primerUsuario.imagen} />
-        <Formulario onSubmit={handleSubmit}>
-          <label htmlFor="primerNombre">Primer Nombre</label>
-          <input
-            type="text"
-            id="primerNombre"
-            name="primerNombre"
-            value={primerNombre}
-            onChange={e => setPrimerNombre(e.target.value)}
-          />
-          
-          <label htmlFor="segundoNombre">Segundo Nombre</label>
-          <input
-            type="text"
-            id="segundoNombre"
-            name="segundoNombre"
-            value={segundoNombre}
-            onChange={e => setSegundoNombre(e.target.value)}
-          />
-          
-          <label htmlFor="correo">Correo</label>
-          <input
-            type="email"
-            id="correo"
-            name="correo"
-            value={correo}
-            onChange={e => setCorreo(e.target.value)}
-          />
-          
-          <Boton tipo="submit" texto="Edita información" />
-        </Formulario>
-      </div>
-    </Modal>
-  )
+interface EditarPerfilProps {
+  onCerrar: () => void
 }
 
-export default EditarPerfil
-
-
-{/* import React, { useState, useEffect } from "react"
-import Boton from "../components/Boton"
-import Formulario from "../components/Formulario"
-import ImgPerfil from "../components/ImgUsuario"
-import Modal from "../components/Modal"
-import Titulo from "../components/Titulo"
-
-const EditarPerfil = () => {
+const EditarPerfil = ({ onCerrar }: EditarPerfilProps) => {
   const [primerNombre, setPrimerNombre] = useState("")
   const [segundoNombre, setSegundoNombre] = useState("")
   const [correo, setCorreo] = useState("")
@@ -112,14 +53,15 @@ const EditarPerfil = () => {
         console.log("Usuario actualizado:", usersArray[0])
       }
     }
+
+    onCerrar()
   }
 
   return (
     <Modal>
-      <div>
+      
         <Titulo texto="Edita la información de tu perfil" />
         <ImgPerfil
-          nombre={primerNombre}
           imagen={imagen}
           onImagenChange={(nuevaImagen) => setImagen(nuevaImagen)}
         />
@@ -152,12 +94,15 @@ const EditarPerfil = () => {
             onChange={e => setCorreo(e.target.value)}
           />
 
-          <Boton tipo="submit" texto="Edita información" />
+          <div className="row-btn1">
+                <Boton tipo="button" texto="Cancelar" onClick={onCerrar} />
+                <Boton tipo="submit" texto="Edita información" />
+            </div>
+
         </Formulario>
-      </div>
+     
     </Modal>
   )
 }
 
 export default EditarPerfil
-*/}

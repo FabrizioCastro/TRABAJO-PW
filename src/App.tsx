@@ -34,9 +34,20 @@ function AppLayout() {
 
 // Layout para admin 
 function AdminLayout() {
+  const usuarioActual = JSON.parse(localStorage.getItem("user") || '{}');
+  console.log(usuarioActual);
+
+  console.log(usuarioActual)
   return (
     <div style={{ display: 'flex', minHeight: '100vh' }}>
-      <NavBar />
+      <NavBar
+        nombreUsuario={usuarioActual.username}
+        imagenUsuario={usuarioActual.imagen}
+        onLogout={() => {
+          localStorage.removeItem("user");
+          window.location.href = "/login";
+        }}
+      />
       <main style={{ flexGrow: 1, padding: '2rem' }}>
         <Outlet />
       </main>
@@ -59,6 +70,7 @@ function App() {
           <Route path="top-vendidos" element={<TopSelling />} />
           <Route path="top-valorados" element={<TopRated />} />
           <Route path="verificacion" element={<Verification />} />
+          <Route path="perfil" element={<Perfil />} />
           <Route path="juego/:id" element={<GameDetail />} />
         </Route>
 

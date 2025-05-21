@@ -34,7 +34,8 @@ function Login() {
       login({
         id: usuarioEncontrado.id,
         username: usuarioEncontrado.name,
-        email: usuarioEncontrado.email
+        email: usuarioEncontrado.email,
+        imagen: usuarioEncontrado.imagen
       })
       
       setMensaje(`Bienvenido/a, ${usuarioEncontrado.name} ✅`)

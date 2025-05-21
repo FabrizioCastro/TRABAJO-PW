@@ -1,9 +1,8 @@
-{/*
-    import { useEffect, useState } from "react";
-import Modal from "../components/Modal";
+import { useEffect, useState } from "react";
 import EditarPerfil from "./EditarPerfil";
 import ImgPerfil from "../components/ImgUsuario";
 import Boton from "../components/Boton";
+import '../styles/Perfil.css'
 
 const Perfil = () => {
   const [usuario, setUsuario] = useState<{ name: string; email: string; imagen?: string } | null>(null);
@@ -18,14 +17,14 @@ const Perfil = () => {
   }, [modalAbierto]);
 
   return (
-    <div style={{ padding: 20, textAlign: "center" }}>
+    <div className="perfil-container">
+
+         <h1>Perfil de usuario</h1>
       {usuario && (
         <ImgPerfil
           imagen={usuario.imagen}
         />
       )}
-
-      <h1>Perfil de usuario</h1>
 
       {usuario ? (
         <>
@@ -46,6 +45,3 @@ const Perfil = () => {
 };
 
 export default Perfil;
-
-    
-    */}
