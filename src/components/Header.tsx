@@ -1,121 +1,62 @@
 // src/components/Header.tsx
-import { Link, useNavigate } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext'
+import SearchBar from './SearchBar'
+import '../styles/Header.css'
 
 function Header() {
-  const navigate = useNavigate()
-  const { user, logout, isAuthenticated } = useAuth()
+  const { user, logout } = useAuth()
+  const location = useLocation()
 
-  const handleLogout = () => {
-    logout()
-    navigate("/")
+  const isActive = (path: string) => {
+    return location.pathname === path ? 'active' : ''
   }
 
   return (
-    <header className="main-header">
-      <nav className="nav-container">
-        <div className="logo">
-          <h1>GameMarket</h1>
-        </div>
+    <header className="header">
+      <div className="nav-container">
         <div className="nav-links">
-          <Link to="/top-vendidos">Más Vendidos</Link>
-          <Link to="/top-valorados">Mejor Valorados</Link>
-          <Link to="/">Catálogo</Link>
-          <Link to="/carrito">Carrito</Link>
-          <Link to="/compras">Mis Compras</Link>
-          <Link to="/perfil">Perfil</Link>
-          <div className="user-actions" style={{
-            display: 'flex',
-            alignItems: 'center',
-            gap: '1rem',
-            marginLeft: 'auto'
-          }}>
-            {isAuthenticated && user ? (
-              <div style={{
-                display: 'flex',
-                alignItems: 'center',
-                gap: '1rem'
-              }}>
-                <span style={{
-                  color: '#fff',
-                  fontSize: '0.9rem'
-                }}>
-                  Bienvenid@, {user.username}
-                </span>
-                <button
-                  className="btn-secondary"
-                  onClick={handleLogout}
-                  style={{
-                    padding: '0.5rem 1rem',
-                    border: '1px solid #ff4444',
-                    backgroundColor: 'transparent',
-                    color: '#ff4444',
-                    borderRadius: '4px',
-                    cursor: 'pointer',
-                    transition: 'all 0.3s ease'
-                  }}
-                  onMouseOver={(e) => {
-                    e.currentTarget.style.backgroundColor = '#ff4444'
-                    e.currentTarget.style.color = '#fff'
-                  }}
-                  onMouseOut={(e) => {
-                    e.currentTarget.style.backgroundColor = 'transparent'
-                    e.currentTarget.style.color = '#ff4444'
-                  }}
-                >
-                  Cerrar Sesión
-                </button>
-              </div>
-            ) : (
-              <div style={{ display: 'flex', gap: '1rem' }}>
-                <Link
-                  to="/login"
-                  className="btn-secondary"
-                  style={{
-                    padding: '0.5rem 1rem',
-                    border: '1px solid #4CAF50',
-                    backgroundColor: 'transparent',
-                    color: '#4CAF50',
-                    borderRadius: '4px',
-                    textDecoration: 'none',
-                    transition: 'all 0.3s ease'
-                  }}
-                  onMouseOver={(e) => {
-                    e.currentTarget.style.backgroundColor = '#4CAF50'
-                    e.currentTarget.style.color = '#fff'
-                  }}
-                  onMouseOut={(e) => {
-                    e.currentTarget.style.backgroundColor = 'transparent'
-                    e.currentTarget.style.color = '#4CAF50'
-                  }}
-                >
-                  Iniciar Sesión
-                </Link>
-                <Link
-                  to="/register"
-                  className="btn-primary"
-                  style={{
-                    padding: '0.5rem 1rem',
-                    backgroundColor: '#4CAF50',
-                    color: '#fff',
-                    borderRadius: '4px',
-                    textDecoration: 'none',
-                    transition: 'all 0.3s ease'
-                  }}
-                  onMouseOver={(e) => {
-                    e.currentTarget.style.backgroundColor = '#45a049'
-                  }}
-                  onMouseOut={(e) => {
-                    e.currentTarget.style.backgroundColor = '#4CAF50'
-                  }}
-                >
-                  Registrarse
-                </Link>
-              </div>
-            )}
-          </div>
+          <Link to="/" className={`nav-link ${isActive('/')}`}>
+            <i className="fas fa-home"></i> Inicio
+          </Link>
+          <Link to="/top-vendidos" className={`nav-link ${isActive('/top-vendidos')}`}>
+            <i className="fas fa-trophy"></i> Más Vendidos
+          </Link>
+          <Link to="/top-valorados" className={`nav-link ${isActive('/top-valorados')}`}>
+            <i className="fas fa-star"></i> Más Valorados
+          </Link>
         </div>
-      </nav>
+
+        <SearchBar />
+
+        <div className="nav-links">
+          {user ? (
+            <>
+              <Link to="/carrito" className={`nav-link ${isActive('/carrito')}`}>
+                <i className="fas fa-shopping-cart"></i> Carrito
+              </Link>
+              <Link to="/compras" className={`nav-link ${isActive('/compras')}`}>
+                <i className="fas fa-history"></i> Mis Compras
+              </Link>
+              <Link to="/perfil" className={`nav-link ${isActive('/perfil')}`}>
+                <i className="fas fa-user"></i> Perfil
+              </Link>
+              <button onClick={logout} className="nav-link logout-btn">
+                <i className="fas fa-sign-out-alt"></i> Cerrar Sesión
+              </button>
+            </>
+          ) : (
+            <>
+              <Link to="/login" className={`nav-link ${isActive('/login')}`}>
+                <i className="fas fa-sign-in-alt"></i> Iniciar Sesión
+              </Link>
+              <Link to="/register" className={`nav-link ${isActive('/register')}`}>
+                <i className="fas fa-user-plus"></i> Registrarse
+              </Link>
+            </>
+          )}
+        </div>
+      </div>
     </header>
   )
 }
