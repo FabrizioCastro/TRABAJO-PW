@@ -37,8 +37,7 @@ function AppLayout() {
 function AdminLayout() {
   const usuarioActual = JSON.parse(localStorage.getItem("user") || '{}');
   console.log(usuarioActual);
-
-  console.log(usuarioActual)
+  
   return (
     <div style={{ display: 'flex', minHeight: '100vh' }}>
       <NavBar

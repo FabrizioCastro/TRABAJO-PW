@@ -4,6 +4,7 @@ import { getJuegos } from '../data/games'
 import type { Game } from '../data/games'
 import { useAuth } from '../context/AuthContext'
 import { sendGameKeysEmail } from '../services/emailService'
+import CompraExitosa from './CompraExitosa'
 
 function Cart() {
   const navigate = useNavigate()
@@ -11,6 +12,7 @@ function Cart() {
   const [carrito, setCarrito] = useState<Game[]>([])
   const [mensaje, setMensaje] = useState('')
   const [total, setTotal] = useState(0)
+  const [compraExitosa, setCompraExitosa] = useState(false)
 
   useEffect(() => {
     const items = JSON.parse(localStorage.getItem("carrito") || "[]")
@@ -20,7 +22,7 @@ function Cart() {
 
   const calcularTotal = (items: Game[]) => {
     const total = items.reduce((acc, item) => {
-      const precio = item.descuento 
+      const precio = item.descuento
         ? item.precio * (1 - item.descuento / 100)
         : item.precio
       return acc + precio
@@ -103,9 +105,14 @@ function Cart() {
       setCarrito([])
       setTotal(0)
 
+      setCompraExitosa(true)
+
       // Guardar resumen temporal y redirigir
-      localStorage.setItem("resumenCompra", JSON.stringify(resumen))
-      navigate("/resumen")
+      setTimeout(() => {
+        localStorage.setItem("resumenCompra", JSON.stringify(resumen))
+        navigate("/resumen")
+      }, 3000)
+
     } catch (error) {
       console.error('Error al procesar el pago:', error)
       setMensaje("Error al procesar el pago. Por favor, intente nuevamente ❌")
@@ -115,12 +122,13 @@ function Cart() {
   return (
     <section className="cart-section">
       <h2><i className="fas fa-shopping-cart"></i> Carrito de Compras</h2>
-      
-      {mensaje && <div className="message">{mensaje}</div>}
 
-      {carrito.length === 0 ? (
+      {mensaje && <div className="message">{mensaje}</div>}
+      {compraExitosa && <CompraExitosa />}
+
+      {carrito.length === 0 && !compraExitosa ? (
         <p>Tu carrito está vacío</p>
-      ) : (
+      ) : !compraExitosa && (
         <>
           <ul className="cart-items">
             {carrito.map((juego, index) => (

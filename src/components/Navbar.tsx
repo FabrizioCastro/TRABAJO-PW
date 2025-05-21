@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom"
 import ImgPerfil from "../components/ImgUsuario"
 import '../styles/NavBar.css'
+import Boton from "./Boton"
 
 interface NavBarProps {
   nombreUsuario?: string
@@ -25,7 +26,7 @@ const NavBar = ({ nombreUsuario = "Nombre perfil", imagenUsuario, onLogout }: Na
           <li><Link to="/admin//estadisticas">Estadísticas</Link></li>
           <li className="cerrar-sesion">
             {onLogout ? (
-              <button onClick={onLogout} className="btn-logout">Cerrar sesión</button>
+              <Boton tipo="button" texto="Cerrar sesión" onClick={onLogout}  />
             ) : (
               <Link to="/logout">Cerrar sesión</Link> 
             )}
