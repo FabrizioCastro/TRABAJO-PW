@@ -1,4 +1,6 @@
 // src/components/Footer.tsx
+import { Link } from 'react-router-dom'
+
 function Footer() {
   return (
     <footer className="main-footer">
@@ -10,9 +12,9 @@ function Footer() {
         <div className="footer-section">
           <h3>Enlaces Rápidos</h3>
           <ul>
-            <li><a href="#catalogo">Catálogo</a></li>
-            <li><a href="#carrito">Carrito</a></li>
-            <li><a href="#compras">Mis Compras</a></li>
+            <li><Link to="/catalogo">Catálogo</Link></li>
+            <li><Link to="/carrito">Carrito</Link></li>
+            <li><Link to="/compras">Mis Compras</Link></li>
           </ul>
         </div>
         <div className="footer-section">

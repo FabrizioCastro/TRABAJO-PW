@@ -19,6 +19,12 @@ function Header() {
           <Link to="/" className={`nav-link ${isActive('/')}`}>
             <i className="fas fa-home"></i> Inicio
           </Link>
+          <Link to="/catalogo" className={`nav-link ${isActive('/catalogo')}`}>
+            <i className="fas fa-gamepad"></i> Catálogo
+          </Link>
+          <Link to="/noticias" className={`nav-link ${isActive('/noticias')}`}>
+            <i className="fas fa-newspaper"></i> Noticias
+          </Link>
           <Link to="/top-vendidos" className={`nav-link ${isActive('/top-vendidos')}`}>
             <i className="fas fa-trophy"></i> Más Vendidos
           </Link>

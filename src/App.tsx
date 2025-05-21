@@ -20,6 +20,8 @@ import Juegos from './pages/Juegos'
 import Perfil from './pages/Perfil'
 import AdminStats from './pages/AdminStats'
 import ForgotPassword from './pages/ForgotPassword'
+import Noticias from './pages/Noticias'
+import AdminNoticias from './pages/AdminNoticias'
 
 // Layout para usuario normal
 function AppLayout() {
@@ -35,7 +37,7 @@ function AppLayout() {
   )
 }
 
-// Layout para admin 
+// Layout para admin
 function AdminLayout() {
   const usuarioActual = JSON.parse(localStorage.getItem("user") || '{}');
   console.log(usuarioActual);
@@ -64,6 +66,7 @@ function App() {
         {/* Rutas con AppLayout */}
         <Route path="/" element={<AppLayout />}>
           <Route index element={<Catalog />} />
+          <Route path="catalogo" element={<Catalog />} />
           <Route path="login" element={<Login />} />
           <Route path="register" element={<Register />} />
           <Route path="carrito" element={<Cart />} />
@@ -75,6 +78,7 @@ function App() {
           <Route path="perfil" element={<Perfil />} />
           <Route path="juego/:id" element={<GameDetail />} />
           <Route path="forgot-password" element={<ForgotPassword />} />
+          <Route path="noticias" element={<Noticias />} />
         </Route>
 
         {/* Rutas admin con AdminLayout */}
@@ -82,6 +86,7 @@ function App() {
           <Route index element={<AdminPanel />} />
           <Route path="juegos" element={<Juegos />} />
           <Route path="estadisticas" element={<AdminStats />} />
+          <Route path="noticias" element={<AdminNoticias />} />
         </Route>
       </Routes>
     </AuthProvider>
