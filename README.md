@@ -52,3 +52,33 @@ export default tseslint.config({
   },
 })
 ```
+
+
+function hashPassword(password) {
+  let hash = 0;
+  for (let i = 0; i < password.length; i++) {
+    const char = password.charCodeAt(i);
+    hash = ((hash << 5) - hash) + char;
+    hash |= 0;
+  }
+  return hash.toString();
+}
+
+const usuarios = JSON.parse(localStorage.getItem('usuarios') || '[]');
+
+const yaExiste = usuarios.some(u => u.email === 'admin@admin.com');
+
+if (!yaExiste) {
+  usuarios.push({
+    id: Date.now(),
+    name: 'Administrador',
+    email: 'admin@admin.com',
+    password: hashPassword('admin123'),
+    imagen: '/admin.png' 
+  });
+
+  localStorage.setItem('usuarios', JSON.stringify(usuarios));
+  console.log('Usuario admin creado con contraseña: admin123');
+} else {
+  console.log('El admin ya existe');
+}
