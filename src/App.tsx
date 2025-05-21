@@ -17,6 +17,7 @@ import GameDetail from './pages/GameDetail'
 import { AuthProvider } from './context/AuthContext'
 import NavBar from './components/Navbar'
 import Juegos from './pages/Juegos'
+import Perfil from './pages/Perfil'
 
 // Layout para usuario normal
 function AppLayout() {

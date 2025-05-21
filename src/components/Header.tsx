@@ -23,26 +23,27 @@ function Header() {
           <Link to="/">Catálogo</Link>
           <Link to="/carrito">Carrito</Link>
           <Link to="/compras">Mis Compras</Link>
-          <div className="user-actions" style={{ 
-            display: 'flex', 
-            alignItems: 'center', 
+          <Link to="/perfil">Perfil</Link>
+          <div className="user-actions" style={{
+            display: 'flex',
+            alignItems: 'center',
             gap: '1rem',
             marginLeft: 'auto'
           }}>
             {isAuthenticated && user ? (
-              <div style={{ 
-                display: 'flex', 
-                alignItems: 'center', 
+              <div style={{
+                display: 'flex',
+                alignItems: 'center',
                 gap: '1rem'
               }}>
-                <span style={{ 
+                <span style={{
                   color: '#fff',
                   fontSize: '0.9rem'
                 }}>
                   Bienvenid@, {user.username}
                 </span>
-                <button 
-                  className="btn-secondary" 
+                <button
+                  className="btn-secondary"
                   onClick={handleLogout}
                   style={{
                     padding: '0.5rem 1rem',
@@ -67,8 +68,8 @@ function Header() {
               </div>
             ) : (
               <div style={{ display: 'flex', gap: '1rem' }}>
-                <Link 
-                  to="/login" 
+                <Link
+                  to="/login"
                   className="btn-secondary"
                   style={{
                     padding: '0.5rem 1rem',
@@ -90,8 +91,8 @@ function Header() {
                 >
                   Iniciar Sesión
                 </Link>
-                <Link 
-                  to="/register" 
+                <Link
+                  to="/register"
                   className="btn-primary"
                   style={{
                     padding: '0.5rem 1rem',
