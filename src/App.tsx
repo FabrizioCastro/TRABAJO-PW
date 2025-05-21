@@ -19,6 +19,7 @@ import NavBar from './components/Navbar'
 import Juegos from './pages/Juegos'
 import Perfil from './pages/Perfil'
 import AdminStats from './pages/AdminStats'
+import ForgotPassword from './pages/ForgotPassword'
 
 // Layout para usuario normal
 function AppLayout() {
@@ -73,6 +74,7 @@ function App() {
           <Route path="verificacion" element={<Verification />} />
           <Route path="perfil" element={<Perfil />} />
           <Route path="juego/:id" element={<GameDetail />} />
+          <Route path="forgot-password" element={<ForgotPassword />} />
         </Route>
 
         {/* Rutas admin con AdminLayout */}

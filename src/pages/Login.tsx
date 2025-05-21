@@ -78,9 +78,19 @@ function Login() {
             />
           </div>
 
-          <button type="submit" className="btn-primary">Ingresar</button>
+          <button type="submit" className="btn-primary">
+            Iniciar Sesión
+          </button>
         </form>
-        {mensaje && <p className="message">{mensaje}</p>}
+
+        {mensaje && <p className="mensaje">{mensaje}</p>}
+        
+        <p className="login-link">
+          ¿No tienes una cuenta? <a href="/register">Regístrate</a>
+        </p>
+        <p className="login-link">
+          <a href="/forgot-password">¿Olvidaste tu contraseña?</a>
+        </p>
       </div>
     </section>
   )
