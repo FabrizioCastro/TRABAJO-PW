@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { juegos as juegosOriginales } from '../data/games'
+import { getJuegos } from '../data/games'
 import type { Game } from '../data/games'
 
 import GameCard from '../components/GameCard'
@@ -8,7 +8,30 @@ function TopSelling() {
   const [juegos, setJuegos] = useState<Game[]>([])
 
   useEffect(() => {
-    const ordenados = [...juegosOriginales].sort((a, b) => b.ventas - a.ventas)
+    // Obtener el historial de compras
+    const historialCompras = JSON.parse(localStorage.getItem("historialCompras") || "[]")
+    
+    // Crear un mapa para contar las ventas de cada juego
+    const ventasPorJuego: { [key: string]: number } = {}
+    
+    // Contar las ventas de cada juego
+    historialCompras.forEach((compra: any) => {
+      compra.juegos.forEach((nombreJuego: string) => {
+        ventasPorJuego[nombreJuego] = (ventasPorJuego[nombreJuego] || 0) + 1
+      })
+    })
+    
+    // Obtener los juegos actualizados
+    const juegosActualizados = getJuegos()
+    
+    // Actualizar las ventas de cada juego
+    const juegosConVentas = juegosActualizados.map(juego => ({
+      ...juego,
+      ventas: ventasPorJuego[juego.nombre] || 0
+    }))
+    
+    // Ordenar por ventas
+    const ordenados = [...juegosConVentas].sort((a, b) => b.ventas - a.ventas)
     setJuegos(ordenados)
   }, [])
 
