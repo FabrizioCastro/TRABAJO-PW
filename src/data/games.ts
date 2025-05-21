@@ -13,13 +13,15 @@ export interface Game {
   categoria: string;
   plataforma: string;
   precio: number;
-  descuento?: number; 
+  descuento?: number; // Porcentaje de descuento (0-100)
   oferta: boolean;
   ventas: number;
   valoracion: number;
   imagen?: string | File;
+  trailer?: string;
   reviews: Review[];
   claves: string[];
+  imagenes?: string[];
   fecha?: string;
 }
 
@@ -36,6 +38,7 @@ const juegosDefault: Game[] = [
     ventas: 150,
     valoracion: 4.8,
     imagen: "/ELDEN-RING.avif",
+    trailer: "https://www.youtube.com/watch?v=E3Huy2cdih0",
     reviews: [],
     claves: ["ELDEN-RING-XXXX-XXXX-XXXX", "ELDEN-RING-YYYY-YYYY-YYYY"],
     fecha: "25-02-2022"
@@ -52,8 +55,14 @@ const juegosDefault: Game[] = [
     ventas: 200,
     valoracion: 4.9,
     imagen: "/GOD-OF-WAR.webp",
+    trailer: "https://www.youtube.com/watch?v=AN3jEjjcZ-k",
     reviews: [],
     claves: ["GOW-XXXX-XXXX-XXXX", "GOW-YYYY-YYYY-YYYY"],
+    imagenes: [
+      "public/GOW1.webp",
+      "public/GOW2.jfif",
+      "public/GOW3.jpg",
+    ],
     fecha: "20-04-2018"
   },
   {
@@ -68,6 +77,7 @@ const juegosDefault: Game[] = [
     ventas: 300,
     valoracion: 4.7,
     imagen: "/HOLLOW-KNIGHT.jpg",
+    trailer: "https://www.youtube.com/watch?v=nSPJXlYjENE",
     reviews: [],
     claves: [],
     fecha: "24-02-2017"
@@ -84,6 +94,7 @@ const juegosDefault: Game[] = [
     ventas: 250,
     valoracion: 4.9,
     imagen: "/XELDA.avif",
+    trailer: "https://www.youtube.com/watch?v=ofH5ptn5w-A",
     reviews: [],
     claves: [],
     fecha: "03-03-2017"
@@ -100,6 +111,7 @@ const juegosDefault: Game[] = [
     ventas: 0,
     valoracion: 0,
     imagen: "/GTA-6.jpg",
+    trailer: "https://www.youtube.com/watch?v=QdBZY2fkU-0",
     reviews: [],
     claves: [],
     fecha: "Próximamente"
@@ -116,6 +128,7 @@ const juegosDefault: Game[] = [
     ventas: 400,
     valoracion: 4.9,
     imagen: "/WITCHER-3.jpeg",
+    trailer: "https://www.youtube.com/watch?v=c0i88t0Kacs",
     reviews: [],
     claves: [],
     fecha: "19-05-2015"
@@ -132,6 +145,7 @@ const juegosDefault: Game[] = [
     ventas: 350,
     valoracion: 4.8,
     imagen: "/RDR2.jpeg",
+    trailer: "https://www.youtube.com/watch?v=gmA6MrX81z4",
     reviews: [],
     claves: [],
     fecha: "26-10-2018"
@@ -148,6 +162,7 @@ const juegosDefault: Game[] = [
     ventas: 200,
     valoracion: 4.5,
     imagen: "/CYBERPUNK.jpeg",
+    trailer: "https://www.youtube.com/watch?v=8X2kIfS6fb8",
     reviews: [],
     claves: [],
     fecha: "10-12-2020"
@@ -164,6 +179,7 @@ const juegosDefault: Game[] = [
     ventas: 300,
     valoracion: 4.7,
     imagen: "/LASTOFUS2.jpeg",
+    trailer: "https://www.youtube.com/watch?v=JdE9U9WW_HM",
     reviews: [],
     claves: [],
     fecha: "19-06-2020"
@@ -180,8 +196,14 @@ const juegosDefault: Game[] = [
     ventas: 250,
     valoracion: 4.6,
     imagen: "/FIFA24.jpg",
+    trailer: "FC24TRAILER.mp4",
     reviews: [],
-    claves: [],
+    claves: ["FIFA24-XXXX-XXXX-XXXX", "FIFA24-YYYY-YYYY-YYYY"],
+    imagenes: [
+      "public/FC241.jpg",
+      "public/FIFA242.webp",
+      "public/FC243.jpg"
+    ],
     fecha: "29-09-2023"
   }
 ];
@@ -189,7 +211,9 @@ const juegosDefault: Game[] = [
 export const getJuegos = (): Game[] => {
   const juegosGuardados = localStorage.getItem("juegos");
   if (juegosGuardados) {
-    return JSON.parse(juegosGuardados);
+    const juegos = JSON.parse(juegosGuardados);
+    const incompletos = juegos.some((j: Game) => !j.imagenes || !Array.isArray(j.imagenes));
+    if (!incompletos) return juegos;
   }
   localStorage.setItem("juegos", JSON.stringify(juegosDefault));
   return juegosDefault;
