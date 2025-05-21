@@ -88,7 +88,7 @@ const EditarPerfil = ({ onCerrar }: EditarPerfilProps) => {
 
         <div className="row-btn1">
           <Boton tipo="button" texto="Cancelar" onClick={onCerrar} />
-          <Boton tipo="submit" texto="Edita información" />
+          <Boton tipo="submit" texto="Guardar" />
         </div>
       </Formulario>
     </Modal>

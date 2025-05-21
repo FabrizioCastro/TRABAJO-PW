@@ -25,7 +25,7 @@ const Perfil = () => {
         <>
           <p><strong>Nombre:</strong> {user.username}</p>
           <p><strong>Correo:</strong> {user.email}</p>
-          <Boton tipo="button" texto="+ Editar Perfil" onClick={() => setModalAbierto(true)} />
+          <Boton tipo="button" texto="Editar Perfil" onClick={() => setModalAbierto(true)} />
         </>
       ) : (
         <p>No hay usuario cargado</p>
