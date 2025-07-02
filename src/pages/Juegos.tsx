@@ -9,6 +9,7 @@ import EditarJuego from './EditarJuego';
 import { type Game } from '../data/games';
 import { filtrarJuegos } from '../utils/filtrarJuegos';
 import '../styles/Juegos.css';
+import { obtenerJuegos } from '../services/juegosService'
 
 interface Filtro {
     fechaLanzamiento: string;
@@ -28,13 +29,16 @@ const Juegos = () => {
     const [filtrosActivos, setFiltrosActivos] = useState<Filtro | null>(null);
 
     useEffect(() => {
-        const juegosGuardados = localStorage.getItem('juegos');
-        if (juegosGuardados) {
-            setJuegos(JSON.parse(juegosGuardados));
-        } else {
-            console.log("No hay juegos guardados")
+        const cargarJuegos = async () => {
+            try {
+                const data = await obtenerJuegos()
+                setJuegos(data)
+            } catch (error) {
+                console.error("Error al obtener juegos:", error)
+            }
         }
-    }, []);
+        cargarJuegos()
+    }, [])
 
     const actualizarJuegos = (nuevosJuegos: Game[]) => {
         setJuegos(nuevosJuegos);
