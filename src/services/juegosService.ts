@@ -7,3 +7,13 @@ export const obtenerJuegos = async () => {
   }
   return await resp.json()
 }
+
+export const eliminarJuego = async (id: number) => {
+    const resp = await fetch(`${BASE_URL}/juegos/${id}`, {
+        method: 'DELETE'
+    });
+    if (!resp.ok) {
+        throw new Error('Error al eliminar el juego');
+    }
+};
+

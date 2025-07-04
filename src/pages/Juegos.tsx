@@ -9,7 +9,7 @@ import EditarJuego from './EditarJuego';
 import { type Game } from '../data/games';
 import { filtrarJuegos } from '../utils/filtrarJuegos';
 import '../styles/Juegos.css';
-import { obtenerJuegos } from '../services/juegosService'
+import { obtenerJuegos, eliminarJuego } from '../services/juegosService'
 
 interface Filtro {
     fechaLanzamiento: string;
@@ -50,11 +50,17 @@ const Juegos = () => {
         actualizarJuegos(nuevos);
     };
 
-    const handleEliminar = () => {
-        if (juegoAEliminar) {
+
+    const handleEliminar = async () => {
+        if (!juegoAEliminar) return;
+
+        try {
+            await eliminarJuego(juegoAEliminar.id);
             const nuevos = juegos.filter(j => j.id !== juegoAEliminar.id);
-            actualizarJuegos(nuevos);
+            setJuegos(nuevos);
             setJuegoAEliminar(null);
+        } catch (error) {
+            console.error("Error al eliminar juego:", error);
         }
     };
 
