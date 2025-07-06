@@ -25,6 +25,7 @@ export interface Game {
   fecha?: string;
 }
 
+
 const juegosDefault: Game[] = [
   {
     id: 1,

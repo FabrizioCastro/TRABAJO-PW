@@ -9,7 +9,8 @@ import EditarJuego from './EditarJuego';
 import { type Game } from '../data/games';
 import { filtrarJuegos } from '../utils/filtrarJuegos';
 import '../styles/Juegos.css';
-import { obtenerJuegos, eliminarJuego } from '../services/juegosService'
+import { obtenerJuegos, eliminarJuego, agregarJuego as agregarJuegoService } from '../services/juegosService'
+import type { GameInput } from '../types';
 
 interface Filtro {
     fechaLanzamiento: string;
@@ -45,9 +46,14 @@ const Juegos = () => {
         localStorage.setItem('juegos', JSON.stringify(nuevosJuegos));
     };
 
-    const agregarJuego = (nuevoJuego: Game) => {
-        const nuevos = [...juegos, nuevoJuego];
-        actualizarJuegos(nuevos);
+    const agregarJuego = async (nuevoJuego: GameInput) => {
+        try {
+            await agregarJuegoService(nuevoJuego);
+            const juegosActualizados = await obtenerJuegos();
+            setJuegos(juegosActualizados);
+        } catch (error) {
+            console.error("Error al agregar juego:", error);
+        }
     };
 
 
