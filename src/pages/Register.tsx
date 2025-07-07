@@ -3,10 +3,13 @@ import type { FormEvent } from 'react'
 
 import { useNavigate } from 'react-router-dom'
 import { hashPassword } from '../utils/hash'
+import { AuthService } from '../services/authService'
 
 function generarCodigoVerificacion(): string {
   return Math.floor(100000 + Math.random() * 900000).toString()
 }
+
+
 
 function Register() {
   const navigate = useNavigate()
@@ -15,44 +18,26 @@ function Register() {
   const [password, setPassword] = useState('')
   const [mensaje, setMensaje] = useState('')
 
-  const manejarRegistro = (e: FormEvent) => {
-    e.preventDefault()
 
-    const tieneArroba = email.includes('@')
-    const tienePunto = email.includes('.')
+  const manejarRegistro = async (e: FormEvent) => {
+    e.preventDefault();
 
-    if (!tieneArroba || !tienePunto) {
-      setMensaje('Correo inválido ❌')
-      return
+    if (!email.includes('@') || !email.includes('.')) {
+      setMensaje('Correo inválido');
+      return;
     }
 
-    const usuarios = JSON.parse(localStorage.getItem("usuarios") || "[]")
-    const yaExiste = usuarios.find((u: any) => u.email === email)
-    if (yaExiste) {
-      setMensaje("Este correo ya está registrado 📧")
-      return
+    const data = await AuthService.register(email, password, nombre);
+
+    if (data.mensaje === "Código enviado. Verifica tu correo.") {
+      localStorage.setItem("correoPendiente", email);
+      setMensaje(data.mensaje);
+      navigate("/verificacion");
+    } else {
+      setMensaje(data.mensaje || "Error en el registro.");
     }
-
-    const codigo = generarCodigoVerificacion()
-    const usuarioPendiente = {
-      name: nombre,
-      email,
-      password: hashPassword(password),
-      codigoVerificacion: codigo,
-      fechaRegistro: new Date().toISOString()
-    }
-
-    const pendientes = JSON.parse(localStorage.getItem("usuariosPendientes") || "[]")
-    pendientes.push(usuarioPendiente)
-    localStorage.setItem("usuariosPendientes", JSON.stringify(pendientes))
-
-    console.log(`Simulando envío de correo a ${email} con código: ${codigo}`)
-
-    localStorage.setItem("codigoVerificacionPendiente", JSON.stringify({ email, codigo }))
-    setMensaje("Código enviado al correo. Verifica tu cuenta ✉️")
-    navigate('/verificacion')
-  }
-
+  };
+  
   return (
     <section className="auth-section">
       <div className="auth-container">

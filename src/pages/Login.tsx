@@ -3,6 +3,7 @@ import type { FormEvent } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { hashPassword } from '../utils/hash'
 import { useAuth } from '../context/AuthContext'
+import { AuthService } from '../services/authService'
 
 function Login() {
   const navigate = useNavigate()
@@ -11,45 +12,38 @@ function Login() {
   const [password, setPassword] = useState('')
   const [mensaje, setMensaje] = useState('')
 
-  const manejarSubmit = (e: FormEvent) => {
-    e.preventDefault()
+  const manejarSubmit = async (e: FormEvent) => {
+    e.preventDefault();
 
-    const tieneArroba = email.includes('@')
-    const tienePunto = email.includes('.')
+    const tieneArroba = email.includes('@');
+    const tienePunto = email.includes('.');
 
     if (!tieneArroba || !tienePunto) {
-      setMensaje('Correo inválido')
-      return
+      setMensaje('Correo inválido');
+      return;
     }
 
-    const usuarios = JSON.parse(localStorage.getItem('usuarios') || '[]')
-    const hashedPassword = hashPassword(password)
+    try {
+      const res = await AuthService.login(email, password);
 
-    const usuarioEncontrado = usuarios.find(
-      (user: any) => user.email === email && user.password === hashedPassword
-    )
+      if (res.token) {
+        login(res.token, res.usuario)
 
-    if (usuarioEncontrado) {
-      // Usar el contexto de autenticación para iniciar sesión
-      login({
-        id: usuarioEncontrado.id,
-        username: usuarioEncontrado.name,
-        email: usuarioEncontrado.email,
-        imagen: usuarioEncontrado.imagen
-      })
-      
-      setMensaje(`Bienvenido/a, ${usuarioEncontrado.name} ✅`)
+        setMensaje(`Bienvenido/a, ${res.usuario.username} ✅`);
 
-      // Si es admin, redirigir al panel
-      if (usuarioEncontrado.email === 'admin@admin.com') {
-        navigate('/admin')
+        if (res.usuario.email === 'admin@admin.com') {
+          navigate('/admin');
+        } else {
+          navigate('/');
+        }
       } else {
-        navigate('/')
+        setMensaje(res.error || 'Correo o contraseña incorrectos ❌');
       }
-    } else {
-      setMensaje('Correo o contraseña incorrectos ❌')
+    } catch (error) {
+      console.error(error);
+      setMensaje('Error de conexión con el servidor ');
     }
-  }
+  };
 
   return (
     <section className="auth-section">

@@ -2,42 +2,34 @@ import { useState } from 'react'
 import type { FormEvent } from 'react'
 
 import { useNavigate } from 'react-router-dom'
+import { AuthService } from '../services/authService'
 
 function Verification() {
   const navigate = useNavigate()
   const [codigo, setCodigo] = useState('')
   const [mensaje, setMensaje] = useState('')
 
-  const manejarVerificacion = (e: FormEvent) => {
-    e.preventDefault()
+const manejarVerificacion = async (e: React.FormEvent) => {
+    e.preventDefault();
 
-    const pendientes = JSON.parse(localStorage.getItem("usuariosPendientes") || "[]")
-    const usuario = pendientes.find((u: any) => u.codigoVerificacion === codigo)
+    const email = localStorage.getItem("correoPendiente"); 
 
-    if (!usuario) {
-      setMensaje("Código incorrecto ❌")
-      return
+    if (!email) {
+      setMensaje("No se encontró un correo pendiente de verificación ");
+      return;
     }
 
-    // Mover a lista de usuarios verificados
-    const verificados = JSON.parse(localStorage.getItem("usuarios") || "[]")
-    verificados.push({
-      name: usuario.name,
-      email: usuario.email,
-      password: usuario.password
-    })
-    localStorage.setItem("usuarios", JSON.stringify(verificados))
+    const res = await AuthService.verifyCode(email, codigo);
 
-    // Eliminar de pendientes
-    const actualizados = pendientes.filter((u: any) => u.codigoVerificacion !== codigo)
-    localStorage.setItem("usuariosPendientes", JSON.stringify(actualizados))
-
-    setMensaje("¡Email verificado exitosamente! ✅")
-    setTimeout(() => {
-      navigate('/login')
-    }, 1500)
-  }
-
+    if (res.token) {
+      localStorage.setItem("token", res.token);
+      localStorage.removeItem("correoPendiente");
+      setMensaje("¡Email verificado exitosamente! ");
+      setTimeout(() => navigate("/login"), 1500);
+    } else {
+      setMensaje(res.mensaje || "Código incorrecto ");
+    }
+  };
   return (
     <section className="auth-section">
       <div className="auth-container">
