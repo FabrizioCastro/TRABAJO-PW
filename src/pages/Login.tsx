@@ -37,7 +37,7 @@ function Login() {
           navigate('/');
         }
       } else {
-        setMensaje(res.error || 'Correo o contraseña incorrectos ❌');
+        setMensaje(res.error || 'Correo o contraseña incorrectos');
       }
     } catch (error) {
       console.error(error);
