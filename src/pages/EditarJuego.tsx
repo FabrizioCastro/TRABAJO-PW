@@ -4,9 +4,12 @@ import Formulario from "../components/Formulario";
 import Titulo from "../components/Titulo";
 import type { Game } from "../data/games";
 import Modal from "../components/Modal";
+import type { Categoria, Plataforma } from '../data/models';
+import { obtenerCategorias, obtenerPlataformas } from '../services/juegosService';
 
 interface EditarJuegoProps {
   juego: Game;
+
   onEditarJuego: (juego: Game) => void;
   onCerrar: () => void;
 }
@@ -20,6 +23,21 @@ const EditarJuego = ({ juego, onEditarJuego, onCerrar }: EditarJuegoProps) => {
   const [plataforma, setPlataforma] = useState('');
   const [archivoImagen, setArchivoImagen] = useState<File | null>(null);
   const [preview, setPreview] = useState<string | null>(null);
+  const [imagenesAdicionales, setImagenesAdicionales] = useState<string[]>([]);
+  const [mostrarMiniModal, setMostrarMiniModal] = useState(false);
+  const [urlImagen, setUrlImagen] = useState('');
+  const [categorias, setCategorias] = useState<Categoria[]>([]);
+  const [plataformas, setPlataformas] = useState<Plataforma[]>([]);
+
+  useEffect(() => {
+    const cargarDatos = async () => {
+      const cats = await obtenerCategorias();
+      setCategorias(cats);
+      const plats = await obtenerPlataformas();
+      setPlataformas(plats);
+    };
+    cargarDatos();
+  }, []);
 
   useEffect(() => {
     setNombre(juego.nombre || "");
@@ -30,7 +48,24 @@ const EditarJuego = ({ juego, onEditarJuego, onCerrar }: EditarJuegoProps) => {
     setPlataforma(juego.plataforma || "");
     setPreview(typeof juego.imagen === 'string' ? juego.imagen : null);
     setArchivoImagen(null);
+    setImagenesAdicionales(juego.imagenes ?? []);
   }, [juego]);
+
+  const agregarCampoImagen = () => {
+    setImagenesAdicionales([...imagenesAdicionales, ""]);
+  };
+
+  const eliminarCampoImagen = (index: number) => {
+    const nuevas = [...imagenesAdicionales];
+    nuevas.splice(index, 1);
+    setImagenesAdicionales(nuevas);
+  };
+
+  const handleImagenUrlChange = (index: number, nuevaUrl: string) => {
+    const nuevas = [...imagenesAdicionales];
+    nuevas[index] = nuevaUrl;
+    setImagenesAdicionales(nuevas);
+  };
 
   const handleImagenChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -44,15 +79,14 @@ const EditarJuego = ({ juego, onEditarJuego, onCerrar }: EditarJuegoProps) => {
     }
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
 
+  const handleSubmit = async () => {
     if (!categoria) {
-      alert("Selecciona una categoría");
+      console.log("Selecciona una categoría");
       return;
     }
     if (!plataforma) {
-      alert("Selecciona una plataforma");
+      console.log("Selecciona una plataforma");
       return;
     }
 
@@ -60,9 +94,16 @@ const EditarJuego = ({ juego, onEditarJuego, onCerrar }: EditarJuegoProps) => {
     const descuentoNumber = parseFloat(descuento);
 
     if (isNaN(precioNumber) || isNaN(descuentoNumber)) {
-      alert("Precio y descuento deben ser números válidos");
+      console.log("Precio y descuento deben ser números válidos");
       return;
     }
+
+    if (precioNumber < 0 || descuentoNumber < 0 || descuentoNumber > 100) {
+      console.log("Precio o descuento fuera de rango");
+      return;
+    }
+
+    const imagenesValidas = imagenesAdicionales.filter((url) => url.trim() !== "");
 
     const juegoEditado: Game = {
       ...juego,
@@ -73,6 +114,11 @@ const EditarJuego = ({ juego, onEditarJuego, onCerrar }: EditarJuegoProps) => {
       descripcion,
       plataforma,
       imagen: preview ? preview : juego.imagen,
+      imagenes: imagenesValidas,
+      oferta: juego.oferta ?? false,
+      ventas: juego.ventas ?? 0,
+      valoracion: juego.valoracion ?? 0,
+      trailer: juego.trailer ?? '',
     };
 
     onEditarJuego(juegoEditado);
@@ -82,7 +128,7 @@ const EditarJuego = ({ juego, onEditarJuego, onCerrar }: EditarJuegoProps) => {
   return (
     <Modal onCerrar={onCerrar}>
       <Titulo texto="Editar juego" />
-      <Formulario onSubmit={handleSubmit}>
+      <Formulario >
         <div className="d-flex flex-row gap-4 justify-content-center align-items-start">
           <div>
             <label htmlFor="nombre">Nombre</label>
@@ -94,34 +140,24 @@ const EditarJuego = ({ juego, onEditarJuego, onCerrar }: EditarJuegoProps) => {
               onChange={(e) => setNombre(e.target.value)}
               required
             />
-
             <label htmlFor="categoria">Categoría</label>
-            <select
-              id="categoria"
-              value={categoria}
-              onChange={(e) => setCategoria(e.target.value)}
-              required
-            >
-              <option value="">Seleccionar</option>
-              <option value="Terror">Terror</option>
-              <option value="Acción">Acción</option>
-              <option value="RPG">RPG</option>
-              <option value="Aventura">Aventura</option>
-              <option value="Metroidvania">Metroidvania</option>
+            <select id="categoria" value={categoria} onChange={e => setCategoria(e.target.value)}>
+              <option value="">Selecciona una categoría</option>
+              {categorias.map(cat => (
+                <option key={cat.categoriaId} value={cat.nombre}>
+                  {cat.nombre}
+                </option>
+              ))}
             </select>
 
             <label htmlFor="plataforma">Plataforma</label>
-            <select
-              id="plataforma"
-              value={plataforma}
-              onChange={(e) => setPlataforma(e.target.value)}
-              required
-            >
-              <option value="">Seleccionar</option>
-              <option value="PC">PC</option>
-              <option value="PlayStation">PlayStation</option>
-              <option value="Nintendo">Nintendo</option>
-              <option value="Xbox">Xbox</option>
+            <select id="plataforma" value={plataforma} onChange={(e) => setPlataforma(e.target.value)}>
+              <option value="">Selecciona una plataforma</option>
+              {plataformas.map(plat => (
+                <option key={plat.plataformaId} value={plat.nombre}>
+                  {plat.nombre}
+                </option>
+              ))}
             </select>
 
             <label htmlFor="precio">Precio</label>
@@ -158,25 +194,104 @@ const EditarJuego = ({ juego, onEditarJuego, onCerrar }: EditarJuegoProps) => {
               onChange={(e) => setDescripcion(e.target.value)}
             ></textarea>
 
-            <label htmlFor="imagen">Subir Imagen</label>
-            <input type="file" id="imagen" accept="image/*" onChange={handleImagenChange} />
-            {preview && (
-              <div className="imagen-cuadro" style={{ marginTop: 10 }}>
-                <img
-                  src={preview}
-                  alt="Vista previa"
-                  style={{ maxWidth: "100%", maxHeight: 200, borderRadius: 8, objectFit: "contain", boxShadow: "0 0 5px rgba(0,0,0,0.2)" }}
-                />
+            <label className="form-label">Imagen principal</label>
+            <div className="imagen-subida-container">
+
+              <div className="d-flex justify-content-start mb-3">
+
+                <button
+                  type="button"
+                  className="btn btn-secondary"
+                  onClick={() => setMostrarMiniModal(true)}
+                >
+                  Subir imagen
+                </button>
+              </div>
+
+              {preview && (
+                <div className="preview-container">
+                  <img src={preview} alt="Vista previa" />
+                </div>
+              )}
+            </div>
+
+            {mostrarMiniModal && (
+              <div className="mini-modal-backdrop">
+                <div className="mini-modal">
+                  <h5>Subir imagen principal</h5>
+
+                  <div className="mt-3">
+                    <label htmlFor="imagenArchivo" className="form-label">Desde computadora</label>
+                    <input
+                      type="file"
+                      id="imagenArchivo"
+                      accept="image/*"
+                      onChange={handleImagenChange}
+                      className="form-control"
+                    />
+                  </div>
+
+                  <div className="mt-3">
+                    <label htmlFor="urlImagen" className="form-label">Desde URL</label>
+                    <input
+                      type="text"
+                      id="urlImagen"
+                      value={urlImagen}
+                      onChange={(e) => setUrlImagen(e.target.value)}
+                      placeholder="https://ejemplo.com/imagen.jpg"
+                      className="form-control"
+                    />
+                  </div>
+
+                  <div className="d-flex justify-content-between mt-4">
+
+                    <button
+                      className="btn btn-sm btn-secondary mt-2"
+                      onClick={() => setMostrarMiniModal(false)}
+                    >
+                      Cancelar
+                    </button>
+
+                    <button
+                      className="btn btn-sm btn-secondary mt-2"
+                      onClick={() => {
+                        if (urlImagen) {
+                          setPreview(urlImagen);
+                        }
+                        setMostrarMiniModal(false);
+                      }}
+                    >
+                      Usar imagen
+                    </button>
+                  </div>
+                </div>
               </div>
             )}
+            <label>Imágenes adicionales</label>
+            {imagenesAdicionales.map((url, index) => (
+              <div key={index} className="d-flex flex-row gap-2 align-items-center mb-2">
+                <input
+                  type="text"
+                  value={url}
+                  onChange={(e) => handleImagenUrlChange(index, e.target.value)}
+                  placeholder={`Imagen ${index + 1}`}
+                  style={{ flexGrow: 1 }}
+                />
+                <button type="button" onClick={() => eliminarCampoImagen(index)} className="btn btn-sm btn-danger">X</button>
+              </div>
+            ))}
+            <button type="button" onClick={agregarCampoImagen} className="btn btn-sm btn-secondary mt-2">
+              + Añadir otra imagen
+            </button>
+
           </div>
         </div>
 
-       <div className="row-btn1">
-          <Boton tipo="button" texto="Cancelar" onClick={onCerrar} />
-          <Boton tipo="submit" texto="Guardar" />
-        </div>
       </Formulario>
+      <div className="row-btn1">
+        <Boton tipo="button" texto="Cancelar" onClick={onCerrar} />
+        <Boton tipo="submit" texto="Guardar" onClick={handleSubmit} />
+      </div>
     </Modal>
   );
 };

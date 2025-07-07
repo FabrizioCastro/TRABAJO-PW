@@ -867,3 +867,72 @@ section {
   display: flex;
   gap: 10px;
 }
+
+
+.mini-modal-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: #0f152ab9;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1050;
+}
+
+.mini-modal {
+  background-color: rgb(16, 18, 22);
+  padding: 20px 24px;
+  border-radius: 10px;
+  width: 90%;
+  max-width: 400px;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+  animation: fadeInScale 0.3s ease;
+}
+
+/* Animación suave de entrada */
+@keyframes fadeInScale {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Botones dentro del modal */
+.mini-modal button {
+  width: 48%;
+  padding: 10px;
+  font-size: 14px;
+}
+
+/* Inputs dentro del modal */
+.mini-modal input[type="text"],
+.mini-modal input[type="file"] {
+  width: 100%;
+  padding: 8px;
+  margin-top: 6px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+}
+
+.imagen-subida-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 20px; 
+  margin-top: 10px;
+}
+
+.preview-container img {
+  max-width: 50px;
+  max-height: 50px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  object-fit: cover;
+}

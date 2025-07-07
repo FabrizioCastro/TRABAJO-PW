@@ -9,7 +9,7 @@ import EditarJuego from './EditarJuego';
 import { type Game } from '../data/games';
 import { filtrarJuegos } from '../utils/filtrarJuegos';
 import '../styles/Juegos.css';
-import { obtenerJuegos, eliminarJuego, agregarJuego as agregarJuegoService } from '../services/juegosService'
+import { obtenerJuegos, eliminarJuego, agregarJuego as agregarJuegoService, obtenerJuegoPorId, editarJuego as editarJuegoService } from '../services/juegosService'
 import type { GameInput } from '../types';
 
 interface Filtro {
@@ -70,9 +70,21 @@ const Juegos = () => {
         }
     };
 
-    const editarJuego = (juegoEditado: Game) => {
-        const nuevos = juegos.map(j => j.id === juegoEditado.id ? juegoEditado : j);
-        actualizarJuegos(nuevos);
+    const editarJuego = async (juegoActualizado: Game) => {
+        try {
+            const juegoDesdeServidor = await editarJuegoService(juegoActualizado);
+
+            setJuegos((prev) =>
+                prev.map((j) => (j.id === juegoDesdeServidor.id ? juegoDesdeServidor : j))
+            );
+        } catch (error) {
+            console.error("Error al editar juego:", error);
+        }
+    };
+
+    const handleEditarClick = (juego: Game) => {
+        setJuegoAEditar(juego);
+        setMostrarEditarJuego(true);
     };
 
     const juegosFiltrados = filtrosActivos
@@ -126,9 +138,14 @@ const Juegos = () => {
                                             <Boton
                                                 tipo="button"
                                                 texto={<FaEdit />}
-                                                onClick={() => {
-                                                    setJuegoAEditar(juego)
-                                                    setMostrarEditarJuego(true)
+                                                onClick={async () => {
+                                                    try {
+                                                        const juegoCompleto = await obtenerJuegoPorId(juego.id);
+                                                        setJuegoAEditar(juegoCompleto);
+                                                        setMostrarEditarJuego(true);
+                                                    } catch (error) {
+                                                        console.error("Error al cargar el juego para editar:", error);
+                                                    }
                                                 }}
                                             />
                                             <Boton

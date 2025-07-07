@@ -1,3 +1,5 @@
+import type { Game } from "../data/games"
+
 const BASE_URL = "http://localhost:5000"
 
 export const obtenerJuegos = async () => {
@@ -41,3 +43,31 @@ export const obtenerPlataformas = async () => {
   return await resp.json();
 };
 
+
+export const obtenerJuegoPorId = async (id: number) => {
+  const resp = await fetch(`${BASE_URL}/juegos/${id}`);
+  if (!resp.ok) throw new Error("Error al obtener el juego");
+  return await resp.json();
+};
+
+export const editarJuego = async (juego: Game): Promise<Game> => {
+  try {
+    const response = await fetch(`${BASE_URL}/juegos/${juego.id}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(juego),
+    });
+
+    if (!response.ok) {
+      throw new Error("Error al actualizar el juego");
+    }
+
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error("Error en editarJuego (frontend):", error);
+    throw error;
+  }
+};
