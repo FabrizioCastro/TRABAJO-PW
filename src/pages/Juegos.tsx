@@ -7,16 +7,16 @@ import Boton from "../components/Boton";
 import Titulo from "../components/Titulo";
 import EditarJuego from './EditarJuego';
 import { type Game } from '../data/games';
-import { filtrarJuegos } from '../utils/filtrarJuegos';
 import '../styles/Juegos.css';
-import { obtenerJuegos, eliminarJuego, agregarJuego as agregarJuegoService, obtenerJuegoPorId, editarJuego as editarJuegoService } from '../services/juegosService'
+import { obtenerJuegos, eliminarJuego, agregarJuego as agregarJuegoService, obtenerJuegoPorId, editarJuego as editarJuegoService, filtrarJuegosService } from '../services/juegosService'
 import type { GameInput } from '../types';
 
 interface Filtro {
-    fechaLanzamiento: string;
+    fecha?: string;
     categoria: string;
-    precioMin: number;
-    precioMax: number;
+    plataforma: string;
+    precioMin?: number;
+    precioMax?: number;
 }
 
 const Juegos = () => {
@@ -87,9 +87,22 @@ const Juegos = () => {
         setMostrarEditarJuego(true);
     };
 
-    const juegosFiltrados = filtrosActivos
-        ? filtrarJuegos(juegos, filtrosActivos)
-        : juegos;
+    const aplicarFiltro = async (filtros: Filtro) => {
+        try {
+            const filtrosLimpios: any = {};
+
+            if (filtros.categoria) filtrosLimpios.categoria = filtros.categoria;
+            if (filtros.plataforma) filtrosLimpios.plataforma = filtros.plataforma;
+            if (filtros.fecha) filtrosLimpios.fecha = filtros.fecha;
+            if (filtros.precioMin !== undefined) filtrosLimpios.precioMin = filtros.precioMin;
+            if (filtros.precioMax !== undefined) filtrosLimpios.precioMax = filtros.precioMax;
+
+            const juegosFiltrados = await filtrarJuegosService(filtrosLimpios);
+            setJuegos(juegosFiltrados);
+        } catch (error) {
+            console.error("Error al aplicar filtros:", error);
+        }
+    };
 
     return (
         <div className="d-flex flex-column w-100 h-100">
@@ -99,7 +112,19 @@ const Juegos = () => {
                     <div className='row-btn2'>
                         <Boton tipo="button" texto="Filtrar" onClick={() => setMostrarFiltro(true)} />
                         {filtrosActivos && (
-                            <Boton tipo="button" texto="Limpiar filtros" onClick={() => setFiltrosActivos(null)} />
+                            <Boton
+                                tipo="button"
+                                texto="Limpiar filtros"
+                                onClick={async () => {
+                                    setFiltrosActivos(null);
+                                    try {
+                                        const juegosOriginales = await obtenerJuegos();
+                                        setJuegos(juegosOriginales);
+                                    } catch (error) {
+                                        console.error("Error al cargar juegos originales:", error);
+                                    }
+                                }}
+                            />
                         )}
                         <Boton tipo="button" texto="+ Añadir" onClick={() => setMostrarModAgregar(true)} />
                     </div>
@@ -120,7 +145,7 @@ const Juegos = () => {
                         </tr>
                     </thead>
                     <tbody>
-                        {juegosFiltrados.map((juego) => {
+                        {juegos.map((juego) => {
                             const precioFinal = juego.oferta
                                 ? (juego.precio - (juego.precio * juego.descuento / 100)).toFixed(2)
                                 : juego.precio.toFixed(2);
@@ -191,11 +216,13 @@ const Juegos = () => {
                 <FiltrarJuego
                     onFiltrar={(filtroAplicado) => {
                         setFiltrosActivos(filtroAplicado);
+                        aplicarFiltro(filtroAplicado);
                         setMostrarFiltro(false);
                     }}
                     onCerrar={() => setMostrarFiltro(false)}
                 />
             )}
+
         </div>
     );
 };

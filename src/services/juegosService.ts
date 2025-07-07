@@ -11,12 +11,12 @@ export const obtenerJuegos = async () => {
 }
 
 export const eliminarJuego = async (id: number) => {
-    const resp = await fetch(`${BASE_URL}/juegos/${id}`, {
-        method: 'DELETE'
-    });
-    if (!resp.ok) {
-        throw new Error('Error al eliminar el juego');
-    }
+  const resp = await fetch(`${BASE_URL}/juegos/${id}`, {
+    method: 'DELETE'
+  });
+  if (!resp.ok) {
+    throw new Error('Error al eliminar el juego');
+  }
 };
 
 export const agregarJuego = async (juego: any) => {
@@ -68,6 +68,38 @@ export const editarJuego = async (juego: Game): Promise<Game> => {
     return data;
   } catch (error) {
     console.error("Error en editarJuego (frontend):", error);
+    throw error;
+  }
+};
+
+interface FiltroParams {
+  categoria?: string;
+  fecha?: string;
+  precioMin?: number;
+  precioMax?: number;
+  plataforma?: string;
+}
+
+export const filtrarJuegosService = async (filtros: FiltroParams): Promise<Game[]> => {
+  const params = new URLSearchParams();
+
+  if (filtros.categoria) params.append("categoria", filtros.categoria);
+  if (filtros.plataforma) params.append("plataforma", filtros.plataforma);
+  if (filtros.fecha) params.append("fecha", filtros.fecha);
+  if (filtros.precioMin !== undefined) params.append("precioMin", filtros.precioMin.toString());
+  if (filtros.precioMax !== undefined) params.append("precioMax", filtros.precioMax.toString());
+
+  try {
+    const response = await fetch(`${BASE_URL}/juegos/filtrar?${params.toString()}`);
+
+    if (!response.ok) {
+      throw new Error("Error al filtrar juegos");
+    }
+
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error("Error en filtrarJuegosService:", error);
     throw error;
   }
 };

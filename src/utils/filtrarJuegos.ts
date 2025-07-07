@@ -1,4 +1,4 @@
-import type { Game } from "../data/games";
+/*import type { Game } from "../data/games";
 
 interface Filtro {
   fechaLanzamiento: string;
@@ -21,3 +21,4 @@ export function filtrarJuegos(juegos: Game[], filtro: Filtro): Game[] {
     );
   });
 }
+*/
