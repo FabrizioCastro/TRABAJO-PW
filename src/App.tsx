@@ -22,6 +22,8 @@ import AdminStats from './pages/AdminStats'
 import ForgotPassword from './pages/ForgotPassword'
 import Noticias from './pages/Noticias'
 import AdminNoticias from './pages/AdminNoticias'
+import RutaProtegida from './routes/RutaProtegida'
+import RutaAdmin from './routes/RutaAdmin'
 
 // Layout para usuario normal
 function AppLayout() {
@@ -41,7 +43,7 @@ function AppLayout() {
 function AdminLayout() {
   const usuarioActual = JSON.parse(localStorage.getItem("user") || '{}');
   console.log(usuarioActual);
-  
+
   return (
     <div style={{ display: 'flex', minHeight: '100vh' }}>
       <NavBar
@@ -63,26 +65,38 @@ function App() {
   return (
     <AuthProvider>
       <Routes>
-        {/* Rutas con AppLayout */}
+        {/* Rutas públicas y protegidas por login */}
         <Route path="/" element={<AppLayout />}>
           <Route index element={<Catalog />} />
           <Route path="catalogo" element={<Catalog />} />
           <Route path="login" element={<Login />} />
           <Route path="register" element={<Register />} />
-          <Route path="carrito" element={<Cart />} />
-          <Route path="resumen" element={<Resumen />} />
-          <Route path="compras" element={<PurchaseHistory />} />
-          <Route path="top-vendidos" element={<TopSelling />} />
-          <Route path="top-valorados" element={<TopRated />} />
           <Route path="verificacion" element={<Verification />} />
-          <Route path="perfil" element={<Perfil />} />
-          <Route path="juego/:id" element={<GameDetail />} />
           <Route path="forgot-password" element={<ForgotPassword />} />
           <Route path="noticias" element={<Noticias />} />
+          <Route path="juego/:id" element={<GameDetail />} />
+
+          {/* Rutas que requieren autenticación */}
+          <Route element={<RutaProtegida><Outlet /></RutaProtegida>}>
+            <Route path="perfil" element={<Perfil />} />
+            <Route path="carrito" element={<Cart />} />
+            <Route path="resumen" element={<Resumen />} />
+            <Route path="compras" element={<PurchaseHistory />} />
+            <Route path="top-vendidos" element={<TopSelling />} />
+            <Route path="top-valorados" element={<TopRated />} />
+          </Route>
+
         </Route>
 
-        {/* Rutas admin con AdminLayout */}
-        <Route path="/admin" element={<AdminLayout />}>
+        {/* Rutas exclusivas de administrador */}
+        <Route
+          path="/admin"
+          element={
+            <RutaAdmin>
+              <AdminLayout />
+            </RutaAdmin>
+          }
+        >
           <Route index element={<AdminPanel />} />
           <Route path="juegos" element={<Juegos />} />
           <Route path="estadisticas" element={<AdminStats />} />

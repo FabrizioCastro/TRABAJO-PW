@@ -2,6 +2,15 @@ import type { Game } from "../data/games"
 
 const BASE_URL = "http://localhost:5000"
 
+const getAuthHeaders = () => {
+  const token = localStorage.getItem('token');
+  return {
+    'Content-Type': 'application/json',
+    Authorization: `Bearer ${token}`,
+  };
+};
+
+
 export const obtenerJuegos = async () => {
   const resp = await fetch(`${BASE_URL}/juegos`)
   if (!resp.ok) {
@@ -12,7 +21,8 @@ export const obtenerJuegos = async () => {
 
 export const eliminarJuego = async (id: number) => {
   const resp = await fetch(`${BASE_URL}/juegos/${id}`, {
-    method: 'DELETE'
+    method: 'DELETE',
+    headers: getAuthHeaders()
   });
   if (!resp.ok) {
     throw new Error('Error al eliminar el juego');
@@ -22,9 +32,7 @@ export const eliminarJuego = async (id: number) => {
 export const agregarJuego = async (juego: any) => {
   const resp = await fetch(`${BASE_URL}/juegos`, {
     method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
+    headers: getAuthHeaders(),
     body: JSON.stringify(juego),
   })
   return await resp.json()
@@ -54,9 +62,7 @@ export const editarJuego = async (juego: Game): Promise<Game> => {
   try {
     const response = await fetch(`${BASE_URL}/juegos/${juego.id}`, {
       method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-      },
+      headers: getAuthHeaders(),
       body: JSON.stringify(juego),
     });
 

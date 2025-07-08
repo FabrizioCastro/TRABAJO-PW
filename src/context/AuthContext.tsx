@@ -6,6 +6,7 @@ interface User {
   username: string
   email: string
   imagen?: string | File
+  rol: string 
 }
 
 interface AuthContextType {

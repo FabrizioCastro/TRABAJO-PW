@@ -29,9 +29,9 @@ function Login() {
       if (res.token) {
         login(res.token, res.usuario)
 
-        setMensaje(`Bienvenido/a, ${res.usuario.username} ✅`);
+        setMensaje(`Bienvenido/a, ${res.usuario.username}`);
 
-        if (res.usuario.email === 'admin@admin.com') {
+       if (res.usuario.rol === 'admin') {
           navigate('/admin');
         } else {
           navigate('/');
