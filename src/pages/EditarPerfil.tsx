@@ -4,6 +4,7 @@ import Formulario from "../components/Formulario"
 import ImgPerfil from "../components/ImgUsuario"
 import Titulo from "../components/Titulo"
 import Modal from "../components/Modal"
+import { UsuariosService } from "../services/usuariosService"
 
 interface EditarPerfilProps {
   onCerrar: () => void
@@ -15,41 +16,43 @@ const EditarPerfil = ({ onCerrar }: EditarPerfilProps) => {
   const [correo, setCorreo] = useState("")
   const [imagen, setImagen] = useState<string | undefined>(undefined)
 
-  useEffect(() => {
-    const storedUser = localStorage.getItem("user")
-    if (storedUser) {
-      const user = JSON.parse(storedUser)
-      if (user.username) {
-        const [first, second] = user.username.split(" ")
-        setPrimerNombre(first || "")
-        setSegundoNombre(second || "")
-        setCorreo(user.email || "")
-        setImagen(user.imagen)
+
+ useEffect(() => {
+    const cargarPerfil = async () => {
+      try {
+        const user = await UsuariosService.getProfile()
+        if (user.username) {
+          const [first, second] = user.username.split(" ")
+          setPrimerNombre(first || "")
+          setSegundoNombre(second || "")
+          setCorreo(user.email || "")
+          setImagen(user.imagen)
+        }
+      } catch (error) {
+        console.error("Error al cargar el perfil:", error)
       }
     }
+
+    cargarPerfil()
   }, [])
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     const fullName = `${primerNombre} ${segundoNombre}`.trim()
 
-    const storedUser = localStorage.getItem("user")
-    if (storedUser) {
-      const user = JSON.parse(storedUser)
-      const userActualizado = {
-        ...user,
+    try {
+      await UsuariosService.updateProfile({
         username: fullName,
         email: correo,
         imagen,
-        password: user.password || "48690", // mantener si lo necesitas
-      }
-
-      localStorage.setItem("user", JSON.stringify(userActualizado))
-      console.log("Usuario actualizado:", userActualizado)
+      })
+      
+      onCerrar()
+    } catch (error) {
+      console.error("Error al actualizar el perfil:", error)
+      alert("No se pudo actualizar el perfil.")
     }
-    onCerrar()
   }
-
   return (
     <Modal>
       <Titulo texto="Edita la información de tu perfil" />

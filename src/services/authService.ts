@@ -1,9 +1,9 @@
 
-const BASE_URL = "http://localhost:5000/api";
+const BASE_URL = "http://localhost:5000";
 
 export const AuthService = {
   register: async (email: string, password: string, username: string) => {
-    const res = await fetch(`${BASE_URL}/usuarios/registrar`, {
+    const res = await fetch(`${BASE_URL}/auth/registrar`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ email, password, username }),
@@ -12,7 +12,7 @@ export const AuthService = {
   },
 
   verifyCode: async (email: string, codigo: string) => {
-    const res = await fetch(`${BASE_URL}/usuarios/verificar`, {
+    const res = await fetch(`${BASE_URL}/auth/verificar`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ email, codigo }),
@@ -27,13 +27,13 @@ export const AuthService = {
       body: JSON.stringify({ email, password }),
     });
 
-     const contentType = res.headers.get("Content-Type");
+    const contentType = res.headers.get("Content-Type");
     if (!contentType?.includes("application/json")) {
       const text = await res.text(); // para depurar
       console.error("Respuesta no JSON del servidor:", text);
       throw new Error("Respuesta inesperada del servidor");
     }
-    
+
     return res.json();
   },
 
@@ -48,4 +48,6 @@ export const AuthService = {
   isLoggedIn: () => {
     return !!localStorage.getItem("token");
   },
+
+
 };

@@ -3,16 +3,24 @@ import EditarPerfil from "./EditarPerfil";
 import ImgPerfil from "../components/ImgUsuario";
 import Boton from "../components/Boton";
 import '../styles/Perfil.css';
+import { UsuariosService } from "../services/usuariosService";
 
 const Perfil = () => {
   const [user, setUser] = useState<{ username: string; email: string; imagen?: string } | null>(null);
   const [modalAbierto, setModalAbierto] = useState(false);
 
   useEffect(() => {
-    const usuarioGuardado = localStorage.getItem("user");
-    if (usuarioGuardado) {
-      setUser(JSON.parse(usuarioGuardado));
-    }
+    const obtenerPerfil = async () => {
+      try {
+        const perfil = await UsuariosService.getProfile();
+        setUser(perfil);
+      } catch (error) {
+        console.error("Error al obtener el perfil:", error);
+        setUser(null);
+      }
+    };
+
+    obtenerPerfil();
   }, [modalAbierto]);
 
   return (
