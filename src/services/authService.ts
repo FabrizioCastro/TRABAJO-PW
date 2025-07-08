@@ -29,7 +29,7 @@ export const AuthService = {
 
     const contentType = res.headers.get("Content-Type");
     if (!contentType?.includes("application/json")) {
-      const text = await res.text(); // para depurar
+      const text = await res.text(); 
       console.error("Respuesta no JSON del servidor:", text);
       throw new Error("Respuesta inesperada del servidor");
     }
