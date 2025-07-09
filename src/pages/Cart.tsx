@@ -1,10 +1,9 @@
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { getJuegos } from '../data/games'
 import type { Game } from '../data/games'
 import { useAuth } from '../context/AuthContext'
-import { sendGameKeysEmail } from '../services/emailService'
 import CompraExitosa from './CompraExitosa'
+import { VentasService } from '../services/ventasService'
 
 function Cart() {
   const navigate = useNavigate()
@@ -13,6 +12,13 @@ function Cart() {
   const [mensaje, setMensaje] = useState('')
   const [total, setTotal] = useState(0)
   const [compraExitosa, setCompraExitosa] = useState(false)
+  const [mostrarFormularioPago, setMostrarFormularioPago] = useState(false)
+  const [datosPago, setDatosPago] = useState({
+    nombre: '',
+    tarjeta: '',
+    vencimiento: '',
+    cvv: ''
+  })
 
   useEffect(() => {
     const items = JSON.parse(localStorage.getItem("carrito") || "[]")
@@ -41,81 +47,76 @@ function Cart() {
     setTimeout(() => setMensaje(''), 2000)
   }
 
+  const handleChangePago = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target
+    setDatosPago(prev => ({ ...prev, [name]: value }))
+  }
+
+  const validarDatosPago = () => {
+    const { nombre, tarjeta, vencimiento, cvv } = datosPago
+    if (!nombre || !tarjeta || !vencimiento || !cvv) {
+      setMensaje("Debes completar todos los campos de pago")
+      return false
+    }
+    if (!/^\d{16}$/.test(tarjeta)) {
+      setMensaje("La tarjeta debe tener 16 dígitos")
+      return false
+    }
+    if (!/^\d{3,4}$/.test(cvv)) {
+      setMensaje("El CVV debe tener 3 o 4 dígitos")
+      return false
+    }
+    return true
+  }
+
   const procesarPago = async () => {
     try {
       if (carrito.length === 0) {
-        setMensaje("El carrito está vacío ❌")
+        setMensaje("El carrito está vacío")
         return
       }
 
       if (!user) {
-        setMensaje("Debes iniciar sesión para realizar la compra ❌")
+        setMensaje("Debes iniciar sesión para realizar la compra")
         return
       }
 
-      const numeroOrden = "ORD-" + Math.floor(Math.random() * 1000000).toString().padStart(6, '0')
-      const fecha = new Date().toLocaleString()
+      if (!validarDatosPago()) return
 
-      // Obtener juegos actualizados para asegurar que tenemos las claves más recientes
-      const juegosActualizados = getJuegos()
-      const juegosSinClaves: string[] = []
+      const juegosPayload = carrito.map(j => ({
+        juegoId: j.id,
+        cantidad: 1
+      }))
 
-      const juegosConClaves = carrito.map(juego => {
-        const juegoActualizado = juegosActualizados.find(j => j.id === juego.id)
-        if (!juegoActualizado || !juegoActualizado.claves || juegoActualizado.claves.length === 0) {
-          juegosSinClaves.push(juego.nombre)
-          return null
-        }
-        // Tomar la primera clave disponible
-        const clave = juegoActualizado.claves[0]
-        // Remover la clave usada
-        juegoActualizado.claves.shift()
-        return { nombre: juego.nombre, clave }
-      }).filter(Boolean) as { nombre: string, clave: string }[]
-
-      if (juegosSinClaves.length > 0) {
-        setMensaje(`No hay claves disponibles para: ${juegosSinClaves.join(', ')} ❌`)
-        return
-      }
-
-      // Actualizar los juegos en localStorage
-      localStorage.setItem("juegos", JSON.stringify(juegosActualizados))
+      const data = await VentasService.comprarJuegos(juegosPayload)
 
       const resumen = {
-        numeroOrden,
-        fecha,
-        total: total.toFixed(2),
-        juegos: juegosConClaves.map(j => j.nombre)
+        numeroOrden: data.orden,
+        fecha: new Date(data.fecha).toLocaleString(),
+        total: data.total.toFixed(2),
+        juegos: data.juegos.map((j: any) => j.nombre),
+        claves: data.juegos.flatMap((j: any) =>
+          j.claves.map((clave: string) => `${j.nombre}: ${clave}`)
+        )
       }
 
-      // Guardar en historial
       const historial = JSON.parse(localStorage.getItem("historialCompras") || "[]")
       historial.push(resumen)
       localStorage.setItem("historialCompras", JSON.stringify(historial))
+      localStorage.setItem("resumenCompra", JSON.stringify(resumen))
 
-      // Enviar email con las claves
-      const emailEnviado = await sendGameKeysEmail(user.email, numeroOrden, juegosConClaves)
-      if (!emailEnviado) {
-        setMensaje("Error al enviar las claves por email ❌")
-        return
-      }
-
-      // Limpiar carrito
       localStorage.removeItem("carrito")
       setCarrito([])
       setTotal(0)
-
       setCompraExitosa(true)
 
-      // Guardar resumen temporal y redirigir
       setTimeout(() => {
-        localStorage.setItem("resumenCompra", JSON.stringify(resumen))
         navigate("/resumen")
       }, 3000)
 
-    } catch (error) {
+    } catch (error: any) {
       console.error('Error al procesar el pago:', error)
-      setMensaje("Error al procesar el pago. Por favor, intente nuevamente ❌")
+      setMensaje(error.message || "Error al procesar el pago")
     }
   }
 
@@ -157,9 +158,23 @@ function Cart() {
           <div className="cart-summary">
             <h3>Resumen de la Compra</h3>
             <p className="total">Total: ${total.toFixed(2)}</p>
-            <button onClick={procesarPago} className="btn-primary">
-              Proceder al Pago
-            </button>
+
+            {!mostrarFormularioPago ? (
+              <button onClick={() => setMostrarFormularioPago(true)} className="btn-primary">
+                Proceder al Pago
+              </button>
+            ) : (
+              <div className="formulario-pago">
+                <h4>Datos de pago simulados</h4>
+                <input type="text" name="nombre" placeholder="Nombre del titular" value={datosPago.nombre} onChange={handleChangePago} required />
+                <input type="text" name="tarjeta" placeholder="Número de tarjeta (16 dígitos)" value={datosPago.tarjeta} onChange={handleChangePago} required />
+                <input type="text" name="vencimiento" placeholder="MM/AA" value={datosPago.vencimiento} onChange={handleChangePago} required />
+                <input type="text" name="cvv" placeholder="CVV (3-4 dígitos)" value={datosPago.cvv} onChange={handleChangePago} required />
+                <button onClick={procesarPago} className="btn-success">
+                  Confirmar y Pagar
+                </button>
+              </div>
+            )}
           </div>
         </>
       )}

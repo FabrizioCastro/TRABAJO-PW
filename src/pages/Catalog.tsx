@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { getJuegos } from '../data/games'
 import type { Game } from '../data/games'
-
+import { obtenerJuegos } from '../services/juegosService'
 import GameCard from '../components/GameCard'
 
 function Catalog() {
@@ -11,11 +11,18 @@ function Catalog() {
   const [soloOferta, setSoloOferta] = useState(false)
   const [precioMax, setPrecioMax] = useState<number | ''>('')
 
-  useEffect(() => {
-    // Obtener los juegos actualizados del localStorage
-    const juegosActualizados = getJuegos()
-    setJuegos(juegosActualizados)
-  }, [])
+useEffect(() => {
+  const fetchJuegos = async () => {
+    try {
+      const juegosDesdeAPI = await obtenerJuegos()
+      setJuegos(juegosDesdeAPI)
+    } catch (error) {
+      console.error("Error al obtener los juegos:", error)
+    }
+  }
+  fetchJuegos()
+}, [])
+
 
   const aplicarFiltros = () => {
     let filtrados = getJuegos().filter(juego => {
