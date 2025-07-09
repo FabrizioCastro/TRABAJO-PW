@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'react'
 import { juegos, getJuegos } from '../data/games'
 import type { Game } from '../data/games'
+import { VentasService } from '../services/ventasService'
+import { obtenerJuegos } from '../services/juegosService'
 
 interface Usuario {
   name: string
@@ -20,54 +22,38 @@ function AdminPanel() {
   const [cantidadClaves, setCantidadClaves] = useState<number>(1)
 
   useEffect(() => {
-    const dataVerificados = JSON.parse(localStorage.getItem("usuarios") || "[]")
-    const dataPendientes = JSON.parse(localStorage.getItem("usuariosPendientes") || "[]")
-    setUsuarios(dataVerificados)
-    setPendientes(dataPendientes)
-    setJuegosList(getJuegos())
-  }, [])
+    const fetchData = async () => {
+      try {
+        const dataVerificados = JSON.parse(localStorage.getItem("usuarios") || "[]");
+        const dataPendientes = JSON.parse(localStorage.getItem("usuariosPendientes") || "[]");
+        const juegosDesdeApi = await obtenerJuegos();
 
-  const generarClaveAleatoria = (prefijo: string): string => {
-    const caracteres = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'
-    const longitud = 12
-    let clave = prefijo + '-'
-    
-    for (let i = 0; i < longitud; i++) {
-      if (i > 0 && i % 4 === 0) clave += '-'
-      clave += caracteres.charAt(Math.floor(Math.random() * caracteres.length))
-    }
-    
-    return clave
-  }
-
-  const generarClaves = () => {
-    if (!selectedGame) return
-
-    const prefijo = selectedGame.nombre
-      .split(' ')
-      .map(word => word[0])
-      .join('')
-      .toUpperCase()
-      .slice(0, 3)
-
-    const nuevasClaves = Array.from({ length: cantidadClaves }, () => 
-      generarClaveAleatoria(prefijo)
-    )
-
-    const nuevosJuegos = juegosList.map(juego => {
-      if (juego.id === selectedGame.id) {
-        return {
-          ...juego,
-          claves: [...(juego.claves || []), ...nuevasClaves]
-        }
+        setUsuarios(dataVerificados);
+        setPendientes(dataPendientes);
+        setJuegosList(juegosDesdeApi);
+      } catch (error) {
+        console.error("Error cargando datos:", error);
       }
-      return juego
-    })
+    };
 
-    setJuegosList(nuevosJuegos)
-    localStorage.setItem("juegos", JSON.stringify(nuevosJuegos))
-    alert(`${cantidadClaves} clave(s) generada(s) para ${selectedGame.nombre}`)
-  }
+    fetchData();
+  }, []);
+
+
+  const generarClaves = async () => {
+    if (!selectedGame) return;
+
+    try {
+      const response = await VentasService.generarClaves(selectedGame.id, cantidadClaves);
+      alert(`${response.message}`);
+
+
+    } catch (error: any) {
+      console.error("Error generando claves:", error);
+      alert(error.message);
+    }
+  };
+
 
   const eliminarUsuario = (email: string) => {
     if (!confirm(`¿Eliminar al usuario ${email}?`)) return
@@ -119,7 +105,7 @@ function AdminPanel() {
 
     setJuegosList(nuevosJuegos)
     localStorage.setItem("juegos", JSON.stringify(nuevosJuegos))
-    alert(`Descuento de ${descuento}% aplicado a ${selectedGame.nombre}`)
+    console.log(`Descuento de ${descuento}% aplicado a ${selectedGame.nombre}`)
     setSelectedGame(null)
     setDescuento(0)
   }
@@ -140,7 +126,7 @@ function AdminPanel() {
     setJuegosList(nuevosJuegos)
     localStorage.setItem("juegos", JSON.stringify(nuevosJuegos))
     setNuevaClave('')
-    alert(`Clave agregada a ${selectedGame.nombre}`)
+    console.log(`Clave agregada a ${selectedGame.nombre}`)
   }
 
   const eliminarClave = (juegoId: number, claveIndex: number) => {
@@ -170,8 +156,8 @@ function AdminPanel() {
       <div className="admin-section">
         <h3><i className="fas fa-tags"></i> Gestión de Descuentos</h3>
         <div className="discount-controls">
-          <select 
-            value={selectedGame?.id || ''} 
+          <select
+            value={selectedGame?.id || ''}
             onChange={(e) => {
               const game = juegosList.find(g => g.id === Number(e.target.value))
               setSelectedGame(game || null)
@@ -199,7 +185,7 @@ function AdminPanel() {
             />
           </div>
 
-          <button 
+          <button
             onClick={aplicarDescuento}
             disabled={!selectedGame}
             className="btn-primary"
@@ -213,8 +199,8 @@ function AdminPanel() {
       <div className="admin-section">
         <h3><i className="fas fa-key"></i> Gestión de Claves</h3>
         <div className="keys-controls">
-          <select 
-            value={selectedGame?.id || ''} 
+          <select
+            value={selectedGame?.id || ''}
             onChange={(e) => {
               const game = juegosList.find(g => g.id === Number(e.target.value))
               setSelectedGame(game || null)
@@ -241,7 +227,7 @@ function AdminPanel() {
             />
           </div>
 
-          <button 
+          <button
             onClick={generarClaves}
             disabled={!selectedGame}
             className="btn-primary"
@@ -260,7 +246,7 @@ function AdminPanel() {
                 {selectedGame.claves.map((clave, index) => (
                   <li key={index}>
                     {clave}
-                    <button 
+                    <button
                       onClick={() => eliminarClave(selectedGame.id, index)}
                       className="btn-danger"
                     >
