@@ -45,12 +45,12 @@ function AdminPanel() {
 
     try {
       const response = await VentasService.generarClaves(selectedGame.id, cantidadClaves);
-      alert(`${response.message}`);
+      console.log(`${response.message}`);
 
 
     } catch (error: any) {
       console.error("Error generando claves:", error);
-      alert(error.message);
+      console.log(error.message);
     }
   };
 

@@ -50,7 +50,7 @@ const EditarPerfil = ({ onCerrar }: EditarPerfilProps) => {
       onCerrar()
     } catch (error) {
       console.error("Error al actualizar el perfil:", error)
-      alert("No se pudo actualizar el perfil.")
+      console.log("No se pudo actualizar el perfil.")
     }
   }
   return (

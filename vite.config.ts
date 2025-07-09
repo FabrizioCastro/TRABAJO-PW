@@ -7,4 +7,5 @@ export default defineConfig({
   server: {
     port: 3000 // puedes cambiarlo por otro si ya está en uso
   },
+  base: "/TRABAJO-PW/"
 })
