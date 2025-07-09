@@ -1,4 +1,4 @@
-const BASE_URL = "http://localhost:5000";
+import { URL_BACKEND } from "../config"; 
 
 export const VentasService = {
     getToken: () => {
@@ -8,7 +8,7 @@ export const VentasService = {
     comprarJuegos: async (juegos: { juegoId: number; cantidad: number }[]) => {
         const token = VentasService.getToken();
 
-        const response = await fetch(`${BASE_URL}/ventas/comprar`, {
+        const response = await fetch(`${URL_BACKEND}/ventas/comprar`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -28,7 +28,7 @@ export const VentasService = {
    generarClaves: async (juegoId: number, cantidad: number) => {
         const token = VentasService.getToken();
 
-        const response = await fetch(`${BASE_URL}/claves/generar`, {
+        const response = await fetch(`${URL_BACKEND}/claves/generar`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",

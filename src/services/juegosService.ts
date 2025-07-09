@@ -1,6 +1,6 @@
 import type { Game } from "../data/games"
 
-const BASE_URL = "http://localhost:5000"
+import { URL_BACKEND } from "../config"; 
 
 const getAuthHeaders = () => {
   const token = localStorage.getItem('token');
@@ -12,7 +12,7 @@ const getAuthHeaders = () => {
 
 
 export const obtenerJuegos = async () => {
-  const resp = await fetch(`${BASE_URL}/juegos`)
+  const resp = await fetch(`${URL_BACKEND}/juegos`)
   if (!resp.ok) {
     throw new Error("Error al obtener juegos")
   }
@@ -20,7 +20,7 @@ export const obtenerJuegos = async () => {
 }
 
 export const eliminarJuego = async (id: number) => {
-  const resp = await fetch(`${BASE_URL}/juegos/${id}`, {
+  const resp = await fetch(`${URL_BACKEND}/juegos/${id}`, {
     method: 'DELETE',
     headers: getAuthHeaders()
   });
@@ -30,7 +30,7 @@ export const eliminarJuego = async (id: number) => {
 };
 
 export const agregarJuego = async (juego: any) => {
-  const resp = await fetch(`${BASE_URL}/juegos`, {
+  const resp = await fetch(`${URL_BACKEND}/juegos`, {
     method: "POST",
     headers: getAuthHeaders(),
     body: JSON.stringify(juego),
@@ -40,27 +40,27 @@ export const agregarJuego = async (juego: any) => {
 
 
 export const obtenerCategorias = async () => {
-  const resp = await fetch(`${BASE_URL}/juegos/categorias`);
+  const resp = await fetch(`${URL_BACKEND}/juegos/categorias`);
   if (!resp.ok) throw new Error("Error al obtener categorías");
   return await resp.json();
 };
 
 export const obtenerPlataformas = async () => {
-  const resp = await fetch(`${BASE_URL}/juegos/plataformas`);
+  const resp = await fetch(`${URL_BACKEND}/juegos/plataformas`);
   if (!resp.ok) throw new Error("Error al obtener plataformas");
   return await resp.json();
 };
 
 
 export const obtenerJuegoPorId = async (id: number) => {
-  const resp = await fetch(`${BASE_URL}/juegos/${id}`);
+  const resp = await fetch(`${URL_BACKEND}/juegos/${id}`);
   if (!resp.ok) throw new Error("Error al obtener el juego");
   return await resp.json();
 };
 
 export const editarJuego = async (juego: Game): Promise<Game> => {
   try {
-    const response = await fetch(`${BASE_URL}/juegos/${juego.id}`, {
+    const response = await fetch(`${URL_BACKEND}/juegos/${juego.id}`, {
       method: "PUT",
       headers: getAuthHeaders(),
       body: JSON.stringify(juego),
@@ -96,7 +96,7 @@ export const filtrarJuegosService = async (filtros: FiltroParams): Promise<Game[
   if (filtros.precioMax !== undefined) params.append("precioMax", filtros.precioMax.toString());
 
   try {
-    const response = await fetch(`${BASE_URL}/juegos/filtrar?${params.toString()}`);
+    const response = await fetch(`${URL_BACKEND}/juegos/filtrar?${params.toString()}`);
 
     if (!response.ok) {
       throw new Error("Error al filtrar juegos");

@@ -1,9 +1,8 @@
 
-const BASE_URL = "http://localhost:5000";
-
+import { URL_BACKEND } from "../config"; 
 export const AuthService = {
   register: async (email: string, password: string, username: string) => {
-    const res = await fetch(`${BASE_URL}/auth/registrar`, {
+    const res = await fetch(`${URL_BACKEND}/auth/registrar`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ email, password, username }),
@@ -12,7 +11,7 @@ export const AuthService = {
   },
 
   verifyCode: async (email: string, codigo: string) => {
-    const res = await fetch(`${BASE_URL}/auth/verificar`, {
+    const res = await fetch(`${URL_BACKEND}/auth/verificar`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ email, codigo }),
@@ -21,7 +20,7 @@ export const AuthService = {
   },
 
   login: async (email: string, password: string) => {
-    const res = await fetch(`${BASE_URL}/auth/login`, {
+    const res = await fetch(`${URL_BACKEND}/auth/login`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ email, password }),

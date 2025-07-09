@@ -1,5 +1,5 @@
 
-const BASE_URL = "http://localhost:5000";
+import { URL_BACKEND } from "../config"; 
 
 export const UsuariosService = {
 
@@ -11,7 +11,7 @@ export const UsuariosService = {
         const token = UsuariosService.getToken();
         if (!token) throw new Error("No se encontró el token");
 
-        const res = await fetch(`${BASE_URL}/usuarios/perfil`, {
+        const res = await fetch(`${URL_BACKEND}/usuarios/perfil`, {
             method: "GET",
             headers: {
                 "Authorization": `Bearer ${token}`,
@@ -31,7 +31,7 @@ export const UsuariosService = {
         const token = UsuariosService.getToken();
         if (!token) throw new Error("No se encontró el token");
 
-        const res = await fetch(`${BASE_URL}/usuarios/perfil`, {
+        const res = await fetch(`${URL_BACKEND}/usuarios/perfil`, {
             method: "PATCH",
             headers: {
                 "Content-Type": "application/json",
