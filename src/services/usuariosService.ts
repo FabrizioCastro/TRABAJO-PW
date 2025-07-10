@@ -52,7 +52,7 @@ export const UsuariosService = {
 };
 
 export const obtenerUsuarios = async () => {
-  const resp = await fetch(`${BASE_URL}/usuarios`)
+  const resp = await fetch(`${URL_BACKEND}/usuarios`)
   if (!resp.ok) {
     throw new Error("Error al obtener usuarios")
   }
@@ -61,7 +61,7 @@ export const obtenerUsuarios = async () => {
 
 export const eliminarUsuario = async (id: number) => {
     const idu = id.toString()
-  const resp = await fetch(`${BASE_URL}/usuarios/${idu}`, {
+  const resp = await fetch(`${URL_BACKEND}/usuarios/${idu}`, {
     method: 'DELETE'
   });
   if (!resp.ok) {
