@@ -82,11 +82,6 @@ const Juegos = () => {
         }
     };
 
-    const handleEditarClick = (juego: Game) => {
-        setJuegoAEditar(juego);
-        setMostrarEditarJuego(true);
-    };
-
     const aplicarFiltro = async (filtros: Filtro) => {
         try {
             const filtrosLimpios: any = {};
