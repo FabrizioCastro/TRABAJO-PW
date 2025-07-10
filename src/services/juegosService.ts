@@ -1,6 +1,6 @@
 import type { Game } from "../data/games"
 
-import { URL_BACKEND } from "../config"; 
+import { URL_BACKEND } from "../config";
 
 const getAuthHeaders = () => {
   const token = localStorage.getItem('token');
@@ -28,7 +28,7 @@ export const obtenerJuegosMasValorados = async (): Promise<Game[]> => {
     throw new Error("Error al obtener juegos más valorados");
   }
 
-  return await resp.json();
+  return await resp.json();
 };
 export const obtenerRankingJuegos = async () => {
   const response = await fetch(`${URL_BACKEND}/juegos/ranking`);
@@ -127,5 +127,5 @@ export const filtrarJuegosService = async (filtros: FiltroParams): Promise<Game[
     console.error("Error en filtrarJuegosService:", error);
     throw error;
   }
- 
+
 };
