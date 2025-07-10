@@ -30,6 +30,13 @@ export const obtenerJuegosMasValorados = async (): Promise<Game[]> => {
 
   return await resp.json();
 };
+export const obtenerRankingJuegos = async () => {
+  const response = await fetch(${URL_BACKEND}/juegos/ranking);
+  if (!response.ok) {
+    throw new Error("Error al obtener el ranking de juegos");
+  }
+  return await response.json();
+};
 
 export const eliminarJuego = async (id: number) => {
   const resp = await fetch(`${URL_BACKEND}/juegos/${id}`, {
