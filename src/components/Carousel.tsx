@@ -1,63 +1,60 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Carousel } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import { obtenerJuegos } from '../services/juegosService'; // Ajusta la ruta si es distinta
+
+interface Juego {
+  id: number;
+  nombre: string;
+  descripcion: string;
+  imagen: string;
+}
 
 const GameCarousel: React.FC = () => {
+  const [juegos, setJuegos] = useState<Juego[]>([]);
+  const [cargando, setCargando] = useState(true);
+
+  useEffect(() => {
+    const cargarJuegos = async () => {
+      try {
+        const data = await obtenerJuegos();
+        setJuegos(data.slice(0, 5)); // Opcional: solo mostrar los primeros 5 juegos
+      } catch (error) {
+        console.error('Error al cargar juegos:', error);
+      } finally {
+        setCargando(false);
+      }
+    };
+
+    cargarJuegos();
+  }, []);
+
+  if (cargando) {
+    return <p className="text-center mt-4">Cargando juegos...</p>;
+  }
+
+  if (juegos.length === 0) {
+    return <p className="text-center mt-4">No se encontraron juegos para mostrar.</p>;
+  }
+
   return (
     <Carousel fade>
-      <Carousel.Item>
-        <img
-          className="d-block w-100"
-          src="/GOD-OF-WAR.webp"
-          alt="God of War"
-          style={{ height: '500px', objectFit: 'cover' }}
-        />
-        <Carousel.Caption>
-          <h3>God of War</h3>
-          <p>Embark on an epic Norse adventure</p>
-        </Carousel.Caption>
-      </Carousel.Item>
-
-      <Carousel.Item>
-        <img
-          className="d-block w-100"
-          src="/ELDEN-RING.avif"
-          alt="Elden Ring"
-          style={{ height: '500px', objectFit: 'cover' }}
-        />
-        <Carousel.Caption>
-          <h3>Elden Ring</h3>
-          <p>Enter the Lands Between</p>
-        </Carousel.Caption>
-      </Carousel.Item>
-
-      <Carousel.Item>
-        <img
-          className="d-block w-100"
-          src="/CYBERPUNK.jpeg"
-          alt="Cyberpunk 2077"
-          style={{ height: '500px', objectFit: 'cover' }}
-        />
-        <Carousel.Caption>
-          <h3>Cyberpunk 2077</h3>
-          <p>Welcome to Night City</p>
-        </Carousel.Caption>
-      </Carousel.Item>
-
-      <Carousel.Item>
-        <img
-          className="d-block w-100"
-          src="/RDR2.jpeg"
-          alt="Red Dead Redemption 2"
-          style={{ height: '500px', objectFit: 'cover' }}
-        />
-        <Carousel.Caption>
-          <h3>Red Dead Redemption 2</h3>
-          <p>Experience the Wild West</p>
-        </Carousel.Caption>
-      </Carousel.Item>
+      {juegos.map((juego) => (
+        <Carousel.Item key={juego.id}>
+          <img
+            className="d-block w-100"
+            src={juego.imagen}
+            alt={juego.nombre}
+            style={{ height: '500px', objectFit: 'cover' }}
+          />
+          <Carousel.Caption>
+            <h3>{juego.nombre}</h3>
+            <p>{juego.descripcion}</p>
+          </Carousel.Caption>
+        </Carousel.Item>
+      ))}
     </Carousel>
   );
 };
 
-export default GameCarousel; 
+export default GameCarousel;
