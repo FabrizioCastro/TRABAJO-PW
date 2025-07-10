@@ -11,7 +11,7 @@ function GameCard({ juego }: Props) {
     const carrito = JSON.parse(localStorage.getItem("carrito") || "[]")
     carrito.push(juego)
     localStorage.setItem("carrito", JSON.stringify(carrito))
-    alert(`${juego.nombre} agregado al carrito 🛒`)
+    console.log(`${juego.nombre} agregado al carrito 🛒`)
   }
 
   const precioConDescuento = juego.descuento 

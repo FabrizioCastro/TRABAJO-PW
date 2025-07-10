@@ -5,6 +5,7 @@ import ImgPerfil from "../components/ImgUsuario"
 import Titulo from "../components/Titulo"
 import Modal from "../components/Modal"
 import { UsuariosService } from "../services/usuariosService"
+import MensajeEstado from "../components/MensajeEstado";
 
 interface EditarPerfilProps {
   onCerrar: () => void
@@ -15,9 +16,9 @@ const EditarPerfil = ({ onCerrar }: EditarPerfilProps) => {
   const [segundoNombre, setSegundoNombre] = useState("")
   const [correo, setCorreo] = useState("")
   const [imagen, setImagen] = useState<string | undefined>(undefined)
+  const [mensaje, setMensaje] = useState<{ tipo: 'error' | 'exito'; texto: string } | null>(null);
 
-
- useEffect(() => {
+  useEffect(() => {
     const cargarPerfil = async () => {
       try {
         const user = await UsuariosService.getProfile()
@@ -30,6 +31,7 @@ const EditarPerfil = ({ onCerrar }: EditarPerfilProps) => {
         }
       } catch (error) {
         console.error("Error al cargar el perfil:", error)
+        setMensaje({ tipo: 'error', texto: 'No se pudo actualizar el perfil' })
       }
     }
 
@@ -46,11 +48,15 @@ const EditarPerfil = ({ onCerrar }: EditarPerfilProps) => {
         email: correo,
         imagen,
       })
-      
+      setMensaje({ tipo: 'exito', texto: 'Perfil actualizado correctamente' });
+      setTimeout(() => {
+        setMensaje(null);
+        onCerrar();
+      }, 2000);
       onCerrar()
     } catch (error) {
       console.error("Error al actualizar el perfil:", error)
-      console.log("No se pudo actualizar el perfil.")
+      setMensaje({ tipo: 'error', texto: 'No se pudo actualizar el perfil' });
     }
   }
   return (
@@ -88,6 +94,10 @@ const EditarPerfil = ({ onCerrar }: EditarPerfilProps) => {
           value={correo}
           onChange={e => setCorreo(e.target.value)}
         />
+
+        {mensaje && (
+          <MensajeEstado tipo={mensaje.tipo} mensaje={mensaje.texto} onCerrar={() => setMensaje(null)} />
+        )}
 
         <div className="row-btn1">
           <Boton tipo="button" texto="Cancelar" onClick={onCerrar} />

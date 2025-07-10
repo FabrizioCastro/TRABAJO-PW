@@ -6,6 +6,7 @@ import Modal from '../components/Modal';
 import type { GameInput } from '../types';
 import { obtenerCategorias, obtenerPlataformas } from '../services/juegosService';
 import type { Categoria, Plataforma } from '../data/models';
+import MensajeEstado from '../components/MensajeEstado';
 
 interface AgregarJuegoProps {
     onAgregarJuego: (juego: GameInput) => void;
@@ -27,6 +28,7 @@ const AgregarJuego = ({ onAgregarJuego, onCerrar }: AgregarJuegoProps) => {
     const [imagenesAdicionales, setImagenesAdicionales] = useState<string[]>(['']);
     const [mostrarMiniModal, setMostrarMiniModal] = useState(false);
     const [urlImagen, setUrlImagen] = useState('');
+    const [mensaje, setMensaje] = useState<{ tipo: 'error' | 'exito'; texto: string } | null>(null);
 
     const handleImagenUrlChange = (index: number, value: string) => {
         const nuevasImagenes = [...imagenesAdicionales];
@@ -77,13 +79,47 @@ const AgregarJuego = ({ onAgregarJuego, onCerrar }: AgregarJuegoProps) => {
     };
 
     const handleAgregarJuego = async () => {
-        if (!nombre || !categoria || !precio || !descripcion || !plataforma || !preview || !trailer) {
-            console.log('Por favor, completa todos los campos obligatorios y sube una imagen.');
+
+        if (!categoria) {
+            setMensaje({ tipo: 'error', texto: 'Selecciona una categoría.' });
+            return;
+        }
+
+        if (!plataforma) {
+            setMensaje({ tipo: 'error', texto: 'Selecciona una plataforma.' });
             return;
         }
 
         const precioNumerico = parseFloat(precio);
         const descuentoNumerico = parseFloat(descuento) || 0;
+
+
+        if (isNaN(precioNumerico) || precioNumerico <= 0) {
+            setMensaje({ tipo: 'error', texto: 'El precio debe ser un número mayor a 0.' });
+            return;
+        }
+
+
+        if (isNaN(descuentoNumerico) || descuentoNumerico < 0 || descuentoNumerico > 100) {
+            setMensaje({ tipo: 'error', texto: 'El descuento debe estar entre 0 y 100.' });
+            return;
+        }
+
+        if (!descripcion.trim() || descripcion.length < 10) {
+            setMensaje({ tipo: 'error', texto: 'La descripción debe tener al menos 10 caracteres.' });
+            return;
+        }
+
+        if (!trailer.trim() || !trailer.startsWith('http')) {
+            setMensaje({ tipo: 'error', texto: 'Ingresa una URL válida para el trailer.' });
+            return;
+        }
+
+        if (!preview) {
+            setMensaje({ tipo: 'error', texto: 'Debes subir una imagen principal.' });
+            return;
+        }
+
 
         const nuevoJuego: GameInput = {
             nombre,
@@ -119,6 +155,7 @@ const AgregarJuego = ({ onAgregarJuego, onCerrar }: AgregarJuegoProps) => {
     return (
         <Modal onCerrar={onCerrar}>
             <Titulo texto="Agregar juego" />
+
             <Formulario>
                 <div className="d-flex flex-row gap-4 justify-content-center align-items-start">
                     <div>
@@ -253,6 +290,10 @@ const AgregarJuego = ({ onAgregarJuego, onCerrar }: AgregarJuegoProps) => {
                     </div>
                 </div>
             </Formulario>
+
+            {mensaje && (
+                <MensajeEstado tipo={mensaje.tipo} mensaje={mensaje.texto} onCerrar={() => setMensaje(null)} />
+            )}
 
             <div className="row-btn1">
                 <Boton tipo="button" texto="Cancelar" onClick={onCerrar} />

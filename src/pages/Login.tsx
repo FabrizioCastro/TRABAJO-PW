@@ -3,13 +3,14 @@ import type { FormEvent } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext'
 import { AuthService } from '../services/authService'
+import MensajeEstado from '../components/MensajeEstado';
 
 function Login() {
   const navigate = useNavigate()
   const { login } = useAuth()
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
-  const [mensaje, setMensaje] = useState('')
+  const [mensaje, setMensaje] = useState<{ tipo: 'error' | 'exito'; texto: string } | null>(null);
 
   const manejarSubmit = async (e: FormEvent) => {
     e.preventDefault();
@@ -18,7 +19,7 @@ function Login() {
     const tienePunto = email.includes('.');
 
     if (!tieneArroba || !tienePunto) {
-      setMensaje('Correo inválido');
+      setMensaje({ tipo: 'error', texto: 'Correo inválido' });
       return;
     }
 
@@ -28,19 +29,19 @@ function Login() {
       if (res.token) {
         login(res.token, res.usuario)
 
-        setMensaje(`Bienvenido/a, ${res.usuario.username}`);
+        setMensaje({ tipo: 'exito', texto: `Bienvenido/a, ${res.usuario.username}` });
 
-       if (res.usuario.rol === 'admin') {
+        if (res.usuario.rol === 'admin') {
           navigate('/admin');
         } else {
           navigate('/');
         }
       } else {
-        setMensaje(res.error || 'Correo o contraseña incorrectos');
+        setMensaje({ tipo: 'error', texto: res.error || 'Correo o contraseña incorrectos' });
       }
     } catch (error) {
       console.error(error);
-      setMensaje('Error de conexión con el servidor ');
+      setMensaje({ tipo: 'error', texto: 'Error de conexión con el servidor' });
     }
   };
 
@@ -76,8 +77,12 @@ function Login() {
           </button>
         </form>
 
-        {mensaje && <p className="mensaje">{mensaje}</p>}
-        
+        {mensaje && (
+          <div className="mt-3">
+            <MensajeEstado tipo={mensaje.tipo} mensaje={mensaje.texto} onCerrar={() => setMensaje(null)} />
+          </div>
+        )}
+
         <p className="login-link">
           ¿No tienes una cuenta? <a href="/register">Regístrate</a>
         </p>

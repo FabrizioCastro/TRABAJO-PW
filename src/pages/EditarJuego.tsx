@@ -6,6 +6,7 @@ import type { Game } from "../data/games";
 import Modal from "../components/Modal";
 import type { Categoria, Plataforma } from '../data/models';
 import { obtenerCategorias, obtenerPlataformas } from '../services/juegosService';
+import MensajeEstado from '../components/MensajeEstado';
 
 interface EditarJuegoProps {
   juego: Game;
@@ -28,6 +29,7 @@ const EditarJuego = ({ juego, onEditarJuego, onCerrar }: EditarJuegoProps) => {
   const [urlImagen, setUrlImagen] = useState('');
   const [categorias, setCategorias] = useState<Categoria[]>([]);
   const [plataformas, setPlataformas] = useState<Plataforma[]>([]);
+  const [mensaje, setMensaje] = useState<{ tipo: 'error' | 'exito'; texto: string } | null>(null);
 
   useEffect(() => {
     const cargarDatos = async () => {
@@ -79,14 +81,14 @@ const EditarJuego = ({ juego, onEditarJuego, onCerrar }: EditarJuegoProps) => {
     }
   };
 
-
   const handleSubmit = async () => {
     if (!categoria) {
-      console.log("Selecciona una categoría");
+      setMensaje({ tipo: 'error', texto: 'Selecciona una categoría válida.' });
       return;
     }
     if (!plataforma) {
-      console.log("Selecciona una plataforma");
+      setMensaje({ tipo: 'error', texto: 'Selecciona una plataforma.' });
+
       return;
     }
 
@@ -94,12 +96,13 @@ const EditarJuego = ({ juego, onEditarJuego, onCerrar }: EditarJuegoProps) => {
     const descuentoNumber = parseFloat(descuento);
 
     if (isNaN(precioNumber) || isNaN(descuentoNumber)) {
-      console.log("Precio y descuento deben ser números válidos");
+      setMensaje({ tipo: 'error', texto: 'Precio y descuento deben ser números válidos.' });
       return;
     }
 
     if (precioNumber < 0 || descuentoNumber < 0 || descuentoNumber > 100) {
-      console.log("Precio o descuento fuera de rango");
+      setMensaje({ tipo: 'error', texto: 'Precio o descuento fuera de rango.' });
+
       return;
     }
 
@@ -288,6 +291,11 @@ const EditarJuego = ({ juego, onEditarJuego, onCerrar }: EditarJuegoProps) => {
         </div>
 
       </Formulario>
+
+      {mensaje && (
+        <MensajeEstado tipo={mensaje.tipo} mensaje={mensaje.texto} onCerrar={() => setMensaje(null)} />
+      )}
+      
       <div className="row-btn1">
         <Boton tipo="button" texto="Cancelar" onClick={onCerrar} />
         <Boton tipo="submit" texto="Guardar" onClick={handleSubmit} />
