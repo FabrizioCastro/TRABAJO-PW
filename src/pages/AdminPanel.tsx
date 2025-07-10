@@ -41,12 +41,13 @@ function AdminPanel() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const dataVerificados = JSON.parse(localStorage.getItem("usuarios") || "[]");
-        const dataPendientes = JSON.parse(localStorage.getItem("usuariosPendientes") || "[]");
+        const usuariosDesdeApi = await obtenerUsuarios()
+        const verificados = usuariosDesdeApi.filter((u: Usuario) => u.codigoVerificacion === null)
+        const pendientes = usuariosDesdeApi.filter((u: Usuario) => u.codigoVerificacion !== null)
         const juegosDesdeApi = await obtenerJuegos();
 
-        setUsuarios(dataVerificados);
-        setPendientes(dataPendientes);
+        setUsuarios(verificados)
+        setPendientes(pendientes)
         setJuegosList(juegosDesdeApi);
       } catch (error) {
         console.error("Error cargando datos:", error);
@@ -54,7 +55,8 @@ function AdminPanel() {
     };
 
     fetchData();
-  }, []);
+  }, []);
+
 
 
   const generarClaves = async () => {
