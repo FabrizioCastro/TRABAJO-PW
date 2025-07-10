@@ -55,7 +55,8 @@ function AdminPanel() {
     };
 
     fetchData();
-  }, []);
+  }, []);
+
 
 
   const generarClaves = async () => {
