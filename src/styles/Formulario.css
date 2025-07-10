@@ -96,3 +96,8 @@
     text-align: left;
     transition: all 0.3s ease;
 }
+#categoria option,
+#plataforma option {
+  color: white;
+  background-color: #1a1a2e; /* Igual que --dark-bg */
+}

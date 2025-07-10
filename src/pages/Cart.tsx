@@ -4,6 +4,7 @@ import type { Game } from '../data/games'
 import { useAuth } from '../context/AuthContext'
 import CompraExitosa from './CompraExitosa'
 import { VentasService } from '../services/ventasService'
+import '../styles/style.css'
 
 function Cart() {
   const navigate = useNavigate()

@@ -243,6 +243,71 @@ body {
     border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
+/* Formulario de Pago */
+.formulario-pago {
+  margin-top: 1.5rem;
+  padding: 2rem;
+  background: rgba(255, 255, 255, 0.06);
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  justify-content: space-between;
+  color: #fff;
+}
+
+.formulario-pago h4 {
+  width: 100%;
+  font-size: 1.2rem;
+  margin-bottom: 1rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+  padding-bottom: 0.5rem;
+}
+
+.formulario-pago input {
+  flex: 1 1 45%;
+  padding: 0.75rem 1rem;
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  background-color: rgba(255, 255, 255, 0.1);
+  color: #fff;
+  font-size: 0.95rem;
+  transition: all 0.3s ease;
+}
+
+.formulario-pago input::placeholder {
+  color: #ccc;
+}
+
+.formulario-pago input:focus {
+  outline: none;
+  border-color: var(--accent-color);
+  background-color: rgba(255, 255, 255, 0.2);
+}
+
+/* Botón Confirmar y Pagar */
+.formulario-pago .btn-success {
+  flex: 1 1 100%;
+  padding: 0.75rem;
+  background-color: var(--accent-color);
+  color: #fff;
+  font-weight: bold;
+  font-size: 1rem;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.3s ease, transform 0.2s ease;
+}
+
+.formulario-pago .btn-success:hover {
+  background-color: #00cc88;
+  transform: scale(1.02);
+}
+
+
+
 /* Order Summary */
 .order-summary {
     max-width: 800px;
@@ -732,4 +797,6 @@ section {
   display: block;
   margin-top: 0.5rem;
 }
+
+
   
