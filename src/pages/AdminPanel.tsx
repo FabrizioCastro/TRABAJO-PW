@@ -41,12 +41,13 @@ function AdminPanel() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const dataVerificados = JSON.parse(localStorage.getItem("usuarios") || "[]");
-        const dataPendientes = JSON.parse(localStorage.getItem("usuariosPendientes") || "[]");
+        const usuariosDesdeApi = await obtenerUsuarios()
+        const verificados = usuariosDesdeApi.filter((u: Usuario) => u.codigoVerificacion === null)
+        const pendientes = usuariosDesdeApi.filter((u: Usuario) => u.codigoVerificacion !== null)
         const juegosDesdeApi = await obtenerJuegos();
 
-        setUsuarios(dataVerificados);
-        setPendientes(dataPendientes);
+        setUsuarios(verificados)
+        setPendientes(pendientes)
         setJuegosList(juegosDesdeApi);
       } catch (error) {
         console.error("Error cargando datos:", error);
@@ -88,7 +89,7 @@ function AdminPanel() {
     setPendientes(nuevos)
   }
 
-const verificarUsuario = (email: string) => {
+  const verificarUsuario = (email: string) => {
     const user = pendientes.find(u => u.email === email)
     if (!user) return
 
@@ -104,7 +105,7 @@ const verificarUsuario = (email: string) => {
     setPendientes(nuevosPendientes)
   }
 
-  
+
   const aplicarDescuento = () => {
     if (!selectedGame) return
 
