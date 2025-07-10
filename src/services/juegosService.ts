@@ -19,6 +19,18 @@ export const obtenerJuegos = async () => {
   return await resp.json()
 }
 
+export const obtenerJuegosMasValorados = async (): Promise<Game[]> => {
+  const resp = await fetch(`${URL_BACKEND}/juegos/api/juegos/mas-valorados`, {
+    headers: getAuthHeaders(),
+  });
+
+  if (!resp.ok) {
+    throw new Error("Error al obtener juegos más valorados");
+  }
+
+  return await resp.json();
+};
+
 export const eliminarJuego = async (id: number) => {
   const resp = await fetch(`${URL_BACKEND}/juegos/${id}`, {
     method: 'DELETE',
@@ -108,4 +120,5 @@ export const filtrarJuegosService = async (filtros: FiltroParams): Promise<Game[
     console.error("Error en filtrarJuegosService:", error);
     throw error;
   }
+ 
 };
