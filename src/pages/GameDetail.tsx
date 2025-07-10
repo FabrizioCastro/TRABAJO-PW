@@ -63,9 +63,9 @@ function GameDetail() {
   }
 
   return (
-    
+
     <div className="container text-white mt-5">
-      
+
 
       <div
         className="position-relative mb-5 rounded"
@@ -96,75 +96,75 @@ function GameDetail() {
       </div>
 
       <div className="mb-4">
-      {/* Trailer del juego */}
-      <h4 className="text-white">Tráiler</h4>
-      <div className="mb-4" style={{ cursor: 'pointer', maxWidth: '1000px' }} onClick={() => setShowTrailerModal(true)}>
-        {juego.trailer?.endsWith(".mp4") ? (
-          <video
-            className="rounded shadow"
-            style={{ width: '100%' }}
-            muted
-            playsInline
-            preload="metadata"
-          >
-            <source src={`/${juego.trailer}`} type="video/mp4" />
-          </video>
-        ) : juego.trailer ? (
-          <div style={{ aspectRatio: '16/9', width: '100%' }}>
-            <iframe
-              src={
-                juego.trailer.includes("embed")
-                  ? juego.trailer
-                  : juego.trailer.replace("watch?v=", "embed/")
-              }
-              title={`Tráiler ${juego.nombre}`}
-              allowFullScreen
-              style={{ width: '100%', height: '100%', border: 0 }}
-            ></iframe>
+        {/* Trailer del juego */}
+        <h4 className="text-white">Tráiler</h4>
+        <div className="mb-4" style={{ cursor: 'pointer', maxWidth: '1000px' }} onClick={() => setShowTrailerModal(true)}>
+          {juego.trailer?.endsWith(".mp4") ? (
+            <video
+              className="rounded shadow"
+              style={{ width: '100%' }}
+              muted
+              playsInline
+              preload="metadata"
+            >
+              <source src={`/${juego.trailer}`} type="video/mp4" />
+            </video>
+          ) : juego.trailer ? (
+            <div style={{ aspectRatio: '16/9', width: '100%' }}>
+              <iframe
+                src={
+                  juego.trailer?.includes("embed")
+                    ? juego.trailer
+                    : juego.trailer?.replace("watch?v=", "embed/")
+                }
+                title={`Tráiler ${juego.nombre}`}
+                allowFullScreen
+                style={{ width: '100%', height: '100%', border: 0 }}
+              ></iframe>
+            </div>
+          ) : (
+            <p className="text-muted">No hay tráiler disponible para este juego.</p>
+          )}
+        </div>
+
+
+
+
+
+
+
+        {/* Imágenes de referencia */}
+        <h5 className="text-white">Imágenes del juego</h5>
+        {juego.imagenes && juego.imagenes.length > 0 ? (
+          <div className="row g-3 mb-4">
+            {juego.imagenes.map((img, idx) => (
+              <div className="col-12 col-sm-6 col-md-4">
+                <div className="ratio ratio-16x9 overflow-hidden rounded shadow" style={{ maxHeight: '220px' }}>
+                  <img
+                    src={img.startsWith('http') ? img : `/${img.replace(/^public\//, '')}`}
+                    className="w-100 h-100 object-fit-cover"
+                    alt={`Imagen referencia ${idx + 1}`}
+                    onClick={() => setImagenSeleccionada(img)}
+                    style={{ cursor: 'pointer' }}
+                    onError={(e) => {
+                      const target = e.target as HTMLImageElement
+                      target.src = "https://via.placeholder.com/300x180?text=Imagen+no+disponible"
+                    }}
+                  />
+
+                </div>
+              </div>
+
+            ))}
           </div>
         ) : (
-          <p className="text-muted">No hay tráiler disponible para este juego.</p>
+          <p className="text-muted">No hay imágenes disponibles para este juego.</p>
         )}
+
       </div>
 
 
 
-
-
-
-
-      {/* Imágenes de referencia */}
-      <h5 className="text-white">Imágenes del juego</h5>
-      {juego.imagenes && juego.imagenes.length > 0 ? (
-        <div className="row g-3 mb-4">
-          {juego.imagenes.map((img, idx) => (
-            <div className="col-12 col-sm-6 col-md-4">
-            <div className="ratio ratio-16x9 overflow-hidden rounded shadow" style={{ maxHeight: '220px' }}>
-              <img
-                src={img.startsWith('http') ? img : `/${img.replace(/^public\//, '')}`}
-                className="w-100 h-100 object-fit-cover"
-                alt={`Imagen referencia ${idx + 1}`}
-                onClick={() => setImagenSeleccionada(img)}
-                style={{ cursor: 'pointer' }}
-                onError={(e) => {
-                  const target = e.target as HTMLImageElement
-                  target.src = "https://via.placeholder.com/300x180?text=Imagen+no+disponible"
-                }}
-              />
-
-            </div>
-          </div>
-
-          ))}
-        </div>
-      ) : (
-        <p className="text-muted">No hay imágenes disponibles para este juego.</p>
-      )}
-
-    </div>
-
-      
-      
       <p><strong>Descripción:</strong> {juego.descripcion}</p>
       <p><strong>Plataforma:</strong> {juego.plataforma}</p>
 
@@ -187,40 +187,40 @@ function GameDetail() {
 
         {hasPurchased && isAuthenticated ? (
           <form onSubmit={handleReviewSubmit} className="mb-4">
-          <h5>Deja tu reseña</h5>
+            <h5>Deja tu reseña</h5>
 
-          <div className="alert alert-info p-3 mb-3">
-            <label className="form-label d-block">Calificación</label>
-            <div className="mb-3 fs-4">
-              {[1, 2, 3, 4, 5].map(num => (
-                <span
-                  key={num}
-                  onClick={() => setReview({ ...review, rating: num })}
-                  style={{
-                    cursor: 'pointer',
-                    color: num <= review.rating ? '#ffc107' : '#ccc',
-                    transition: 'color 0.2s'
-                  }}
-                >
-                  ★
-                </span>
-              ))}
+            <div className="alert alert-info p-3 mb-3">
+              <label className="form-label d-block">Calificación</label>
+              <div className="mb-3 fs-4">
+                {[1, 2, 3, 4, 5].map(num => (
+                  <span
+                    key={num}
+                    onClick={() => setReview({ ...review, rating: num })}
+                    style={{
+                      cursor: 'pointer',
+                      color: num <= review.rating ? '#ffc107' : '#ccc',
+                      transition: 'color 0.2s'
+                    }}
+                  >
+                    ★
+                  </span>
+                ))}
+              </div>
+
+
+              <label className="form-label">Comentario</label>
+              <textarea
+                className="form-control"
+                rows={4}
+                placeholder="Escribe tu reseña aquí..."
+                value={review.comment}
+                onChange={(e) => setReview({ ...review, comment: e.target.value })}
+                required
+              />
             </div>
 
-
-            <label className="form-label">Comentario</label>
-            <textarea 
-              className="form-control"
-              rows={4}
-              placeholder="Escribe tu reseña aquí..."
-              value={review.comment}
-              onChange={(e) => setReview({ ...review, comment: e.target.value })}
-              required
-            />
-          </div>
-
-          <button type="submit" className="btn btn-primary">Enviar Reseña</button>
-        </form>
+            <button type="submit" className="btn btn-primary">Enviar Reseña</button>
+          </form>
 
 
         ) : (
@@ -233,85 +233,85 @@ function GameDetail() {
 
         <div className="mt-3">
           {juego.reviews.length === 0 ? (
-          <div className="alert alert-info">
-            No hay reseñas aún. <strong>¡Sé el primero!</strong>
-          </div>
-        ) : (
-          juego.reviews.map((rev, i) => (
-            <div key={i} className="border rounded p-3 mb-3 bg-dark text-white">
-              <strong>{rev.username}</strong> - {'★'.repeat(rev.rating)}{'☆'.repeat(5 - rev.rating)}
-              <p>{rev.comment}</p>
-              <small className="text-secondary">{new Date(rev.date).toLocaleDateString()}</small>
+            <div className="alert alert-info">
+              No hay reseñas aún. <strong>¡Sé el primero!</strong>
             </div>
-          ))
-        )}
-        </div>
-      </div>
-      {showTrailerModal && (
-  <div
-    className="position-fixed top-0 start-0 w-100 h-100 bg-black bg-opacity-75 d-flex justify-content-center align-items-center"
-    style={{ zIndex: 1050 }}
-    onClick={() => setShowTrailerModal(false)}
-  >
-    <div
-      className="position-relative"
-      style={{ width: '90%', maxWidth: '1200px' }}
-      onClick={(e) => e.stopPropagation()} // Evita cerrar al hacer clic dentro
-    >
-      <button
-        onClick={() => setShowTrailerModal(false)}
-        className="btn btn-danger position-absolute top-0 end-0 m-2"
-      >
-        ×
-      </button>
-      {juego.trailer?.endsWith(".mp4") ? (
-        <video
-          controls
-          autoPlay
-          className="w-100 rounded"
-        >
-          <source src={`/${juego.trailer}`} type="video/mp4" />
-        </video>
-      ) : (
-        <iframe
-          src={
-            juego.trailer.includes("embed")
-              ? juego.trailer
-              : juego.trailer.replace("watch?v=", "embed/")
-          }
-              allowFullScreen
-              style={{ width: '100%', aspectRatio: '16/9', border: 0 }}
-              title="Modo cine"
-            ></iframe>
+          ) : (
+            juego.reviews.map((rev, i) => (
+              <div key={i} className="border rounded p-3 mb-3 bg-dark text-white">
+                <strong>{rev.username}</strong> - {'★'.repeat(rev.rating)}{'☆'.repeat(5 - rev.rating)}
+                <p>{rev.comment}</p>
+                <small className="text-secondary">{new Date(rev.date).toLocaleDateString()}</small>
+              </div>
+            ))
           )}
         </div>
       </div>
-    )}
-    {imagenSeleccionada && (
-      <div
-        className="position-fixed top-0 start-0 w-100 h-100 bg-black bg-opacity-75 d-flex justify-content-center align-items-center"
-        style={{ zIndex: 1050 }}
-        onClick={() => setImagenSeleccionada(null)}
-      >
+      {showTrailerModal && (
         <div
-          className="position-relative"
-          style={{ width: '90%', maxWidth: '1000px' }}
-          onClick={(e) => e.stopPropagation()}
+          className="position-fixed top-0 start-0 w-100 h-100 bg-black bg-opacity-75 d-flex justify-content-center align-items-center"
+          style={{ zIndex: 1050 }}
+          onClick={() => setShowTrailerModal(false)}
         >
-          <button
-            onClick={() => setImagenSeleccionada(null)}
-            className="btn btn-danger position-absolute top-0 end-0 m-2"
+          <div
+            className="position-relative"
+            style={{ width: '90%', maxWidth: '1200px' }}
+            onClick={(e) => e.stopPropagation()} // Evita cerrar al hacer clic dentro
           >
-            ×
-          </button>
-          <img
-            src={imagenSeleccionada.startsWith('http') ? imagenSeleccionada : `/${imagenSeleccionada.replace(/^public\//, '')}`}
-            alt="Imagen ampliada"
-            className="w-100 rounded"
-          />
+            <button
+              onClick={() => setShowTrailerModal(false)}
+              className="btn btn-danger position-absolute top-0 end-0 m-2"
+            >
+              ×
+            </button>
+            {juego.trailer?.endsWith(".mp4") ? (
+              <video
+                controls
+                autoPlay
+                className="w-100 rounded"
+              >
+                <source src={`/${juego.trailer}`} type="video/mp4" />
+              </video>
+            ) : (
+              <iframe
+                src={
+                  juego.trailer?.includes("embed")
+                    ? juego.trailer
+                    : juego.trailer?.replace("watch?v=", "embed/")
+                }
+                allowFullScreen
+                style={{ width: '100%', aspectRatio: '16/9', border: 0 }}
+                title="Modo cine"
+              ></iframe>
+            )}
+          </div>
         </div>
-      </div>
-    )}
+      )}
+      {imagenSeleccionada && (
+        <div
+          className="position-fixed top-0 start-0 w-100 h-100 bg-black bg-opacity-75 d-flex justify-content-center align-items-center"
+          style={{ zIndex: 1050 }}
+          onClick={() => setImagenSeleccionada(null)}
+        >
+          <div
+            className="position-relative"
+            style={{ width: '90%', maxWidth: '1000px' }}
+            onClick={(e) => e.stopPropagation()}
+          >
+            <button
+              onClick={() => setImagenSeleccionada(null)}
+              className="btn btn-danger position-absolute top-0 end-0 m-2"
+            >
+              ×
+            </button>
+            <img
+              src={imagenSeleccionada.startsWith('http') ? imagenSeleccionada : `/${imagenSeleccionada.replace(/^public\//, '')}`}
+              alt="Imagen ampliada"
+              className="w-100 rounded"
+            />
+          </div>
+        </div>
+      )}
 
     </div>
   )

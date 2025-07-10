@@ -26,7 +26,13 @@ function Home() {
               key={juego.id}
             >
               <img
-                src={juego.imagen}
+                src={
+                  typeof juego.imagen === "string"
+                    ? juego.imagen
+                    : juego.imagen
+                      ? URL.createObjectURL(juego.imagen)
+                      : undefined
+                }
                 className="d-block w-100"
                 alt={juego.nombre}
                 style={{ height: '500px', objectFit: 'cover' }}

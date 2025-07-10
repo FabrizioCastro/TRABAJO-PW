@@ -6,7 +6,7 @@ interface Props {
   index: number
 }
 
-function GameCard({ juego, index }: Props) {
+function GameCard({ juego }: Props) {
   const agregarAlCarrito = () => {
     const carrito = JSON.parse(localStorage.getItem("carrito") || "[]")
     carrito.push(juego)

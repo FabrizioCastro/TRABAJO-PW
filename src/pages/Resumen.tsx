@@ -28,7 +28,7 @@ function Resumen() {
     const ultimoEmail = emailsData[emailsData.length - 1]
     if (ultimoEmail) {
       const clavesText = ultimoEmail.text.split('\n\n')[1]
-      const clavesArray = clavesText.split('\n').map(line => {
+      const clavesArray = clavesText.split('\n').map((line: string) => {
         const [nombre, clave] = line.split(': ')
         return { nombre, clave }
       })

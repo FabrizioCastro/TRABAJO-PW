@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react'
-import { juegos, getJuegos } from '../data/games'
 import type { Game } from '../data/games'
 import { VentasService } from '../services/ventasService'
 import { obtenerJuegos } from '../services/juegosService'
@@ -108,25 +107,6 @@ function AdminPanel() {
     console.log(`Descuento de ${descuento}% aplicado a ${selectedGame.nombre}`)
     setSelectedGame(null)
     setDescuento(0)
-  }
-
-  const agregarClave = () => {
-    if (!selectedGame || !nuevaClave.trim()) return
-
-    const nuevosJuegos = juegosList.map(juego => {
-      if (juego.id === selectedGame.id) {
-        return {
-          ...juego,
-          claves: [...juego.claves, nuevaClave.trim()]
-        }
-      }
-      return juego
-    })
-
-    setJuegosList(nuevosJuegos)
-    localStorage.setItem("juegos", JSON.stringify(nuevosJuegos))
-    setNuevaClave('')
-    console.log(`Clave agregada a ${selectedGame.nombre}`)
   }
 
   const eliminarClave = (juegoId: number, claveIndex: number) => {

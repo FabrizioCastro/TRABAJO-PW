@@ -1,7 +1,6 @@
 import { useState } from 'react'
 import type { FormEvent } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { hashPassword } from '../utils/hash'
 import { useAuth } from '../context/AuthContext'
 import { AuthService } from '../services/authService'
 
