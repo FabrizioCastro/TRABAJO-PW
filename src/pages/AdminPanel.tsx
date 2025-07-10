@@ -2,8 +2,9 @@ import { useEffect, useState } from 'react'
 import type { Game } from '../data/games'
 import { VentasService } from '../services/ventasService'
 import { obtenerJuegos } from '../services/juegosService'
-
+import { obtenerUsuarios, eliminarUsuario } from '../services/usuariosService'
 interface Usuario {
+  usuarioId: number
   name: string
   email: string
   password?: string
@@ -19,6 +20,24 @@ function AdminPanel() {
   const [descuento, setDescuento] = useState<number>(0)
   const [nuevaClave, setNuevaClave] = useState('')
   const [cantidadClaves, setCantidadClaves] = useState<number>(1)
+  const [selectedUser, setSelectedUser] = useState<Usuario| null>(null);
+  const [UsuarioAEliminar, setusuarioaEliminar] = useState<Usuario| null>(null);
+
+  const handleEliminar = async (id : number) => {
+          
+  
+          try {
+              await eliminarUsuario(id);
+              const nuevos = usuarios.filter(j => j.usuarioId !== id);
+              setUsuarios(nuevos);
+              setusuarioaEliminar(null);
+          } catch (error) {
+              console.error("Error al eliminar el usuario:", error);
+          }
+      };
+
+
+
 
   useEffect(() => {
     const fetchData = async () => {
@@ -262,7 +281,7 @@ function AdminPanel() {
                   <td>{u.name}</td>
                   <td>{u.email}</td>
                   <td>
-                    <button onClick={() => eliminarUsuario(u.email)} className="btn-danger">
+                    <button onClick={() => handleEliminar(u.usuarioId)} className="btn-danger">
                       <i className="fas fa-trash"></i> Eliminar
                     </button>
                   </td>
