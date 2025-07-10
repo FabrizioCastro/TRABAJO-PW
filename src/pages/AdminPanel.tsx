@@ -2,7 +2,8 @@ import { useEffect, useState } from 'react'
 import type { Game } from '../data/games'
 import { VentasService } from '../services/ventasService'
 import { obtenerJuegos } from '../services/juegosService'
-import { obtenerUsuarios, eliminarUsuario } from '../services/usuariosService'
+import { obtenerUsuarios, eliminarUsuario as eliminarUsuarioApi } from '../services/usuariosService'
+
 interface Usuario {
   usuarioId: number
   name: string
@@ -20,21 +21,19 @@ function AdminPanel() {
   const [descuento, setDescuento] = useState<number>(0)
   const [nuevaClave, setNuevaClave] = useState('')
   const [cantidadClaves, setCantidadClaves] = useState<number>(1)
-  const [selectedUser, setSelectedUser] = useState<Usuario| null>(null);
-  const [UsuarioAEliminar, setusuarioaEliminar] = useState<Usuario| null>(null);
+  const [selectedUser, setSelectedUser] = useState<Usuario | null>(null);
+  const [UsuarioAEliminar, setusuarioaEliminar] = useState<Usuario | null>(null);
 
-  const handleEliminar = async (id : number) => {
-          
-  
-          try {
-              await eliminarUsuario(id);
-              const nuevos = usuarios.filter(j => j.usuarioId !== id);
-              setUsuarios(nuevos);
-              setusuarioaEliminar(null);
-          } catch (error) {
-              console.error("Error al eliminar el usuario:", error);
-          }
-      };
+  const handleEliminar = async (id: number) => {
+    try {
+      await eliminarUsuarioApi(id);
+      const nuevos = usuarios.filter(j => j.usuarioId !== id);
+      setUsuarios(nuevos);
+      setusuarioaEliminar(null);
+    } catch (error) {
+      console.error("Error al eliminar el usuario:", error);
+    }
+  };
 
 
 
@@ -89,14 +88,12 @@ function AdminPanel() {
     setPendientes(nuevos)
   }
 
-  const verificarUsuario = (email: string) => {
+const verificarUsuario = (email: string) => {
     const user = pendientes.find(u => u.email === email)
     if (!user) return
 
     const nuevosVerificados = [...usuarios, {
-      name: user.name,
-      email: user.email,
-      password: user.password
+      ...user
     }]
     const nuevosPendientes = pendientes.filter(u => u.email !== email)
 
@@ -107,6 +104,7 @@ function AdminPanel() {
     setPendientes(nuevosPendientes)
   }
 
+  
   const aplicarDescuento = () => {
     if (!selectedGame) return
 
