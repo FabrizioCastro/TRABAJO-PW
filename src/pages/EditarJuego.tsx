@@ -30,7 +30,8 @@ const EditarJuego = ({ juego, onEditarJuego, onCerrar }: EditarJuegoProps) => {
   const [categorias, setCategorias] = useState<Categoria[]>([]);
   const [plataformas, setPlataformas] = useState<Plataforma[]>([]);
   const [mensaje, setMensaje] = useState<{ tipo: 'error' | 'exito'; texto: string } | null>(null);
-
+ const [trailer, setTrailer] = useState('');
+ 
   useEffect(() => {
     const cargarDatos = async () => {
       const cats = await obtenerCategorias();
@@ -51,6 +52,7 @@ const EditarJuego = ({ juego, onEditarJuego, onCerrar }: EditarJuegoProps) => {
     setPreview(typeof juego.imagen === 'string' ? juego.imagen : null);
     setArchivoImagen(null);
     setImagenesAdicionales(juego.imagenes ?? []);
+    setTrailer(juego.trailer || '');
   }, [juego]);
 
   const agregarCampoImagen = () => {
@@ -121,7 +123,7 @@ const EditarJuego = ({ juego, onEditarJuego, onCerrar }: EditarJuegoProps) => {
       oferta: juego.oferta ?? false,
       ventas: juego.ventas ?? 0,
       valoracion: juego.valoracion ?? 0,
-      trailer: juego.trailer ?? '',
+      trailer
     };
 
     onEditarJuego(juegoEditado);
@@ -196,6 +198,10 @@ const EditarJuego = ({ juego, onEditarJuego, onCerrar }: EditarJuegoProps) => {
               value={descripcion}
               onChange={(e) => setDescripcion(e.target.value)}
             ></textarea>
+
+              <label htmlFor="trailer">Trailer</label>
+                        <input type="text" id="trailer" value={trailer} onChange={(e) => setTrailer(e.target.value)} />
+
 
             <label className="form-label">Imagen principal</label>
             <div className="imagen-subida-container">

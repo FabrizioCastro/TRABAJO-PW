@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { getJuegos } from '../data/games'
 import type { Game } from '../data/games'
+import { buscarJuegosPorNombre } from '../services/juegosService'
 import '../styles/SearchBar.css'
 
 function SearchBar() {
@@ -23,16 +23,19 @@ function SearchBar() {
     return () => document.removeEventListener('mousedown', handleClickOutside)
   }, [])
 
-  const handleSearch = (value: string) => {
+  const handleSearch = async (value: string) => {
     setSearchTerm(value)
-    
-    if (value.length >= 2) { // Mostrar sugerencias con 2 o más caracteres
-      const juegos = getJuegos()
-      const filtered = juegos.filter(juego => 
-        juego.nombre.toLowerCase().includes(value.toLowerCase())
-      )
-      setSuggestions(filtered)
-      setShowSuggestions(true)
+
+    if (value.length >= 2) {
+      try {
+        const resultados = await buscarJuegosPorNombre(value)
+        setSuggestions(resultados)
+        setShowSuggestions(true)
+      } catch (error) {
+        console.error("Error al buscar juegos:", error)
+        setSuggestions([])
+        setShowSuggestions(false)
+      }
     } else {
       setSuggestions([])
       setShowSuggestions(false)
@@ -92,4 +95,4 @@ function SearchBar() {
   )
 }
 
-export default SearchBar 
+export default SearchBar

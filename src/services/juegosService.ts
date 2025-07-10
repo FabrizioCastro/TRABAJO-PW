@@ -129,3 +129,17 @@ export const filtrarJuegosService = async (filtros: FiltroParams): Promise<Game[
   }
 
 };
+
+
+export const buscarJuegosPorNombre = async (nombre: string): Promise<Game[]> => {
+  const resp = await fetch(
+    `${URL_BACKEND}/juegos/search?nombre=${encodeURIComponent(nombre)}`,
+    {
+      headers: getAuthHeaders()
+    }
+  )
+  if (!resp.ok) {
+    throw new Error("Error al buscar juegos por nombre")
+  }
+  return await resp.json()
+}
